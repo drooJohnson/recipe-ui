@@ -7,10 +7,14 @@ import playerPositionReducer from './position'
 const playerSlice = createSlice({
   name: 'player',
   initialState: {
+    name: null,
     health: null,
     money: null
   },
   reducers: {
+    setName(state, action) {
+      state.name = action.payload
+    },
     setHealth(state, action) {
       state.health = action.payload
     },
@@ -27,6 +31,7 @@ const playerSlice = createSlice({
 })
 
 const nestedPlayerReducer = combineReducers({
+  name: (s = null) => s,
   health: (s = null) => s,
   money: (s = null) => s,
   attributes: playerAttributesReducer,

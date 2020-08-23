@@ -1,7 +1,6 @@
 import { createSlice } from '@reduxjs/toolkit';
 
 export const initialState = {
-  name: null,
   race: null,
   class: null,
   max_health: null,
@@ -16,7 +15,6 @@ const playerAttributesSlice = createSlice({
   reducers: {
     setRace(state, action)  {state.race = action.payload;},
     setClass(state, action) {state.class = action.payload;},
-    setName(state, action) {state.name = action.payload;},
     setMaxHealth(state, action) {state.maxHealth = action.payload;},
     setStrength(state, action) {state.strength = action.payload;},
     setIntellect(state, action) {state.intellect = action.payload;},

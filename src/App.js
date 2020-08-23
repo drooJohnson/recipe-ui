@@ -1,13 +1,18 @@
 import React from 'react';
 import { BrowserRouter as Router } from 'react-router-dom';
-import { Navigation, Viewport } from './views/layout/Layout';
+import { Navigation, Viewport, LayoutContainer } from 'views/layout/';
+
+import Routing from 'routing/Root';
+
 function App() {
   return (
     <Router>
-      <Navigation/>
-      <Viewport>
-
-      </Viewport>
+      <LayoutContainer>
+        <Navigation/>
+        <Viewport>
+          <Routing/>
+        </Viewport>
+      </LayoutContainer>
     </Router>
   );
 }
