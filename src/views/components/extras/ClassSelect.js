@@ -1,8 +1,7 @@
 import React from 'react';
-import {withRouter} from 'react-router-dom'
 import { useQuery, useMutation, gql } from '@apollo/client';
 import { Card, Button } from 'antd';
-import StatModifierTable from './StatModifierTable';
+import StatModifierTable from '../StatModifierTable';
 import styled from 'styled-components';
 
 const CLASSES = gql`
@@ -122,7 +121,7 @@ const StyledClassCard = styled(Card)`
   }
 `
 
-const Class = ({history}) => {
+const ClassSelect = ({onComplete}) => {
   const [ setClass, { newData }] = useMutation(SET_CLASS);
   const [ grantClassStarterGear, { gearedData }] = useMutation(GRANT_GEAR);
   const { loading: loadingPlayer, error: errorPlayer, data: dataPlayer } = useQuery(PLAYER);
@@ -131,20 +130,20 @@ const Class = ({history}) => {
   if (loading || loadingPlayer) return <p>Loading...</p>
   if (error || errorPlayer) return <p>Error :(</p>
 
+  const handleSelect = (playerClass) => {
+    setClass({ variables: {classId: playerClass.id, id:dataPlayer.me.id}}).then(
+      res => {
+        grantClassStarterGear({ variables: { classId: playerClass.id, id: dataPlayer.me.id }}).catch(err => console.log(err));
+        onComplete();
+      }
+    ).catch(err => console.log(err));
+  }
   return (
     <CardArray>
     {data.classes.map((playerClass) => {
       return(
         <ClassCard playerClass={playerClass} player={dataPlayer.me} onSelect={()=>{
-            setClass({ variables: { classId: playerClass.id, id:dataPlayer.me.id }}).then(
-              res => {
-                grantClassStarterGear({ variables: { classId: playerClass.id, id:dataPlayer.me.id }}).then(
-                  res => {
-                    history.push('/');
-                  }
-                )
-              }
-            )
+            handleSelect(playerClass);
           }}/>
       )
     })}
@@ -152,4 +151,4 @@ const Class = ({history}) => {
   )
 }
 
-export default withRouter(Class);
+export default ClassSelect;

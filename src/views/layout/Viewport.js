@@ -1,6 +1,5 @@
 import React from "react";
 import styled from 'styled-components';
-import { useQuery, gql } from '@apollo/client';
 import { Link } from "react-router-dom";
 
 const ViewportWrapper = styled.div`

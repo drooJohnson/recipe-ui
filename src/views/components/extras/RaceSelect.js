@@ -1,9 +1,7 @@
-import React from 'react';
-import {withRouter} from 'react-router-dom'
+import React,{useState} from 'react';
 import { useQuery, useMutation, gql } from '@apollo/client';
-// import { Card, Button, Elevation } from '@blueprintjs/core';
 import { Card, Button } from 'antd';
-import StatModifierTable from './StatModifierTable'
+import StatModifierTable from '../StatModifierTable'
 import styled from 'styled-components'
 
 const RACES = gql`
@@ -55,7 +53,7 @@ const SET_RACE = gql`
   }
 `
 
-const RaceCard = ({playerRace, player, onSelect}) => {
+const RaceCard = ({selected, playerRace, player, onSelect}) => {
   return(
     <StyledRaceCard actions={[
       <Button type="link" onClick={onSelect}>{"Choose " + playerRace.name}</Button>
@@ -81,25 +79,31 @@ const StyledRaceCard = styled(Card)`
   }
 `
 
-const Race = ({history}) => {
+const RaceSelect = ({onComplete}) => {
   const [ setRace, { newData }] = useMutation(SET_RACE);
   const { loading: loadingPlayer, error: errorPlayer, data: dataPlayer } = useQuery(PLAYER);
   const { loading, error, data } = useQuery(RACES);
+  const [selectedRace, setSelectedRace] = useState(null);
 
   if (loading || loadingPlayer) return <p>Loading...</p>
   if (error || errorPlayer) return <p>Error :(</p>
 
-console.log(data);
+  const handleSelect = (race) => {
+    setSelectedRace(race.id)
+    setRace({ variables: {raceId:race.id, id:dataPlayer.me.id}}).then( res => {
+      console.log(res);
+      onComplete();
+    }).catch( err => {
+      console.log(err);
+    })
+  }
+
   return (
     <CardArray>
     {data.races.map((playerRace) => {
       return(
-        <RaceCard playerRace={playerRace} player={dataPlayer.me} onSelect={()=>{
-            setRace({ variables: { raceId: playerRace.id, id: dataPlayer.me.id }}).then(
-              res => {
-                history.push('class');
-              }
-            )
+        <RaceCard selected={selectedRace === playerRace.id} playerRace={playerRace} player={dataPlayer.me} onSelect={()=>{
+            handleSelect(playerRace);
           }}/>
       )
     })}
@@ -107,4 +111,4 @@ console.log(data);
   )
 }
 
-export default withRouter(Race);
+export default RaceSelect;

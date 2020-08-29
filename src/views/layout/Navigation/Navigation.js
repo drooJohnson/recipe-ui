@@ -38,9 +38,8 @@ const PLAYER = gql`
         description
       }
       inventory {
-        id
-        itemInstanceId
-        itemTemplateId
+        instanceId
+        templateId
         playerId
         name
         description
@@ -61,10 +60,15 @@ const PLAYER = gql`
         remainingCharges
         loseOnDeath
       }
-      position {
+      tile {
+        id
         x
         y
-        zone
+        zone {
+          id
+          name
+          description
+        }
       }
       name
     }
@@ -87,7 +91,7 @@ export const Navigation = ({loading, error, player}) => {
   }*/
   console.log("RENDER WITH:",player);
   return(
-    <div style={{ position: 'fixed', zIndex: 1, width: '100%' }}>
+    <div style={{ zIndex: 1, width: '100%' }}>
       <Menu style={{ display: 'flex', justifyContent: 'space-between', flexDirection:'rows', borderRadius:0 }}>
         <div style={{ display: 'flex', flex: '1', justifyContent: 'flex-start', flexDirection:'rows' }}>
           <Menu.Item>RPG</Menu.Item>
