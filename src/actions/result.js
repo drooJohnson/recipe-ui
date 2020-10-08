@@ -1,58 +1,37 @@
 import { client } from 'index'
 import { gql } from '@apollo/client'
+import store from 'store/configureStore'
+import { actions } from 'store/slices/messages'
 
-export const getResultFunctionArrFromObject = (results, player) => {
-  console.log(results);
-  let funcArr = [];
-
-  if (results.hasOwnProperty('addMessage')){
-    funcArr.push(()=>{resultAddMessage(results.addMessage,player.id)})
+const coerceResults = (results) => {
+  let resultsAsObj;
+  switch(typeof results){
+    case 'string':
+      try {
+        resultsAsObj = JSON.parse(results)
+      } catch (e) {
+        console.log("Failed to parse results string as JSON")
+        console.log(e);
+      }
+      break;
+    case 'object':
+      resultsAsObj = results;
+      break;
+    default:
+      console.log("Results reached default case, not processed");
+      break;
   }
-  if (results.hasOwnProperty('newMessage')){
-    funcArr.push(()=>{resultNewMessage(results.newMessage,player.id)})
-  }
-  if (results.hasOwnProperty('clearMessages')){
-    funcArr.push(()=>{resultClearMessages(player.id)})
-  }
-  if (results.hasOwnProperty('createExit')){
-    funcArr.push(()=>{resultCreateExit(results.createExit)})
-  }
-  if (results.hasOwnProperty('take')){
-    funcArr.push(()=>{resultTake(results.take,player.id)})
-  }
-  if (results.hasOwnProperty('drop')){
-    funcArr.push(()=>{resultDrop(results.drop,player.tile.id)})
-  }
-  if (results.hasOwnProperty('location')){
-    funcArr.push(()=>{resultLocation(player.id,results.location)})
-  }
-  if (results.hasOwnProperty('destroy')){
-    funcArr.push(()=>{resultDestroy(results.destroy)})
-  }
-  if (results.hasOwnProperty('addMoney')){
-    funcArr.push(()=>{resultAddMoney(results.addMoney,player.id)})
-  }
-  if (results.hasOwnProperty('removeMoney')){
-    funcArr.push(()=>{resultRemoveMoney(results.removeMoney,player.id)})
-  }
-  if (results.hasOwnProperty('roomDescription')){
-    funcArr.push(()=>{resultRoomDescription(results.roomDescription,player.tile.id)})
-  }
-  if (results.hasOwnProperty('destroyExit')){
-    funcArr.push(()=>{resultDestroyExit(results.destroyExit)})
-  }
-
-  return funcArr;
+  return resultsAsObj;
 }
 
 export const getResultFunctionArr = (results, player) => {
-  console.log(results);
-  let parsedResults = JSON.parse(results);
-  console.log(parsedResults);
+
+  let parsedResults = coerceResults(results);
   let funcArr = [];
 
   if (parsedResults.hasOwnProperty('addMessage')){
     funcArr.push(()=>{resultAddMessage(parsedResults.addMessage,player.id)})
+    funcArr.push(()=>{store.dispatch(actions.pushMessage(parsedResults.addMessage))})
   }
   if (parsedResults.hasOwnProperty('newMessage')){
     funcArr.push(()=>{resultNewMessage(parsedResults.newMessage,player.id)})
@@ -86,6 +65,12 @@ export const getResultFunctionArr = (results, player) => {
   }
   if (parsedResults.hasOwnProperty('destroyExit')){
     funcArr.push(()=>{resultDestroyExit(parsedResults.destroyExit)})
+  }
+  if (parsedResults.hasOwnProperty('damagePlayer')){
+    funcArr.push(()=>{resultDamagePlayer(parsedResults.damagePlayer,player.id)})
+  }
+  if (parsedResults.hasOwnProperty('healPlayer')){
+    funcArr.push(()=>{resultHealPlayer(parsedResults.healPlayer,player.id)})
   }
 
   return funcArr;
@@ -406,6 +391,52 @@ export const resultDestroyExit = (exit) => {
     }
   }).then((res) => {
     console.log("RESULT_DESTROY_EXIT MUTATION SUCCEEDED WITH ", res);
+  }).catch((err) => {
+    console.log(err);
+  })
+}
+
+const RESULT_DAMAGE_PLAYER = gql`
+  mutation ResultDamagePlayer($damage:Int!,$id:ID!){
+    damagePlayer(damage:$damage, id:$id){
+      id
+      health
+    }
+  }
+`
+
+export const resultDamagePlayer = (damage,id) => {
+  return client.mutate({
+    mutation: RESULT_DAMAGE_PLAYER,
+    variables:{
+      damage: damage,
+      id: id
+    }
+  }).then((res) => {
+    console.log("RESULT_DAMAGE_PLAYER MUTATION SUCCEEDED WITH ", res);
+  }).catch((err) => {
+    console.log(err);
+  })
+}
+
+const RESULT_HEAL_PLAYER = gql`
+  mutation ResultHealPlayer($healing:Int!,$id:ID!){
+    healPlayer(healing:$healing, id:$id){
+      id
+      health
+    }
+  }
+`
+
+export const resultHealPlayer = (healing,id) => {
+  return client.mutate({
+    mutation: RESULT_HEAL_PLAYER,
+    variables:{
+      healing: healing,
+      id: id
+    }
+  }).then((res) => {
+    console.log("RESULT_HEAL_PLAYER MUTATION SUCCEEDED WITH ", res);
   }).catch((err) => {
     console.log(err);
   })

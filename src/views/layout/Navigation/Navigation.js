@@ -4,6 +4,7 @@ import { useQuery, gql } from '@apollo/client';
 import { Menu } from 'semantic-ui-react';
 import { Link } from "react-router-dom";
 import InventoryIcon from "./InventoryIcon";
+import HealthBar from './HealthBar';
 
 const PLAYER = gql`
   query GetCurrentPlayer {
@@ -100,6 +101,9 @@ export const Navigation = ({loading, error, player}) => {
           <Menu.Item>{player.class?.name ? player.class?.name : <Link to='/character_creation/class'>Choose a Class</Link>}</Menu.Item>
         </div>
         <div style={{ display: 'flex', flex: '1', justifyContent: 'flex-end', flexDirection:'rows' }}>
+          <Menu.Item>
+            <HealthBar player={player}></HealthBar>
+          </Menu.Item>
           <Menu.Item>
             <InventoryIcon inventory={player.inventory}/>
           </Menu.Item>

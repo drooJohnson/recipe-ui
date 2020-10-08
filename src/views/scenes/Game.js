@@ -1,4 +1,6 @@
-import React from 'react';
+import React, {useEffect} from 'react';
+import {useSelector, useDispatch} from 'react-redux';
+import {actions as messageActions} from 'store/slices/messages'
 import styled from 'styled-components'
 import Tile from 'views/components/Tile'
 import Message from 'views/components/Message'
@@ -10,7 +12,6 @@ import { useQuery, gql } from '@apollo/client';
 
 import TextPanel from 'views/components/text/TextPanel'
 
-import getAllowedActions from '../../actions/getAllowedActions'
 
 const PLAYER = gql`
   query GetCurrentPlayer {
@@ -138,37 +139,54 @@ const ActionDiv = styled.div`
 `
 
 const Game = () => {
-
+  const messages = useSelector(state => state.gameState.messages);
+  console.log(messages);
   let {loading, error, data: gameData} = useQuery(PLAYER);
 
   if (loading) return <div>"Loading..."</div>;
   if (error) return <div>"Error..."</div>;
 
-  let {tile, inventory, class: playerClass, race, lastMessage, ...player} = gameData?.me;
-  let gameActions = getAllowedActions(tile.zone.actions, inventory, tile, player);
-  console.log(gameActions);
+  let {tile, inventory, ...player} = gameData?.me;
   return(
     <HomeDiv>
-      <TextPanel>
-        <div key={'messages'}>
-          {gameData.me.messages?.map(message => (<div>{message}</div>))}
-        </div>
-        <div key={'tileDescription'}>{gameData.me.tile.description}</div>
-        {gameData.me.tile.items.map((item) => {
-          return <div key={item.instanceId}>{item.worldDescription}</div>
-        })}
-        {/*
-          <Message message={gameData.me.lastMessage}/>
-          <Tile tile={gameData.me.tile}/>
-          <LocationObjects items={gameData.me.tile.items}/>
-        */}
-        <TileExtras tile={gameData.me.tile} player={player}/>
-      </TextPanel>
-      <ActionDiv>
-        <ExploreActions exits={gameData.me.tile.exits} player={player}/>
-        <GameActions actions={gameActions} player={player}/>
-      </ActionDiv>
+      <GameComponent tile={tile} inventory={inventory} player={player} messages={messages}/>
     </HomeDiv>
+  )
+}
+
+const GameComponent = ({tile, inventory, player, messages}) => {
+  const dispatch = useDispatch();
+
+  useEffect(()=>{
+    console.log("TILE ID OR DESCRIPTION CHANGED");
+    dispatch(messageActions.clearMessages());
+    dispatch(messageActions.pushMessage(tile.description));
+  }, [tile.id, tile.description]);
+
+  console.log(messages);
+  return(
+    <>
+    <TextPanel>
+      {false && <div key={'tileDescription'}>{tile.description}</div>}
+      {tile.items.map((item) => {
+        return <div key={item.instanceId}>{item.worldDescription}</div>
+      })}
+      {/*
+        <Message message={gameData.me.lastMessage}/>
+        <Tile tile={gameData.me.tile}/>
+        <LocationObjects items={gameData.me.tile.items}/>
+      */}
+      <div key={'messages'}>
+        <br/>
+        {messages?.map(message => (<div>{message}</div>))}
+      </div>
+      <TileExtras tile={tile} player={player}/>
+    </TextPanel>
+    <ActionDiv>
+      <ExploreActions exits={tile.exits} player={player}/>
+      <GameActions tile={tile} inventory={inventory} player={player}/>
+    </ActionDiv>
+    </>
   )
 }
 

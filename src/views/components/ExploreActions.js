@@ -2,10 +2,11 @@ import React from 'react';
 import { Button } from 'semantic-ui-react';
 import { gql, useMutation } from '@apollo/client';
 
-const MOVE = gql`
-  mutation Move($id:ID!, $tileId:ID!){
-    move(id:$id, tileId:$tileId){
+const TAKE_EXIT = gql`
+  mutation TakeExit($id:ID!, $exitId:ID!){
+    takeExit(id:$id, exitId:$exitId){
       id
+      message
       tile{
         id
       }
@@ -14,16 +15,16 @@ const MOVE = gql`
 `
 
 const ExploreActions = ({exits, player}) => {
-  let [move, {moveData}] = useMutation(MOVE);
+  let [takeExit, {takeExitData}] = useMutation(TAKE_EXIT);
 
-  const onMove = (exit) => {
-    move({variables:{id:player.id, tileId:exit.destination.id}}).then((res)=>{console.log(res)}).catch(error => console.log(error));
+  const onTakeExit = (exit) => {
+    takeExit({variables:{id:player.id, exitId:exit.id}}).then((res)=>{console.log(res)}).catch(error => console.log(error));
   }
 
   return(
     <>
       {exits.map(exit => {
-        return <Button onClick={()=>{onMove(exit)}}>{exit.text}</Button>
+        return <div><a onClick={()=>{onTakeExit(exit)}}>[{exit.description}]</a></div>
       })}
     </>
   )

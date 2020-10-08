@@ -7,6 +7,7 @@ const ViewportWrapper = styled.div`
   align-items:center;
   justify-content:center;
   flex:1;
+  font-family:monospace;
 `
 
 const Viewport = ({children}) => {

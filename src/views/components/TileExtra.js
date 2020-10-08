@@ -3,14 +3,14 @@ import ClassSelect from './extras/ClassSelect';
 import NameSelect from './extras/NameSelect';
 import RaceSelect from './extras/RaceSelect';
 
-import {getResultFunctionArrFromObject} from 'actions/result'
+import {getResultFunctionArr} from 'actions/result'
 
 const TileExtra = ({tile, player}) => {
   if (!tile.extra) {
     return "NO EXTRA"
   }
   let extra = JSON.parse(tile.extra);
-  let resultFunctionArr = getResultFunctionArrFromObject(extra.onComplete, player);
+  let resultFunctionArr = getResultFunctionArr(extra.onComplete, player);
 
   const onComplete = async () => {
     return Promise.all(resultFunctionArr.map(

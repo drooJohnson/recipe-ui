@@ -1,10 +1,12 @@
 import React from 'react';
 import {getResultFunctionArr} from 'actions/result'
+import getAllowedActions from 'actions/getAllowedActions'
 
-const GameActions = ({actions, player}) => {
+const GameActions = ({tile, inventory, player}) => {
+  let gameActions = getAllowedActions(tile.zone.actions, inventory, tile, player);
   return(
     <>
-      {actions.map(action => {
+      {gameActions.map(action => {
         return(
           <Action action={action} player={player}/>
         )
