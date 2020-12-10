@@ -1,38 +1,12 @@
 import React from 'react';
 import { gql, useQuery } from '@apollo/client'
-import { Link } from 'react-router-dom'
-import Pagination from './components/Pagination'
-
-const ALL_RECIPES = gql`
-  query AllRecipes{
-    allRecipes{
-      id,
-      name,
-      description
-      ingredients {
-        id,
-        sectionName,
-        displayOrder,
-        quantity,
-        unit,
-        name
-      },
-      steps {
-        id,
-        sectionName,
-        displayOrder,
-        numberOverride,
-        text
-      },
-      tags {
-        id,
-        slug,
-        text,
-        kind
-      }
-    }
-  }
-`
+import { Link, useHistory } from 'react-router-dom'
+import RecipeCard from './components/RecipeCard'
+import Grid from '@material-ui/core/Grid'
+import Button from '@material-ui/core/Button'
+import Typography from '@material-ui/core/Typography'
+import styled from 'styled-components'
+import FeaturedRecipe from './recipe/FeaturedRecipe'
 
 const RECIPES = gql`
   query Recipes(
@@ -67,10 +41,10 @@ const RECIPES = gql`
       recipes {
         id,
         name,
-        description
+        description,
+        imageUrl,
         ingredients {
           id,
-          sectionName,
           displayOrder,
           quantity,
           unit,
@@ -78,9 +52,7 @@ const RECIPES = gql`
         },
         steps {
           id,
-          sectionName,
           displayOrder,
-          numberOverride,
           text
         },
         tags {
@@ -94,62 +66,40 @@ const RECIPES = gql`
   }
 `
 
+const FeaturedRecipes = styled.div`
+  display:grid;
+  grid-template-columns:repeat(12, 1fr);
+  grid-template-rows: auto;
+  column-gap:24px;
+`
 
 const Home = () => {
-  const {loading, data, error, refetch, fetchMore} = useQuery(RECIPES, {variables: {pageSize: 5}});
+  const history = useHistory();
+  const {loading, data, error, refetch, fetchMore} = useQuery(RECIPES, {variables: {pageSize: 3}});
+
   if (loading) return "Loading..."
   if (error) return `${error}`
 
-
-  const changePage = (page,cursor) => {
-    console.log(page,cursor);
-    refetch({
-      pageSize: 5,
-      page: page,
-      after: cursor
-    })
-  }
+  const featureProps = [
+    {color:'teal',side:'LEFT'},
+    {color:'yellow',side:'RIGHT'},
+    {color:'purple',side:'LEFT'}
+  ]
 
   return(
-    <div>
-      {data.recipes.recipes.map(recipe => {
-        return(
-          <div>
-            <Link to={`/recipe/${recipe.id}`}><h1>{recipe.name}</h1></Link>
-            <p>{recipe.description}</p>
-            <div>
-            {recipe.tags?.map(tag => {
-              return <Link to={`/tag/${tag.id}`}>{tag.text}</Link>
-            })}
-            </div>
-            <h3>Ingredients</h3>
-            <ul>
-              {recipe.ingredients?.map(ingredient => {
-                return <li>{ingredient.quantity} {ingredient.unit} {ingredient.name}</li>
-              })}
-            </ul>
-            <h3>Method</h3>
-            <ol>
-              {recipe.steps?.map(step => {
-                return <li>{step.text}</li>
-              })}
-            </ol>
-          </div>
-        )
-      })}
-      <Pagination
-        pageCursors={data.recipes.pageCursors}
-        onClick={changePage}
-        />
-      <button onClick={async () => {
-          await fetchMore({
-            variables: {
-              after:data.recipes.cursor
-            }
-          })
-        }}
-        >Load More</button>
-    </div>
+      <Grid container spacing={3}>
+        <Grid item xs={12} style={{display:'flex',justifyContent:'space-between',alignItems:'baseline'}}>
+          <Typography variant="h4">Latest Recipes</Typography>
+          <Button onClick={()=>{history.push('/recipes/')}}>VIEW MORE</Button>
+        </Grid>
+          {data.recipes.recipes.map((recipe, index) => {
+            return(
+              <Grid item xs={12}>
+                <FeaturedRecipe recipe={recipe} {...featureProps[index]}/>
+              </Grid>
+            )
+          })}
+      </Grid>
   )
 }
 

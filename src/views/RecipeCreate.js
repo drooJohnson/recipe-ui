@@ -1,6 +1,6 @@
 import React from 'react';
 import { gql, useMutation } from '@apollo/client'
-import { useHistory, Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import RecipeForm from './forms/RecipeForm'
 
 const CREATE_RECIPE = gql`
@@ -8,10 +8,10 @@ const CREATE_RECIPE = gql`
     insertRecipe(recipe: $recipe){
       id,
       name,
-      description
+      description,
+      imageUrl,
       ingredients {
         id,
-        sectionName,
         displayOrder,
         quantity,
         unit,
@@ -19,9 +19,7 @@ const CREATE_RECIPE = gql`
       },
       steps {
         id,
-        sectionName,
         displayOrder,
-        numberOverride,
         text
       },
       tags {
@@ -36,7 +34,7 @@ const CREATE_RECIPE = gql`
 
 const RecipeCreate = () => {
   const history = useHistory();
-  const [ createRecipe, { data, error, loading }] = useMutation(CREATE_RECIPE,
+  const [ createRecipe, { error, loading }] = useMutation(CREATE_RECIPE,
     {
       onCompleted: (data) => {
       console.log("ONCOMPLETED",data);
@@ -49,18 +47,16 @@ const RecipeCreate = () => {
     var rawObj = {...obj};
     propertiesArray.map((propToRemove) => {
       delete rawObj[propToRemove]
+      return null;
     })
     return rawObj;
-  }
-  const stripTypeName = (obj) => {
-    const {__typename, ...rest} = obj;
-    return rest;
   }
 
   const submitRecipe = (recipe) => {
     let createRecipeInput = {
       name: recipe.name,
       description: recipe.description,
+      imageUrl: recipe.imageUrl,
       ingredients: recipe.ingredients.map( ingredient => stripProperties(['__typename','key'],ingredient) ),
       steps: recipe.steps.map( step => stripProperties(['__typename','key'],step) ),
       tags: recipe.tags.map( tag => stripProperties(['__typename','key'],tag) )

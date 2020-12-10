@@ -1,6 +1,6 @@
 import React from 'react';
 import { gql, useQuery, useMutation } from '@apollo/client'
-import { useParams, Link } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import RecipeForm from './forms/RecipeForm'
 
 const RECIPE = gql`
@@ -8,10 +8,10 @@ const RECIPE = gql`
     recipe(id: $id){
       id,
       name,
-      description
+      description,
+      imageUrl,
       ingredients {
         id,
-        sectionName,
         displayOrder,
         quantity,
         unit,
@@ -19,9 +19,8 @@ const RECIPE = gql`
       },
       steps {
         id,
-        sectionName,
         displayOrder,
-        numberOverride,
+        title,
         text
       },
       tags {
@@ -39,10 +38,10 @@ const UPDATE_RECIPE = gql`
     updateRecipe(recipe: $recipe){
       id,
       name,
-      description
+      description,
+      imageUrl,
       ingredients {
         id,
-        sectionName,
         displayOrder,
         quantity,
         unit,
@@ -50,9 +49,8 @@ const UPDATE_RECIPE = gql`
       },
       steps {
         id,
-        sectionName,
         displayOrder,
-        numberOverride,
+        title,
         text
       },
       tags {
@@ -65,31 +63,19 @@ const UPDATE_RECIPE = gql`
   }
 `
 
-function reverseStr(str) {
-  return str.split("").reverse().join("");
-}
-
-function stripTypeName(obj) {
-  let {__typename, ...data} = obj;
-  return data;
-}
-
 const RecipeEdit = () => {
   let { id: recipeId } = useParams();
   const { loading, data, error } = useQuery(RECIPE, { variables: { id: recipeId } });
-  const [ updateRecipe, { data: updateData, error: updateError, loading: updateLoading }] = useMutation(UPDATE_RECIPE);
+  const [ updateRecipe, { error: updateError, loading: updateLoading }] = useMutation(UPDATE_RECIPE);
   // After successful submission, redirect user to the EDIT route, using the
   // id that the CREATE_RECIPE mutation should return.
   const stripProperties = (propertiesArray, obj) => {
     var rawObj = {...obj};
     propertiesArray.map((propToRemove) => {
       delete rawObj[propToRemove]
+      return null;
     })
     return rawObj;
-  }
-  const stripTypeName = (obj) => {
-    const {__typename, ...rest} = obj;
-    return rest;
   }
 
   const submitRecipe = (recipe) => {
@@ -97,9 +83,10 @@ const RecipeEdit = () => {
       id: recipe.id,
       name: recipe.name,
       description: recipe.description,
-      ingredients: recipe.ingredients.map( ingredient => stripProperties(['__typename','key'],ingredient) ),
-      steps: recipe.steps.map( step => stripProperties(['__typename','key'],step) ),
-      tags: recipe.tags.map( tag => stripProperties(['__typename','key'],tag) )
+      imageUrl: recipe.imageUrl,
+      ingredients: recipe.ingredients.map( ingredient => stripProperties(['__typename','key','uiKey'],ingredient) ),
+      steps: recipe.steps.map( step => stripProperties(['__typename','key','uiKey'],step) ),
+      tags: recipe.tags.map( tag => stripProperties(['__typename','key','uiKey'],tag) )
     }
 
     updateRecipe({
