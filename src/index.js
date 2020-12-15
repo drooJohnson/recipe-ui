@@ -37,15 +37,6 @@ const uploadLink = createUploadLink({
 
 export const client = new ApolloClient({
   cache: cache,
-  /*request: operation => {
-    console.log(operation);
-    operation.setContext(context => ({
-      headers: {
-        ...context.headers,
-        authorization: auth.getIdToken(),
-      },
-    }));
-  },*/
   uri: process.env.REACT_APP_GRAPHQL_URI,
   link: authLink.concat(uploadLink)
 });
@@ -65,17 +56,6 @@ ReactDOM.render(
   document.getElementById('root')
 );
 
-/*ReactDOM.render(
-  <React.StrictMode>
-    <ApolloProvider client={client}>
-      <Provider store={store}>
-        <CssBaseline />
-        <App />
-      </Provider>
-    </ApolloProvider>
-  </React.StrictMode>,
-  document.getElementById('root')
-);*/
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
