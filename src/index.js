@@ -1,40 +1,89 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
-import 'semantic-ui-css/semantic.min.css';
 import './index.css';
 import App from './App';
 import * as serviceWorker from './serviceWorker';
+import auth from './Auth';
 
-import { Provider } from 'react-redux';
-import store from './store/configureStore';
+import {BrowserRouter as Router} from 'react-router-dom';
 
-import { ApolloClient, InMemoryCache, ApolloProvider } from '@apollo/client';
+import CssBaseline from '@material-ui/core/CssBaseline';
+//import store from './store/configureStore';
+import { cache } from './cache';
+import { ApolloClient, ApolloProvider } from '@apollo/client';
+import { setContext } from '@apollo/client/link/context';
+
+import { createUploadLink } from 'apollo-upload-client';
 
 import { library } from '@fortawesome/fontawesome-svg-core';
 import { fas } from '@fortawesome/pro-solid-svg-icons';
 import { far } from '@fortawesome/pro-regular-svg-icons';
 import { fal } from '@fortawesome/pro-light-svg-icons';
 
+import { ToastContainer } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
+
+import Theme from './theme';
+
 library.add(fas);
 library.add(far);
 library.add(fal);
 
-export const client = new ApolloClient({
-  uri: 'http://localhost:8000/graphql',
-  cache: new InMemoryCache()
-});
+const authLink = setContext((_, {headers}) => {
+  const token = auth.getIdToken();
 
+  return {
+    headers: {
+      ...headers,
+      authorization: token
+    }
+  }
+})
+
+const uploadLink = createUploadLink({
+  uri: 'http://localhost:8000/graphql'
+})
+
+export const client = new ApolloClient({
+  cache: cache,
+  /*request: operation => {
+    console.log(operation);
+    operation.setContext(context => ({
+      headers: {
+        ...context.headers,
+        authorization: auth.getIdToken(),
+      },
+    }));
+  },*/
+  link: authLink.concat(uploadLink)
+});
 
 ReactDOM.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
+      <Theme>
+        <CssBaseline />
+        <Router>
+          <App />
+        </Router>
+        <ToastContainer/>
+      </Theme>
+    </ApolloProvider>
+  </React.StrictMode>,
+  document.getElementById('root')
+);
+
+/*ReactDOM.render(
+  <React.StrictMode>
+    <ApolloProvider client={client}>
       <Provider store={store}>
+        <CssBaseline />
         <App />
       </Provider>
     </ApolloProvider>
   </React.StrictMode>,
   document.getElementById('root')
-);
+);*/
 
 // If you want your app to work offline and load faster, you can change
 // unregister() to register() below. Note this comes with some pitfalls.
