@@ -32,7 +32,7 @@ const authLink = setContext((_, {headers}) => {
 })
 
 const uploadLink = createUploadLink({
-  uri: 'http://localhost:8000/graphql'
+  uri: 'https://droolangerie.herokuapp.com/graphql'
 })
 
 export const client = new ApolloClient({
