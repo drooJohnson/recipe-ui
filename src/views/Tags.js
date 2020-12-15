@@ -1,6 +1,6 @@
 import React from 'react';
 import { gql, useQuery } from '@apollo/client'
-import { Link } from 'react-router-dom'
+import { useHistory, Link } from 'react-router-dom'
 import styled from 'styled-components'
 import * as _ from 'lodash'
 
@@ -49,12 +49,15 @@ const TagChipRow = styled.div`
 
 const Tags = () => {
   const { loading, data, error } = useQuery(TAGS);
+  const history = useHistory();
 
   if (loading) return "Loading..."
   if (error) return `${error}`
 
   // sort tags by KIND
-  const groupedTags = _.groupBy(data.tags, 'kind');
+  const withoutEmptyTags = data.tags.filter(tag => tag.recipes.length > 0);
+  const groupedTags = _.groupBy(withoutEmptyTags, 'kind');
+  //const withoutEmptyGroups = groupedTags.filter(group => group.length > 0);
 
   return(
     <>
@@ -65,14 +68,13 @@ const Tags = () => {
               <TagKind key={key}>{key}</TagKind>
               <GridList>
                 {value.map(tag => {
+                  if (tag.recipes.length < 1) return;
                   return (
-                    <GridListTile key={tag.id}>
-                      <img src={tag.imageUrl}/>
-                      <GridListTileBar title={tag.text}>
-                        <Link to={`/tag/${tag.id}`}>
-                        {tag.text}
-                        </Link>
-                      </GridListTileBar>
+                    <GridListTile style={{cursor:'pointer'}} key={tag.id} onClick={()=>{history.push(`/tag/${tag.id}`)}}>
+                        <img src={tag.imageUrl}/>
+                        <GridListTileBar title={tag.text}>
+                          {tag.text}
+                        </GridListTileBar>
                     </GridListTile>
                   )
                 })}

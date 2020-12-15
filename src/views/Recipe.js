@@ -1,14 +1,16 @@
 import React from 'react';
 import { gql, useQuery } from '@apollo/client'
-import { useParams, Link } from 'react-router-dom'
+import { useParams, Link, Redirect } from 'react-router-dom'
 import Typography from '@material-ui/core/Typography'
-import LinkTagList from './components/LinkTagList'
+import ChipTagList from './components/ChipTagList'
 import styled from 'styled-components'
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
 import RecipeHeader from './recipe/RecipeHeader'
 import Ingredient from './recipe/Ingredient'
 import Step from './recipe/Step'
+
+import auth from '../Auth'
 
 const RECIPE = gql`
   query Recipe($id: ID!){
@@ -17,6 +19,8 @@ const RECIPE = gql`
       name,
       description,
       imageUrl,
+      imageColor,
+      imageAltText,
       ingredients {
         id,
         displayOrder,
@@ -31,7 +35,10 @@ const RECIPE = gql`
         title,
         type,
         imageUrl,
-        text
+        altText,
+        text,
+        color,
+        side
       },
       tags {
         id,
@@ -112,6 +119,7 @@ const Recipe = () => {
 
   if (loading) return "Loading..."
   if (error) return `${error}`
+  if (data.recipe === null) return <Redirect to="/404"/>
 
   const {id, name, description, ingredients, steps, tags} = data.recipe;
 
@@ -132,9 +140,9 @@ const Recipe = () => {
 
   return(
     <>
-      <RecipeHeader name={name} date={null} recipeId={id} imageUrl={data.recipe.imageUrl}>
+      <RecipeHeader name={name} date={null} recipeId={id} imageUrl={data.recipe.imageUrl} imageColor={data.recipe.imageColor} imageAltText={data.recipe.imageAltText}>
         <div>
-          {tags && <LinkTagList tags={tags} fadeOverflow={false}/>}
+          {tags && <ChipTagList tags={tags} fadeOverflow={false}/>}
         </div>
       </RecipeHeader>
       <GridContainer>
@@ -148,9 +156,7 @@ const Recipe = () => {
             return <Ingredient ingredient={ingredient}/>
           })}
         </Ingredients>
-        <Steps>
-            {renderSteps(steps)}
-        </Steps>
+        {renderSteps(steps)}
       </GridContainer>
     </>
   )

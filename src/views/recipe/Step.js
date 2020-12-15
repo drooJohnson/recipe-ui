@@ -4,6 +4,7 @@ import styled from 'styled-components'
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
 import PropTypes from 'prop-types'
+import FilteredImage from '../components/FilteredImage'
 
 const Tick = styled.div`
   width: 16px;
@@ -39,7 +40,7 @@ const Step = ({step, stepNumber}) => {
 
 const StepText = ({step, stepNumber}) => {
   return (
-    <div style={{marginBottom:36, gridColumnStart:'1', gridColumnEnd:'7'}}>
+    <div style={{marginBottom:36, gridColumnStart:'4', gridColumnEnd:'10'}}>
       <StepHeaderContainer style={{marginBottom:16}}>
         <Tick/>
         <Typography variant='h6' style={{color:'#FF9E3B', fontWeight:'900', marginRight:12}}>
@@ -56,7 +57,7 @@ const StepText = ({step, stepNumber}) => {
 
 const StepHeader = ({step, stepNumber}) => {
   return (
-    <div style={{marginBottom:36, gridColumnStart:'1', gridColumnEnd:'7'}}>
+    <div style={{marginBottom:36, gridColumnStart:'4', gridColumnEnd:'10'}}>
       <StepHeaderContainer style={{marginBottom:16}}>
         <Typography variant='h5'>
           {step.title}
@@ -69,22 +70,25 @@ const StepHeader = ({step, stepNumber}) => {
 
 const StepImageGrid = styled.div`
   grid-column-start:1;
-  grid-column-end:10;
+  grid-column-end:13;
   display:grid;
-  grid-template-columns:repeat(9, 1fr);
+  grid-template-columns:repeat(12, 1fr);
   grid-template-rows: auto;
   column-gap:24px;
 `
 
 const StepImageCaption = styled.div`
-  grid-column-start:7;
-  grid-column-end:10;
+  grid-column-start:${props => props.side === 'LEFT' ? '10' : '4'};
+  grid-column-end:${props => props.side === 'LEFT' ? '13' : '13'};
 `
 
-const StepImg = styled.img`
-  grid-column-start:1;
-  grid-column-end:7;
+const StepImg = styled.div`
+  grid-column-start: ${props => props.side === 'LEFT' ? '1' : '4'};
+  grid-column-end: ${props => props.side === 'LEFT' ? '10' : '13'};
+  margin-bottom: ${props => props.side === 'LEFT' ? '0' : '16px'};
   width: 100%;
+  object-fit: cover;
+  max-height: 480px;
 `
 
 const CaptionBar = styled.div`
@@ -98,8 +102,11 @@ const CaptionBar = styled.div`
 const StepImage = ({step, stepNumber}) => {
   return (
     <StepImageGrid style={{marginBottom:36}}>
-      <StepImg src={step.imageUrl}/>
-      <StepImageCaption>
+      <StepImg side={step.side}>
+        <FilteredImage imageUrl={step.imageUrl} side={'RIGHT'} color={step.color} gradientStart='0%' gradientEnd='50%'/>
+      </StepImg>
+      {(step.title || step.text) &&
+      <StepImageCaption side={step.side}>
         <CaptionBar/>
         <Typography variant='subtitle2'>
           {step.title}
@@ -107,7 +114,7 @@ const StepImage = ({step, stepNumber}) => {
         <Typography variant='caption'>
           {step.text}
         </Typography>
-      </StepImageCaption>
+      </StepImageCaption>}
     </StepImageGrid>
   )
 }

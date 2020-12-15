@@ -1,7 +1,9 @@
 import React from 'react';
 import { gql, useQuery, useMutation } from '@apollo/client'
-import { useParams } from 'react-router-dom'
+import { useParams, useHistory } from 'react-router-dom'
 import RecipeForm from './forms/RecipeForm'
+import Button from '@material-ui/core/Button'
+import { toast } from 'react-toastify';
 
 const RECIPE = gql`
   query Recipe($id: ID!){
@@ -15,13 +17,19 @@ const RECIPE = gql`
         displayOrder,
         quantity,
         unit,
-        name
+        name,
+        type
       },
       steps {
         id,
         displayOrder,
         title,
-        text
+        text,
+        type,
+        imageUrl,
+        side,
+        color,
+        altText
       },
       tags {
         id,
@@ -45,13 +53,55 @@ const UPDATE_RECIPE = gql`
         displayOrder,
         quantity,
         unit,
-        name
+        name,
+        type
       },
       steps {
         id,
         displayOrder,
         title,
-        text
+        text,
+        type,
+        imageUrl,
+        side,
+        color,
+        altText
+      },
+      tags {
+        id,
+        slug,
+        text,
+        kind
+      }
+    }
+  }
+`
+
+const DELETE_RECIPE = gql`
+  mutation DeleteRecipe($recipeId: ID!){
+    deleteRecipe(recipeId: $recipeId){
+      id,
+      name,
+      description,
+      imageUrl,
+      ingredients {
+        id,
+        displayOrder,
+        quantity,
+        unit,
+        name,
+        type
+      },
+      steps {
+        id,
+        displayOrder,
+        title,
+        text,
+        type,
+        imageUrl,
+        side,
+        color,
+        altText
       },
       tags {
         id,
@@ -65,8 +115,10 @@ const UPDATE_RECIPE = gql`
 
 const RecipeEdit = () => {
   let { id: recipeId } = useParams();
+  const history = useHistory();
   const { loading, data, error } = useQuery(RECIPE, { variables: { id: recipeId } });
   const [ updateRecipe, { error: updateError, loading: updateLoading }] = useMutation(UPDATE_RECIPE);
+  const [ deleteRecipe, { error: deleteError, loading: deleteLoading }] = useMutation(DELETE_RECIPE, { variables: {recipeId: recipeId} });
   // After successful submission, redirect user to the EDIT route, using the
   // id that the CREATE_RECIPE mutation should return.
   const stripProperties = (propertiesArray, obj) => {
@@ -93,7 +145,23 @@ const RecipeEdit = () => {
       variables: {
         recipe: updateRecipeInput
       }
-    }).then(res => console.log(res)).catch(e => console.log(e));
+    })
+      .then((res) => {
+        toast.success('Recipe Saved!')
+      })
+      .catch((e) => {
+        toast.error(`Recipe couldn't be saved. Error: ${e}`)
+      });
+  }
+
+  const deleteRecipeHandler = () => {
+    deleteRecipe()
+    .then((res) => {
+      toast.success('Recipe Deleted, returning to recipes...', {onClose: ()=>{history.push(`/recipes`)}})
+    })
+    .catch((e) => {
+      toast.error(`Recipe couldn't be deleted. Error: ${e}`)
+    })
   }
 
   if (loading) return "Loading..."
@@ -103,6 +171,7 @@ const RecipeEdit = () => {
     <>
       <h1>Edit Recipe</h1>
       <RecipeForm onSubmit={submitRecipe} recipe={data.recipe} loading={updateLoading} error={updateError}/>
+      <Button onClick={()=>{deleteRecipeHandler()}}>Delete Recipe</Button>
     </>
   )
 }

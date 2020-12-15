@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Button from '@material-ui/core/Button';
 import IngredientCard from './IngredientCard';
 import List from '@material-ui/core/List';
@@ -28,7 +29,13 @@ export const Ingredients = ({updateIngredients, ingredients}) => {
   }
 
   const addIngredient = () => {
-    let newIngredient = {quantity: null, unit: null, name: null, key: `new-${ingredients.length+1}`, uiKey: uuidv4()};
+    let newIngredient = {quantity: null, unit: null, name: null, key: `new-${ingredients.length+1}`, type: "INGREDIENT", uiKey: uuidv4()};
+    // auto-assign a key since this ingredient won't have a DB ID to use as one
+    updateIngredients(calcDisplayOrder([...ingredients, newIngredient]));
+  }
+
+  const addIngredientHeader = () => {
+    let newIngredient = {quantity: null, unit: null, name: null, key: `new-${ingredients.length+1}`, type: "HEADER", uiKey: uuidv4()};
     // auto-assign a key since this ingredient won't have a DB ID to use as one
     updateIngredients(calcDisplayOrder([...ingredients, newIngredient]));
   }
@@ -86,14 +93,25 @@ export const Ingredients = ({updateIngredients, ingredients}) => {
             {orderedIngredients.map((ingredient,index) => {
               if (ingredient.delete) { return null }
               return(
-                <IngredientCard ingredient={ingredient} index={index} addIngredient={addIngredient} updateIngredient={updateIngredient} removeIngredient={removeIngredient} moveIngredient={moveIngredient} key={ingredient.id ?? ingredient.uiKey}/>
+                <IngredientCard
+                  ingredient={ingredient}
+                  index={index}
+                  addIngredient={addIngredient}
+                  updateIngredient={updateIngredient}
+                  removeIngredient={removeIngredient}
+                  moveIngredient={moveIngredient}
+                  key={ingredient.id ?? ingredient.uiKey}
+                />
               )
             })}
           </List>
         </Paper>
       </Grid>
       <Grid item xs={12}>
-        <Button variant='contained' color='primary' type='button' fullWidth onClick={addIngredient}>New Ingredient</Button>
+        <ButtonGroup variant='contained' color='primary' type='button' fullWidth>
+          <Button onClick={addIngredient}>New Ingredient</Button>
+          <Button onClick={addIngredientHeader}>New Section</Button>
+        </ButtonGroup>
       </Grid>
     </Grid>
   )

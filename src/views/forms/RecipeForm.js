@@ -13,6 +13,7 @@ import UploadFile from '../UploadFile';
 // "key" values for NEW entries.
 
 const recipeReducer = (state, action) => {
+  console.log(`recipeReducer called with action.type of ${action.type}`)
   switch (action.type) {
     case 'updateDescription':
       return {...state, description: action.payload}
@@ -77,12 +78,7 @@ const RecipeForm = ({onSubmit, loading, error, recipe}) => {
             />
         </Grid>
         <Grid item xs={12}>
-          {recipe.imageUrl ? <img src={recipe.imageUrl}/> : <UploadFile
-            onSuccess={({encoding, filename, mimetype, url})=>{
-              console.log(url);
-              dispatch({type: 'updateImageUrl', payload:url});
-            }}
-            />}
+          <UploadFile imageUrl={recipe.imageUrl} onSuccess={({url}) => {dispatch({type: 'updateImageUrl', payload:url})}}/>
         </Grid>
       </Grid>
         <IngredientsList ingredients={state.ingredients} updateIngredients={(newIngredients) => {dispatch({type: 'updateIngredients', payload:newIngredients})}}/>

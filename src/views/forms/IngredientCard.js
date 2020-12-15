@@ -76,47 +76,71 @@ const IngredientCard = ({ingredient, index, addIngredient, updateIngredient, rem
 
   drag(drop(ref));
 
-  return(
+  if (ingredient.type === "HEADER"){return(
     <ListItem style={{display:'flex',alignItems:'center',justifyContent:'stretch',paddingRight:'64px',paddingLeft:'8px', opacity}} ref={ref}>
       <ListItemIcon style={{minWidth:'32px'}}>
         <DragIndicatorIcon/>
       </ListItemIcon>
       <Grid container spacing={3} style={{display:'flex',alignItems:'center',justifyContent:'stretch', flexGrow:1}}>
-        <Grid item xs={2}>
+        <Grid item xs={12}>
           <TextField
             variant='outlined'
-            label='Quantity'
+            label='Section Name'
             size='small'
             fullWidth
-            value={ingredient.quantity ?? ''}
-            onChange={(event) => {updateIngredient({...ingredient, quantity: event.target.value}, index)}}
-            />
-        </Grid>
-        <Grid item xs={2}>
-          <TextField
-            variant='outlined'
-            label='Unit'
-            size='small'
-            fullWidth
-            value={ingredient.unit ?? ''}
-            onChange={(event) => {updateIngredient({...ingredient, unit: event.target.value}, index)}}
-            />
-        </Grid>
-        <Grid item xs={8} style={{flexGrow:1}}>
-          <TextField
-            variant='outlined'
-            label='Name'
-            size='small'
-            fullWidth
-            value={ingredient.name ?? ''}
-            onChange={(event) => {updateIngredient({...ingredient, name: event.target.value}, index)}}
-            style={{marginRight:16}}
+            defaultValue={ingredient.name ?? ''}
+            onBlur={(event) => {updateIngredient({...ingredient, name: event.target.value}, index)}}
             />
         </Grid>
       </Grid>
       <ListItemSecondaryAction style={{marginLeft:16, opacity}}><IconButton onClick={()=>{removeIngredient(index)}} style={{marginRight:-8}} aria-label="delete"><DeleteIcon/></IconButton></ListItemSecondaryAction>
     </ListItem>
   )
+
+  } else {
+    return(
+      <ListItem style={{display:'flex',alignItems:'center',justifyContent:'stretch',paddingRight:'64px',paddingLeft:'8px', opacity}} ref={ref}>
+        <ListItemIcon style={{minWidth:'32px'}}>
+          <DragIndicatorIcon/>
+        </ListItemIcon>
+        <Grid container spacing={3} style={{display:'flex',alignItems:'center',justifyContent:'stretch', flexGrow:1}}>
+          <Grid item xs={2}>
+            <TextField
+              variant='outlined'
+              label='Quantity'
+              size='small'
+              fullWidth
+              defaultValue={ingredient.quantity ?? ''}
+              onBlur={(event) => {updateIngredient({...ingredient, quantity: event.target.value}, index)}}
+              />
+          </Grid>
+          <Grid item xs={2}>
+            <TextField
+              variant='outlined'
+              label='Unit'
+              size='small'
+              fullWidth
+              defaultValue={ingredient.unit ?? ''}
+              onBlur={(event) => {updateIngredient({...ingredient, unit: event.target.value}, index)}}
+              />
+          </Grid>
+          <Grid item xs={8} style={{flexGrow:1}}>
+            <TextField
+              variant='outlined'
+              label='Name'
+              size='small'
+              fullWidth
+              defaultValue={ingredient.name ?? ''}
+              onBlur={(event) => {updateIngredient({...ingredient, name: event.target.value}, index)}}
+              style={{marginRight:16}}
+              />
+          </Grid>
+        </Grid>
+        <ListItemSecondaryAction style={{marginLeft:16, opacity}}><IconButton onClick={()=>{removeIngredient(index)}} style={{marginRight:-8}} aria-label="delete"><DeleteIcon/></IconButton></ListItemSecondaryAction>
+      </ListItem>
+    )
+  }
+
 }
 
 export default IngredientCard;

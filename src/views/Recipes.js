@@ -113,15 +113,6 @@ const Recipes = () => {
         pageCursors={data.recipes.pageCursors}
         onClick={changePage}
         />
-      <MPagination count={data.recipes.pageCursors.last?.page} page={currentPage()} onChange={(event,value) => {changePage(value)}}/>
-      {false && <button onClick={async () => {
-          await fetchMore({
-            variables: {
-              after:data.recipes.cursor
-            }
-          })
-        }}
-        >Load More</button> }
     </>
   )
 }

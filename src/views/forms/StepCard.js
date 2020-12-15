@@ -5,12 +5,23 @@ import Card from '@material-ui/core/Card';
 import CardContent from '@material-ui/core/CardContent';
 import CardHeader from '@material-ui/core/CardHeader';
 import TextField from '@material-ui/core/TextField';
-
+import UploadFile from '../UploadFile';
 import DeleteIcon from '@material-ui/icons/Delete';
+import styled from 'styled-components';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
 
+import { useEnumValues } from '../../utils/useEnumValues';
 import { useDrag, useDrop } from 'react-dnd';
 
+
 const StepCard = ({step, index, addStep, updateStep, removeStep, moveStep}) => {
+
+  const {data:imageColorOptions} = useEnumValues("ImageColor");
+  const {data:imageSideOptions} = useEnumValues("ImageSide");
+
   const ref = useRef(null);
 
   const [, drop] = useDrop({
@@ -73,51 +84,168 @@ const StepCard = ({step, index, addStep, updateStep, removeStep, moveStep}) => {
   const opacity = isDragging ? 0 : 1;
 
   drag(drop(ref));
-
-  return(
-    <Grid
-      item
-      xs={12}
-      style={{
-        display:'flex',
-        justifyContent:'stretch',
-        alignItems:'flex-start'
-      }}
-      ref={ref}
-      >
-      <Card style={{flexGrow:1, opacity}}>
-        <CardHeader
-          action={
-            <IconButton aria-label="delete" onClick={()=>{removeStep(index)}}><DeleteIcon/></IconButton>
-          }
-          title={`Step ${step.displayOrder ?? index+1 }`}
-          />
-        <CardContent style={{paddingTop:0}}>
-        <Grid container spacing={2}>
-          <Grid item xs={12}>
-            <TextField
-              variant='outlined'
-              label='Title'
-              value={step.title ?? ''}
-              fullWidth
-              onChange={(event) => {updateStep({...step, title: event.target.value}, index)}}
+  if (step.type === 'HEADER'){
+    return(
+      <Grid
+        item
+        xs={12}
+        style={{
+          display:'flex',
+          justifyContent:'stretch',
+          alignItems:'flex-start'
+        }}
+        ref={ref}
+        >
+          <Card style={{flexGrow:1, opacity}}>
+            <CardHeader
+              action={
+                <IconButton aria-label="delete" onClick={()=>{removeStep(index)}}><DeleteIcon/></IconButton>
+              }
+              title={`Section Header`}
               />
-          </Grid>
-          <Grid item xs={12}>
-            <TextField
-              variant='outlined'
-              label='Text'
-              value={step.text ?? ''}
-              fullWidth
-              multiline
-              onChange={(event) => {updateStep({...step, text: event.target.value}, index)}}
+            <CardContent style={{paddingTop:0}}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  variant='outlined'
+                  label='Header'
+                  defaultValue={step.title ?? ''}
+                  fullWidth
+                  onBlur={(event) => {updateStep({...step, title: event.target.value}, index)}}
+                  />
+              </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
+      </Grid>)
+  } else if (step.type === 'IMAGE'){
+    return(
+      <Grid
+        item
+        xs={12}
+        style={{
+          display:'flex',
+          justifyContent:'stretch',
+          alignItems:'flex-start'
+        }}
+        ref={ref}
+        >
+           <Card style={{flexGrow:1, opacity}}>
+            <CardHeader
+              action={
+                <IconButton aria-label="delete" onClick={()=>{removeStep(index)}}><DeleteIcon/></IconButton>
+              }
+              title={`Step ${step.displayOrder ?? index+1 }`}
               />
-            </Grid>
-          </Grid>
-        </CardContent>
-      </Card>
-    </Grid>
-  )
+            <CardContent style={{paddingTop:0}}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  variant='outlined'
+                  label='Caption Heading'
+                  defaultValue={step.title ?? ''}
+                  fullWidth
+                  onBlur={(event) => {updateStep({...step, title: event.target.value}, index)}}
+                  />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant='outlined'
+                  label='Caption Text'
+                  defaultValue={step.text ?? ''}
+                  fullWidth
+                  multiline
+                  onBlur={(event) => {updateStep({...step, text: event.target.value}, index)}}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <UploadFile imageUrl={step.imageUrl} onSuccess={({url}) => {updateStep({...step, imageUrl: url}, index)}}/>
+                </Grid>
+                <Grid item xs={6}>
+                  <TextField
+                    variant='outlined'
+                    label='Image Alt Text'
+                    defaultValue={step.altText ?? ''}
+                    fullWidth
+                    multiline
+                    onBlur={(event) => {updateStep({...step, altText: event.target.value}, index)}}
+                    />
+                  </Grid>
+                  <Grid item xs={6}>
+                  <FormControl variant='outlined' fullWidth>
+                    <InputLabel>Image Color</InputLabel>
+                    <Select
+                      defaultValue={step.color ?? ''}
+                      onChange={(event) => {updateStep({...step, color: event.target.value}, index)}}
+                      >
+                      {[null, ...imageColorOptions].map((opt) => {
+                        return( <MenuItem value={opt}>{opt ?? '...'}</MenuItem>)
+                      })}
+                      </Select>
+                      </FormControl>
+                    </Grid>
+                    <Grid item xs={6}>
+                    <FormControl variant='outlined' fullWidth>
+                      <InputLabel>Image Side</InputLabel>
+                      <Select
+                        defaultValue={step.side ?? ''}
+                        onChange={(event) => {updateStep({...step, side: event.target.value}, index)}}
+                        >
+                        {[null, ...imageSideOptions].map((opt) => {
+                          return( <MenuItem value={opt}>{opt ?? '...'}</MenuItem>)
+                        })}
+                        </Select>
+                        </FormControl>
+                      </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
+      </Grid>)
+  } else {
+    return(
+      <Grid
+        item
+        xs={12}
+        style={{
+          display:'flex',
+          justifyContent:'stretch',
+          alignItems:'flex-start'
+        }}
+        ref={ref}
+        >
+          <Card style={{flexGrow:1, opacity}}>
+            <CardHeader
+              action={
+                <IconButton aria-label="delete" onClick={()=>{removeStep(index)}}><DeleteIcon/></IconButton>
+              }
+              title={`Step ${step.displayOrder ?? index+1 }`}
+              />
+            <CardContent style={{paddingTop:0}}>
+            <Grid container spacing={2}>
+              <Grid item xs={12}>
+                <TextField
+                  variant='outlined'
+                  label='Title'
+                  defaultValue={step.title ?? ''}
+                  fullWidth
+                  onBlur={(event) => {updateStep({...step, title: event.target.value}, index)}}
+                  />
+              </Grid>
+              <Grid item xs={12}>
+                <TextField
+                  variant='outlined'
+                  label='Text'
+                  defaultValue={step.text ?? ''}
+                  fullWidth
+                  multiline
+                  onBlur={(event) => {updateStep({...step, text: event.target.value}, index)}}
+                  />
+                </Grid>
+              </Grid>
+            </CardContent>
+          </Card>
+      </Grid>)
+  }
 }
 
 export default StepCard;

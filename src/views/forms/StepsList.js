@@ -2,6 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
+import ButtonGroup from '@material-ui/core/ButtonGroup';
 import Button from '@material-ui/core/Button';
 import StepCard from './StepCard';
 import { v4 as uuidv4 } from 'uuid';
@@ -25,7 +26,19 @@ export const Steps = ({updateSteps, steps}) => {
   }
 
   const addStep = () => {
-    let newStep = {text:null, key:`new-${steps.length+1}`, title: null, uiKey: uuidv4()};
+    let newStep = {text:null, key:`new-${steps.length+1}`, type: "TEXT", title: null, uiKey: uuidv4()};
+    // auto-assign a key since this step won't have a DB ID to use as one
+    updateSteps(calcDisplayOrder([...steps, newStep]));
+  }
+
+  const addStepImage = () => {
+    let newStep = {text:null, key:`new-${steps.length+1}`, type: "IMAGE", title: null, uiKey: uuidv4()};
+    // auto-assign a key since this step won't have a DB ID to use as one
+    updateSteps(calcDisplayOrder([...steps, newStep]));
+  }
+
+  const addStepHeader = () => {
+    let newStep = {text:null, key:`new-${steps.length+1}`, type: "HEADER", title: null, uiKey: uuidv4()};
     // auto-assign a key since this step won't have a DB ID to use as one
     updateSteps(calcDisplayOrder([...steps, newStep]));
   }
@@ -84,7 +97,11 @@ export const Steps = ({updateSteps, steps}) => {
         )
       })}
       <Grid item xs={12}>
-        <Button variant='contained' color='primary' type='button' fullWidth onClick={addStep}>New Step</Button>
+        <ButtonGroup variant='contained' color='primary' type='button' fullWidth>
+          <Button onClick={addStep}>New Step</Button>
+          <Button onClick={addStepImage}>New Image</Button>
+          <Button onClick={addStepHeader}>New Section</Button>
+        </ButtonGroup>
       </Grid>
     </Grid>
   )

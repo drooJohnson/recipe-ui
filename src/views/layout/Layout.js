@@ -4,21 +4,11 @@ import styled from 'styled-components';
 const LayoutDiv = styled.div`
   width:100%;
   max-width:100%;
-  height:100%;
   display:flex;
   justify-content:center;
-  overflow-x: hidden;
   position:relative;
-  &::before{
-    content:'';
-    display:block;
-    position:absolute;
-    width:100%;
-    height:100%;
-    top:20em;
-    bottom:0;
-    background-color:rgba(0,0,0,0.02);
-  }
+  background:linear-gradient(to bottom, rgba(0,0,0,0.0) 17em, rgba(0,0,0,0.02) 17em);
+  flex-grow:1;
 `
 
 const ContentDiv = styled.div`
