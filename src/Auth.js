@@ -3,10 +3,10 @@ import auth0 from 'auth0-js';
 class Auth {
   constructor() {
     this.auth0 = new auth0.WebAuth({
-      domain: process.env.AUTH_DOMAIN,
-      clientID: process.env.AUTH_CLIENT_ID,
-      redirectUri: process.env.AUTH_REDIRECT_URI,
-      audience: process.env.AUTH_AUDIENCE,
+      domain: process.env.REACT_APP_AUTH_DOMAIN,
+      clientID: process.env.REACT_APP_AUTH_CLIENT_ID,
+      redirectUri: process.env.REACT_APP_AUTH_REDIRECT_URI,
+      audience: process.env.REACT_APP_AUTH_AUDIENCE,
       responseType: 'token id_token',
       scope: 'openid email'
     });
@@ -47,8 +47,8 @@ class Auth {
   logout() {
     localStorage.setItem(this.authFlag, JSON.stringify(false));
     this.auth0.logout({
-      returnTo: process.env.AUTH_RETURN_TO,
-      clientID: process.env.AUTH_CLIENT_ID,
+      returnTo: process.env.REACT_APP_AUTH_RETURN_TO,
+      clientID: process.env.REACT_APP_AUTH_CLIENT_ID,
     });
   }
 
