@@ -15,19 +15,10 @@ import { setContext } from '@apollo/client/link/context';
 
 import { createUploadLink } from 'apollo-upload-client';
 
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { fas } from '@fortawesome/pro-solid-svg-icons';
-import { far } from '@fortawesome/pro-regular-svg-icons';
-import { fal } from '@fortawesome/pro-light-svg-icons';
-
 import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 
 import Theme from './theme';
-
-library.add(fas);
-library.add(far);
-library.add(fal);
 
 const authLink = setContext((_, {headers}) => {
   const token = auth.getIdToken();
