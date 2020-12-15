@@ -46,6 +46,7 @@ export const client = new ApolloClient({
       },
     }));
   },*/
+  uri: process.env.REACT_APP_GRAPHQL_URI,
   link: authLink.concat(uploadLink)
 });
 
