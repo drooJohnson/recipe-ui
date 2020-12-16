@@ -1,21 +1,40 @@
 import React from 'react';
 import Typography from '@material-ui/core/Typography'
 import PropTypes from 'prop-types'
+import styled from 'styled-components';
+import {device} from '../../utils/device'
 
+const IngredientText = styled(Typography)`
+  margin-bottom:8px;
+  margin-left:16px;
+  @media ${device.mobile} {
+    margin-left:0;
+  }
+`
+
+const IngredientHeader = styled(Typography)`
+  margin-bottom:8px;
+  margin-left:16px;
+  display:flex;
+  alignItems:center;
+  @media ${device.mobile} {
+    margin-left:0;
+  }
+`
 
 const Ingredient = ({ingredient}) => {
   switch(ingredient.type){
     case "INGREDIENT":
       return (
-        <Typography variant='body2' style={{marginBottom:'8px',marginLeft:'16px'}}>
+        <IngredientText variant='body2'>
           {ingredient.quantity} {ingredient.unit} {ingredient.name}
-        </Typography>
+        </IngredientText>
       )
     case "HEADER":
       return (
-        <Typography variant='subtitle2' style={{marginBottom:'8px',marginLeft:'0',display:'flex',alignItems:'center'}}>
+        <IngredientHeader variant='subtitle2'>
           {ingredient.name}
-        </Typography>
+        </IngredientHeader>
       )
     default:
       console.log("Ingredient with unhandled type found");

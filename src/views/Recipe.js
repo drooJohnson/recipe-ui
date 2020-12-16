@@ -9,6 +9,8 @@ import Button from '@material-ui/core/Button'
 import RecipeHeader from './recipe/RecipeHeader'
 import Ingredient from './recipe/Ingredient'
 import Step from './recipe/Step'
+import Hidden from '@material-ui/core/Hidden'
+import {device} from '../utils/device'
 
 import auth from '../Auth'
 
@@ -60,6 +62,11 @@ const Tick = styled.div`
   &:last-child{
     margin-left: 16px;
   }
+
+  @media ${device.mobile} {
+    height:6px;
+    width:8px;
+  }
 `
 
 const GridContainer = styled.div`
@@ -76,6 +83,11 @@ const Description = styled.div`
   grid-row-start: 1;
   grid-row-end: 2;
   margin-bottom:48px;
+  @media ${device.mobile} {
+    grid-column-start:1;
+    grid-column-end:13;
+    margin-bottom:24px;
+  }
 `
 
 const DescriptionText = styled.p`
@@ -84,6 +96,9 @@ const DescriptionText = styled.p`
   font-weight:300;
   font-style:italic;
   margin-left:32px;
+  @media ${device.mobile} {
+    margin-left:0px;
+  }
 `
 
 const Ingredients = styled.div`
@@ -91,6 +106,13 @@ const Ingredients = styled.div`
   grid-column-end: 4;
   grid-row-start: 1;
   grid-row-end: 3;
+  @media ${device.mobile} {
+    grid-column-start:1;
+    grid-column-end:13;
+    grid-row-start: 2;
+    grid-row-end: 3;
+    margin-bottom:36px;
+  }
 `
 
 const Steps = styled.div`
@@ -102,14 +124,32 @@ const Steps = styled.div`
   grid-template-columns:repeat(9, 1fr);
   grid-template-rows: auto;
   column-gap:24px;
+  @media ${device.mobile} {
+    grid-column-start:1;
+    grid-column-end:13;
+    grid-row-start: 3;
+    grid-row-end: 4;
+  }
+`
+
+const DashedSubheadWrapper = styled.div`
+  display:flex;
+  justify-content: flex-start;
+  align-items:center;
+  margin-bottom:16px;
+  text-transform:uppercase;
+  @media ${device.mobile} {
+    margin-left:-24px;
+  }
 `
 
 const DashedSubhead = ({children}) => {
   return (
-    <div style={{display:'flex',justifyContent:'flex-start',alignItems:'center',marginBottom:16,textTransform:'uppercase'}}>
+    <DashedSubheadWrapper>
+      <Hidden mdUp><Tick/></Hidden>
       {children}
-      <Tick/>
-    </div>
+      <Hidden smDown><Tick/></Hidden>
+    </DashedSubheadWrapper>
   )
 }
 
@@ -156,6 +196,7 @@ const Recipe = () => {
             return <Ingredient ingredient={ingredient}/>
           })}
         </Ingredients>
+        <Hidden mdUp><DashedSubhead><Typography variant='h6'>Directions</Typography></DashedSubhead></Hidden>
         {renderSteps(steps)}
       </GridContainer>
     </>
