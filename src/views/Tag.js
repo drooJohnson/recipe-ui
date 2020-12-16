@@ -47,7 +47,7 @@ const Tag = () => {
       </Grid>
       {data.tag.recipes.map(recipe => {
         return (
-          <Grid item xs={4} style={{display:'flex',justifyContent:'stretch',alignItems:'stretch'}}>
+          <Grid item xs={12} sm={6} md={4} style={{display:'flex',justifyContent:'stretch',alignItems:'stretch'}}>
             <RecipeCard recipe={recipe}/>
         </Grid>
         )

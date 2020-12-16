@@ -12,9 +12,8 @@ const LayoutDiv = styled.div`
 `
 
 const ContentDiv = styled.div`
-  max-width: 100%;
-  width: 1024px;
-  min-width: 720px;
+  max-width: 1024px;
+  width: 100%;
   padding: 24px;
 `
 

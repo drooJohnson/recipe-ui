@@ -6,6 +6,9 @@ import Button from '@material-ui/core/Button'
 import PropTypes from 'prop-types'
 import { useHistory } from 'react-router-dom';
 import FilteredImage, { GreyscaleImage } from '../components/FilteredImage'
+import Hidden from '@material-ui/core/Hidden';
+import {device} from '../../utils/device'
+import useMediaQuery from '@material-ui/core/useMediaQuery';
 
 const ImagePosition = styled.div`
   grid-column-start:${props => props.side === 'LEFT' ? 1 : 4};
@@ -19,6 +22,11 @@ const ImagePosition = styled.div`
   overflow:hidden;
   box-shadow:0 0 0 0 rgba(0,0,0,0);
   transition:all 300ms ease-in-out;
+  @media ${device.mobile} {
+    grid-column-start:1;
+    grid-column-end:13;
+    opacity:0.85;
+  }
 `
 
 const Text = styled.div`
@@ -30,6 +38,10 @@ const Text = styled.div`
   transform: translate(0, 0);
   transition:all 300ms ease-in-out;
   mix-blend-mode:normal;
+  @media ${device.mobile} {
+    grid-column-start:2;
+    grid-column-end:9;
+  }
 `
 
 const Wrapper = styled.div`
@@ -38,7 +50,7 @@ const Wrapper = styled.div`
   column-gap:24px;
   align-items:top;
   cursor: pointer;
-  &:hover{
+  &:hover,&:active{
     ${ImagePosition}{
       box-shadow:0 4px 8px -1px rgba(0,0,0,0.25);
     }
@@ -46,20 +58,26 @@ const Wrapper = styled.div`
       transform: translate(0, -5%);
     }
   }
+  @media ${device.mobile} {
+    align-items: top;
+  }
 `
 
 const FeaturedRecipe = ({side, color, recipe}) => {
+  const mobile = useMediaQuery(`${device.mobile}`);
   const history = useHistory();
   return (
-    <Wrapper onClick={()=>{history.push(`/recipe/${recipe.id}`)}}>
-      <ImagePosition side={side}>
-        <FilteredImage color={color || recipe.imageColor} side={side} imageUrl={recipe.imageUrl ?? `/images/pumpkin_tart.jpg`}/>
-      </ImagePosition>
-      <Text side={side}>
-        <Typography variant='overline' color='primary'>RECIPE</Typography>
-        <Typography gutterBottom variant='h1' style={{fontWeight:'bold',lineHeight:'56px',color:'rgba(0,0,0,.8)'}}>{recipe.name}</Typography>
-      </Text>
-    </Wrapper>
+    <>
+        <Wrapper onClick={()=>{history.push(`/recipe/${recipe.id}`)}}>
+          <ImagePosition side={mobile ? 'RIGHT' : side}>
+            <FilteredImage color={color || recipe.imageColor} side={mobile ? 'RIGHT' : side} imageUrl={recipe.imageUrl ?? `/images/pumpkin_tart.jpg`} gradientStart={mobile ? "50%" : null} gradientEnd={mobile ? "200%" : null}/>
+          </ImagePosition>
+          <Text side={mobile ? 'RIGHT' : side}>
+            <Typography variant='overline' color='primary'>RECIPE</Typography>
+            <Typography gutterBottom variant='h1' style={{fontWeight:'bold',lineHeight:'56px',color:'rgba(0,0,0,.8)'}}>{recipe.name}</Typography>
+          </Text>
+        </Wrapper>
+    </>
   )
 }
 
