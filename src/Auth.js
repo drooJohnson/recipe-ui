@@ -68,7 +68,6 @@ class Auth {
   }
 
   isAuthenticated() {
-    console.log(this);
     return JSON.parse(localStorage.getItem(this.authFlag));
     //return new Date().getTime() < this.expiresAt;
   }

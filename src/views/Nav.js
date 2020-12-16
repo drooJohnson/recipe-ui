@@ -1,16 +1,26 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { NavLink,  useHistory } from 'react-router-dom';
 import styled from 'styled-components';
 import Typography from '@material-ui/core/Typography';
 import auth from '../Auth';
 import Button from '@material-ui/core/Button';
+import Hidden from '@material-ui/core/Hidden';
+import AppBar from '@material-ui/core/AppBar';
+import Toolbar from '@material-ui/core/Toolbar';
+import MenuIcon from '@material-ui/icons/Menu';
+import IconButton from '@material-ui/core/IconButton';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import ListItemIcon from '@material-ui/core/ListItemIcon';
+import ListItemText from '@material-ui/core/ListItemText';
+import Drawer from '@material-ui/core/Drawer';
+import SwipeableDrawer from '@material-ui/core/SwipeableDrawer';
 
 const NavContainer = styled.div`
   display:flex;
   justify-content:space-between;
-  max-width: 100%;
-  width: 1024px;
-  min-width: 720px;
+  max-width: 1024px;
+  width: 100%;
   padding: 24px;
 `
 
@@ -28,6 +38,36 @@ const activeStyle = {
   fontWeight: 'bold'
 }
 
+const MobileNav = () => {
+  const [open, setOpen] = useState(false);
+  const history = useHistory();
+  const iOS = process.browser && /iPad|iPhone|iPod/.test(navigator.userAgent);
+
+  return(
+    <>
+      <SwipeableDrawer
+        disableDiscovery={iOS}
+        disable sBackdropTransition={!iOS}
+        anchor='top'
+        open={open}
+        onClose={()=>{setOpen(false)}}
+        onOpen={()=>{setOpen(true)}}
+      >
+        <List>
+          <ListItem button component="a" href="/recipes" key="recipes"><ListItemText primary="Recipes"/></ListItem>
+          <ListItem button component="a" href="/tags" key="tags"><ListItemText primary="Tags"/></ListItem>
+          <ListItem button component="a" href="/about" key="about"><ListItemText primary="About"/></ListItem>
+        </List>
+      </SwipeableDrawer>
+      <AppBar position='static' style={{color:'white',backgroundColor:'rgba(0,0,0,0.87)'}} color="inherit">
+        <Toolbar>
+          <IconButton edge='start' color="inherit" aria-label="menu" onClick={()=>{setOpen(true)}}><MenuIcon/></IconButton>
+          <Typography variant='h6' color="inherit" onClick={()=>{history.push("/")}}>He Bakes</Typography>
+        </Toolbar>
+      </AppBar>
+    </>
+  )
+}
 
 const Nav = () => {
   const history = useHistory();
@@ -39,6 +79,10 @@ const Nav = () => {
 
   return(
     <>
+      <Hidden mdUp>
+        <MobileNav/>
+      </Hidden>
+      <Hidden smDown>
       <div style={{display:'flex', justifyContent:'center'}}>
         <NavContainer>
           <Typography variant="h5"><NavLink exact to="/" activeStyle={activeStyle}>He Bakes</NavLink></Typography>
@@ -60,6 +104,7 @@ const Nav = () => {
           </div>
         </NavContainer>
       </div>
+      </Hidden>
     </>
   )
 }

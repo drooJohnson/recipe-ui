@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
 import PropTypes from 'prop-types'
 import FilteredImage from '../components/FilteredImage'
+import {device} from '../../utils/device'
 
 const Tick = styled.div`
   width: 16px;
@@ -15,6 +16,10 @@ const Tick = styled.div`
   }
   &:last-child{
     margin-left: 16px;
+  }
+  @media ${device.mobile} {
+    width: 8px;
+    margin-left:-24px;
   }
 `
 
@@ -38,9 +43,27 @@ const Step = ({step, stepNumber}) => {
   }
 }
 
+const StepTextWrapper = styled.div`
+  margin-bottom:36px;
+  grid-column-start:4;
+  grid-column-end:10;
+  @media ${device.mobile} {
+    grid-column-start:1;
+    grid-column-end:13;
+  }
+`
+
+const StepTextText = styled(Typography)`
+  margin-left:16px;
+  @media ${device.mobile} {
+    margin-left:0;
+  }
+`
+
+
 const StepText = ({step, stepNumber}) => {
   return (
-    <div style={{marginBottom:36, gridColumnStart:'4', gridColumnEnd:'10'}}>
+    <StepTextWrapper>
       <StepHeaderContainer style={{marginBottom:16}}>
         <Tick/>
         <Typography variant='h6' style={{color:'#FF9E3B', fontWeight:'900', marginRight:12}}>
@@ -50,21 +73,31 @@ const StepText = ({step, stepNumber}) => {
           {step.title}
         </Typography>
       </StepHeaderContainer>
-      <Typography variant='body1' paragraph style={{marginLeft:'16px'}}>{step.text}</Typography>
-    </div>
+      <StepTextText variant='body1' paragraph>{step.text}</StepTextText>
+    </StepTextWrapper>
   )
 }
 
+const StepHeaderWrapper = styled.div`
+  margin-bottom:36px;
+  grid-column-start:4;
+  grid-column-end:10;
+  @media ${device.mobile} {
+    grid-column-start:1;
+    grid-column-end:13;
+  }
+`
+
 const StepHeader = ({step, stepNumber}) => {
   return (
-    <div style={{marginBottom:36, gridColumnStart:'4', gridColumnEnd:'10'}}>
+    <StepHeaderWrapper>
       <StepHeaderContainer style={{marginBottom:16}}>
         <Typography variant='h5'>
           {step.title}
         </Typography>
       </StepHeaderContainer>
       <Typography variant='body1' paragraph style={{marginLeft:'16px'}}>{step.text}</Typography>
-    </div>
+    </StepHeaderWrapper>
   )
 }
 
@@ -75,11 +108,20 @@ const StepImageGrid = styled.div`
   grid-template-columns:repeat(12, 1fr);
   grid-template-rows: auto;
   column-gap:24px;
+  @media ${device.mobile} {
+    grid-column-start:1;
+    grid-column-end:13;
+  }
 `
 
 const StepImageCaption = styled.div`
   grid-column-start:${props => props.side === 'LEFT' ? '10' : '4'};
   grid-column-end:${props => props.side === 'LEFT' ? '13' : '13'};
+  @media ${device.mobile} {
+    margin-top:16px;
+    grid-column-start:1;
+    grid-column-end:13;
+  }
 `
 
 const StepImg = styled.div`
@@ -89,6 +131,10 @@ const StepImg = styled.div`
   width: 100%;
   object-fit: cover;
   max-height: 480px;
+  @media ${device.mobile} {
+    grid-column-start:1;
+    grid-column-end:13;
+  }
 `
 
 const CaptionBar = styled.div`
@@ -97,6 +143,9 @@ const CaptionBar = styled.div`
   height: 4px;
   background-color: #FF6231;
   margin-bottom:16px;
+  @media ${device.mobile} {
+    display: none;
+  }
 `
 
 const StepImage = ({step, stepNumber}) => {
