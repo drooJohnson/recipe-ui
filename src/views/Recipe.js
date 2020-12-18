@@ -78,7 +78,7 @@ const GridContainer = styled.div`
 `
 
 const Description = styled.div`
-  grid-column-start: 4;
+  grid-column-start: 5;
   grid-column-end: 13;
   grid-row-start: 1;
   grid-row-end: 2;
@@ -103,7 +103,7 @@ const DescriptionText = styled.p`
 
 const Ingredients = styled.div`
   grid-column-start: 1;
-  grid-column-end: 4;
+  grid-column-end: 5;
   grid-row-start: 1;
   grid-row-end: 3;
   @media ${device.mobile} {
@@ -116,7 +116,7 @@ const Ingredients = styled.div`
 `
 
 const Steps = styled.div`
-  grid-column-start: 4;
+  grid-column-start: 5;
   grid-column-end: 13;
   grid-row-start: 2;
   grid-row-end: 3;
@@ -196,8 +196,10 @@ const Recipe = () => {
             return <Ingredient ingredient={ingredient}/>
           })}
         </Ingredients>
-        <Hidden mdUp><DashedSubhead><Typography variant='h6'>Directions</Typography></DashedSubhead></Hidden>
-        {renderSteps(steps)}
+        <Steps>
+          <Hidden mdUp><DashedSubhead><Typography variant='h6'>Directions</Typography></DashedSubhead></Hidden>
+          {renderSteps(steps)}
+        </Steps>
       </GridContainer>
     </>
   )

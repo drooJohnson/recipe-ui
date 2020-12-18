@@ -108,12 +108,13 @@ const Recipes = () => {
           <Grid item xs={12} sm={6} md={4} style={{display:'flex',justifyContent:'stretch',alignItems:'stretch'}}><RecipeCard recipe={recipe}/></Grid>
         )
       })}
+      <Grid item xs={12}>
+        <Pagination
+          pageCursors={data.recipes.pageCursors}
+          onClick={changePage}
+          />
+      </Grid>
     </Grid>
-      <Pagination
-        style={{marginTop:24}}
-        pageCursors={data.recipes.pageCursors}
-        onClick={changePage}
-        />
     </>
   )
 }

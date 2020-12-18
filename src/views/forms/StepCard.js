@@ -99,7 +99,7 @@ const StepCard = ({step, index, addStep, updateStep, removeStep, moveStep}) => {
           <Card style={{flexGrow:1, opacity}}>
             <CardHeader
               action={
-                <IconButton aria-label="delete" onClick={()=>{removeStep(index)}}><DeleteIcon/></IconButton>
+                <IconButton aria-label="delete" onClick={()=>{removeStep(step)}}><DeleteIcon/></IconButton>
               }
               title={`Section Header`}
               />
@@ -133,7 +133,7 @@ const StepCard = ({step, index, addStep, updateStep, removeStep, moveStep}) => {
            <Card style={{flexGrow:1, opacity}}>
             <CardHeader
               action={
-                <IconButton aria-label="delete" onClick={()=>{removeStep(index)}}><DeleteIcon/></IconButton>
+                <IconButton aria-label="delete" onClick={()=>{removeStep(step)}}><DeleteIcon/></IconButton>
               }
               title={`Step ${step.displayOrder ?? index+1 }`}
               />
@@ -216,7 +216,7 @@ const StepCard = ({step, index, addStep, updateStep, removeStep, moveStep}) => {
           <Card style={{flexGrow:1, opacity}}>
             <CardHeader
               action={
-                <IconButton aria-label="delete" onClick={()=>{removeStep(index)}}><DeleteIcon/></IconButton>
+                <IconButton aria-label="delete" onClick={()=>{removeStep(step)}}><DeleteIcon/></IconButton>
               }
               title={`Step ${step.displayOrder ?? index+1 }`}
               />

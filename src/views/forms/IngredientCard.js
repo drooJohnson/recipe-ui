@@ -93,7 +93,7 @@ const IngredientCard = ({ingredient, index, addIngredient, updateIngredient, rem
             />
         </Grid>
       </Grid>
-      <ListItemSecondaryAction style={{marginLeft:16, opacity}}><IconButton onClick={()=>{removeIngredient(index)}} style={{marginRight:-8}} aria-label="delete"><DeleteIcon/></IconButton></ListItemSecondaryAction>
+      <ListItemSecondaryAction style={{marginLeft:16, opacity}}><IconButton onClick={()=>{removeIngredient(ingredient)}} style={{marginRight:-8}} aria-label="delete"><DeleteIcon/></IconButton></ListItemSecondaryAction>
     </ListItem>
   )
 
@@ -136,7 +136,7 @@ const IngredientCard = ({ingredient, index, addIngredient, updateIngredient, rem
               />
           </Grid>
         </Grid>
-        <ListItemSecondaryAction style={{marginLeft:16, opacity}}><IconButton onClick={()=>{removeIngredient(index)}} style={{marginRight:-8}} aria-label="delete"><DeleteIcon/></IconButton></ListItemSecondaryAction>
+        <ListItemSecondaryAction style={{marginLeft:16, opacity}}><IconButton onClick={()=>{removeIngredient(ingredient)}} style={{marginRight:-8}} aria-label="delete"><DeleteIcon/></IconButton></ListItemSecondaryAction>
       </ListItem>
     )
   }

@@ -13,7 +13,8 @@ import UploadFile from '../UploadFile';
 // "key" values for NEW entries.
 
 const recipeReducer = (state, action) => {
-  console.log(`recipeReducer called with action.type of ${action.type}`)
+  console.log("ACTION:",action);
+  //console.log(`recipeReducer called with action.type of ${action.type}`)
   switch (action.type) {
     case 'updateDescription':
       return {...state, description: action.payload}
@@ -22,11 +23,20 @@ const recipeReducer = (state, action) => {
     case 'updateImageUrl':
       return {...state, imageUrl: action.payload}
     case 'updateTags':
+      console.log("STATE TAGS:",state.tags);
+      console.log("AFTER STATE TAGS:", action.payload);
       return {...state, tags: action.payload}
     case 'updateSteps':
+      console.log("BEFORE STATE STEPS:",state.steps);
+      console.log("AFTER STATE STEPS:", action.payload);
       return {...state, steps: action.payload}
     case 'updateIngredients':
+      console.log("STATE INGREDIENTS:",state.ingredients);
+      console.log("AFTER STATE INGREDIENTS:", action.payload);
       return {...state, ingredients: action.payload}
+    case 'updateRecipe':
+      console.log("STATE:",state);
+      return {...state, ...action.payload}
     default:
       throw new Error();
   }
@@ -34,21 +44,20 @@ const recipeReducer = (state, action) => {
 
 const ImageInput = () => {
   return(
-
-  <>
-  <input
-    accept="image/*"
-    id="raised-button-file"
-    type="file"
-    onChange={()=>{console.log("Later")}}
-  />
-  <label htmlFor="raised-button-file">
-    <Button raised component="span">
-      Upload
-    </Button>
-  </label>
-  </>
-)
+    <>
+      <input
+        accept="image/*"
+        id="raised-button-file"
+        type="file"
+        onChange={()=>{console.log("Later")}}
+      />
+      <label htmlFor="raised-button-file">
+        <Button raised component="span">
+          Upload
+        </Button>
+      </label>
+    </>
+  )
 }
 
 const RecipeForm = ({onSubmit, loading, error, recipe}) => {

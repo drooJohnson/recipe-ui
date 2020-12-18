@@ -65,22 +65,26 @@ export const Steps = ({updateSteps, steps}) => {
     )
   }
 
-  const removeStep = (index) => {
-    if (steps[index].id) {
-      let newSteps = steps.map((step, mapIndex) => {
-        if (mapIndex === index) {
-          return { ...step, delete: true};
+  const removeStep = (stepToRemove) => {
+
+    if (stepToRemove.id) {
+      let newSteps = steps.map((step) => {
+        if (step.id === stepToRemove.id) {
+          return { ...step, delete: true}
         } else { return step }
-      });
+      })
+
       return updateSteps(calcDisplayOrder(newSteps));
-    } else {
-      let newSteps = steps.filter((step, mapIndex) => {
-        if (mapIndex === index) {
+
+    } else if (stepToRemove.uiKey) {
+      let newSteps = steps.filter((step) => {
+        if(step.uiKey === stepToRemove.uiKey) {
           return false;
         } else {
           return true;
         }
-      });
+      })
+
       return updateSteps(calcDisplayOrder(newSteps));
     }
   }

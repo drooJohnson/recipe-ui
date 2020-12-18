@@ -45,8 +45,8 @@ const Step = ({step, stepNumber}) => {
 
 const StepTextWrapper = styled.div`
   margin-bottom:36px;
-  grid-column-start:4;
-  grid-column-end:10;
+  grid-column-start:1;
+  grid-column-end:8;
   @media ${device.mobile} {
     grid-column-start:1;
     grid-column-end:13;
@@ -80,8 +80,8 @@ const StepText = ({step, stepNumber}) => {
 
 const StepHeaderWrapper = styled.div`
   margin-bottom:36px;
-  grid-column-start:4;
-  grid-column-end:10;
+  grid-column-start:1;
+  grid-column-end:8;
   @media ${device.mobile} {
     grid-column-start:1;
     grid-column-end:13;
