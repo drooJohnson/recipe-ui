@@ -12,6 +12,7 @@ import Step from './recipe/Step'
 import Hidden from '@material-ui/core/Hidden'
 import {device} from '../utils/device'
 
+import MDEditor from '@uiw/react-md-editor'
 import auth from '../Auth'
 
 const RECIPE = gql`
@@ -78,7 +79,7 @@ const GridContainer = styled.div`
 `
 
 const Description = styled.div`
-  grid-column-start: 4;
+  grid-column-start: 5;
   grid-column-end: 13;
   grid-row-start: 1;
   grid-row-end: 2;
@@ -103,7 +104,7 @@ const DescriptionText = styled.p`
 
 const Ingredients = styled.div`
   grid-column-start: 1;
-  grid-column-end: 4;
+  grid-column-end: 5;
   grid-row-start: 1;
   grid-row-end: 3;
   @media ${device.mobile} {
@@ -116,7 +117,7 @@ const Ingredients = styled.div`
 `
 
 const Steps = styled.div`
-  grid-column-start: 4;
+  grid-column-start: 5;
   grid-column-end: 13;
   grid-row-start: 2;
   grid-row-end: 3;
@@ -166,8 +167,6 @@ const Recipe = () => {
   const renderSteps = (steps) => {
     var count = 1;
     return steps?.map((step, index) => {
-      console.log(count);
-      console.log(step.type);
       if (step.type === 'TEXT'){
         count += 1;
         return <Step step={step} stepNumber={count}/>
@@ -187,17 +186,25 @@ const Recipe = () => {
       </RecipeHeader>
       <GridContainer>
         <Description>
-          <DashedSubhead><Typography variant='h6'>Notes</Typography></DashedSubhead>
-          <DescriptionText>{description}</DescriptionText>
+          <DashedSubhead>
+            <Typography variant='h6'>Notes</Typography>
+          </DashedSubhead>
+          <DescriptionText>
+            <MDEditor.Markdown style={{fontSize:'20px',fontFamily:'inherit'}} source={description}/>
+          </DescriptionText>
         </Description>
         <Ingredients>
-          <DashedSubhead><Typography variant='h6'>Ingredients</Typography></DashedSubhead>
+          <DashedSubhead>
+            <Typography variant='h6'>Ingredients</Typography>
+          </DashedSubhead>
           {ingredients?.map(ingredient => {
             return <Ingredient ingredient={ingredient}/>
           })}
         </Ingredients>
-        <Hidden mdUp><DashedSubhead><Typography variant='h6'>Directions</Typography></DashedSubhead></Hidden>
-        {renderSteps(steps)}
+        <Steps>
+          <Hidden mdUp><DashedSubhead><Typography variant='h6'>Directions</Typography></DashedSubhead></Hidden>
+          {renderSteps(steps)}
+        </Steps>
       </GridContainer>
     </>
   )

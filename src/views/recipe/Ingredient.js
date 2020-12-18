@@ -6,20 +6,12 @@ import {device} from '../../utils/device'
 
 const IngredientText = styled(Typography)`
   margin-bottom:8px;
-  margin-left:16px;
-  @media ${device.mobile} {
-    margin-left:0;
-  }
 `
 
 const IngredientHeader = styled(Typography)`
   margin-bottom:8px;
-  margin-left:16px;
   display:flex;
   alignItems:center;
-  @media ${device.mobile} {
-    margin-left:0;
-  }
 `
 
 const Ingredient = ({ingredient}) => {

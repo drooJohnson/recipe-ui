@@ -62,24 +62,27 @@ export const Ingredients = ({updateIngredients, ingredients}) => {
     )
   }
 
-  const removeIngredient = (index) => {
-    if (ingredients[index].id) {
-      let newIngredients = ingredients.map((ingredient, mapIndex) => {
-        if (mapIndex === index) {
-          return { ...ingredient, delete: true};
-        } else { return ingredient }
-      });
-      return updateIngredients(calcDisplayOrder(newIngredients));
-    } else {
-      let newIngredients = ingredients.filter((ingredient, mapIndex) => {
-        if (mapIndex === index) {
-          return false;
-        } else {
-          return true;
-        }
-      });
-      return updateIngredients(calcDisplayOrder(newIngredients));
-    }
+  const removeIngredient = (ingredientToRemove) => {
+      if (ingredientToRemove.id) {
+        let newIngredients = ingredients.map((ingredient) => {
+          if (ingredient.id === ingredientToRemove.id) {
+            return { ...ingredient, delete: true}
+          } else { return ingredient }
+        })
+
+        return updateIngredients(calcDisplayOrder(newIngredients));
+
+      } else if (ingredientToRemove.uiKey) {
+        let newIngredients = ingredients.filter((ingredient) => {
+          if(ingredient.uiKey === ingredientToRemove.uiKey) {
+            return false;
+          } else {
+            return true;
+          }
+        })
+
+        return updateIngredients(calcDisplayOrder(newIngredients));
+      }
   }
 
   let orderedIngredients = _.orderBy(ingredients, ['displayOrder'])
@@ -123,7 +126,7 @@ Ingredients.propTypes = {
 }
 
 Ingredients.defaultProps = {
-  updateIngredients: (newIngredients) => { console.log(newIngredients); },
+  updateIngredients: (newIngredients) => { console.log("No updateIngredients func provided to IngredientsList.js"); },
   ingredients: []
 }
 

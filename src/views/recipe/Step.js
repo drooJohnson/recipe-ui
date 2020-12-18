@@ -7,6 +7,8 @@ import PropTypes from 'prop-types'
 import FilteredImage from '../components/FilteredImage'
 import {device} from '../../utils/device'
 
+import MDEditor from '@uiw/react-md-editor'
+
 const Tick = styled.div`
   width: 16px;
   height: 2px;
@@ -45,8 +47,8 @@ const Step = ({step, stepNumber}) => {
 
 const StepTextWrapper = styled.div`
   margin-bottom:36px;
-  grid-column-start:4;
-  grid-column-end:10;
+  grid-column-start:1;
+  grid-column-end:8;
   @media ${device.mobile} {
     grid-column-start:1;
     grid-column-end:13;
@@ -73,15 +75,17 @@ const StepText = ({step, stepNumber}) => {
           {step.title}
         </Typography>
       </StepHeaderContainer>
-      <StepTextText variant='body1' paragraph>{step.text}</StepTextText>
+      <StepTextText variant='body1' paragraph>
+        <MDEditor.Markdown style={{fontSize:'inherit',fontFamily:'inherit'}} source={step.text}/>
+      </StepTextText>
     </StepTextWrapper>
   )
 }
 
 const StepHeaderWrapper = styled.div`
   margin-bottom:36px;
-  grid-column-start:4;
-  grid-column-end:10;
+  grid-column-start:1;
+  grid-column-end:8;
   @media ${device.mobile} {
     grid-column-start:1;
     grid-column-end:13;

@@ -1,4 +1,4 @@
-import React, { useReducer } from 'react';
+import React, { useReducer, useState } from 'react';
 import PropTypes from 'prop-types';
 import TextField from '@material-ui/core/TextField';
 import TagInput from './TagInput'
@@ -8,12 +8,13 @@ import Button from '@material-ui/core/Button';
 import IngredientsList from './IngredientsList';
 import StepsList from './StepsList';
 import UploadFile from '../UploadFile';
+import MDEditor from '@uiw/react-md-editor';
 
 // ARRAY INPUTS - Tags/Ingredients/Steps - currently only equipped to handle
 // "key" values for NEW entries.
 
 const recipeReducer = (state, action) => {
-  console.log(`recipeReducer called with action.type of ${action.type}`)
+  //console.log(`recipeReducer called with action.type of ${action.type}`)
   switch (action.type) {
     case 'updateDescription':
       return {...state, description: action.payload}
@@ -27,32 +28,16 @@ const recipeReducer = (state, action) => {
       return {...state, steps: action.payload}
     case 'updateIngredients':
       return {...state, ingredients: action.payload}
+    case 'updateRecipe':
+      return {...state, ...action.payload}
     default:
       throw new Error();
   }
 }
 
-const ImageInput = () => {
-  return(
-
-  <>
-  <input
-    accept="image/*"
-    id="raised-button-file"
-    type="file"
-    onChange={()=>{console.log("Later")}}
-  />
-  <label htmlFor="raised-button-file">
-    <Button raised component="span">
-      Upload
-    </Button>
-  </label>
-  </>
-)
-}
-
 const RecipeForm = ({onSubmit, loading, error, recipe}) => {
   const [state, dispatch] = useReducer(recipeReducer, recipe);
+  const [description, setDescription] = useState(recipe.description);
   return (
     <form noValidate autoComplete='off'>
       <Grid container spacing={2} style={{marginBottom:'24px'}}>
@@ -67,14 +52,11 @@ const RecipeForm = ({onSubmit, loading, error, recipe}) => {
             />
         </Grid>
         <Grid item xs={12}>
-          <TextField
+          <MDEditor
             id="recipe-description"
-            label="Description"
-            variant='outlined'
-            value={state.description ?? ''}
-            multiline
-            fullWidth
-            onChange={(event) => {dispatch({type: 'updateDescription', payload:event.target.value})}}
+            value={description}
+            onChange={(value) => setDescription(value)}
+            onBlur={(event) => {dispatch({type: 'updateDescription', payload:event.target.value})}}
             />
         </Grid>
         <Grid item xs={12}>

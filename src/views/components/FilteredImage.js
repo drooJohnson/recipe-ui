@@ -97,4 +97,45 @@ export const GreyscaleImage = ({imageUrl}) => {
   )
 }
 
+const TintedWrapper = styled.div`
+  width:100%;
+  height:100%;
+  position:relative;
+  background-color:white;
+`
+
+const ImageTint = styled.div`
+  width:100%;
+  height:100%;
+  position:absolute;
+  top:0;
+  bottom:0;
+  left:0;
+  right:0;
+  background-color:
+    ${props => props.color ? Colors[props.color].startColor : 'transparent'};
+  mix-blend-mode: ${props => props.color ? Colors[props.color].blend : 'normal'};
+`
+
+const TintedImageContent = styled.img`
+  width:100%;
+  height:100%;
+  object-fit:cover;
+  object-position:center center;
+  filter: grayscale(1.0) contrast(1.5) opacity(0.3);
+  transition: filter 300ms linear;
+  &:hover{
+    filter: grayscale(0.0) contrast(1.0) opacity(1.0);
+  }
+`
+
+export const TintedImage = ({color, imageUrl}) => {
+  return(
+    <TintedWrapper>
+      {color && <ImageTint color={color}/>}
+      <TintedImageContent color={color} src={imageUrl ?? `/images/pumpkin_tart.jpg`}/>
+    </TintedWrapper>
+  )
+}
+
 export default FilteredImage;

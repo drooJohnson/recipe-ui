@@ -7,7 +7,7 @@ import PropTypes from 'prop-types'
 import auth from '../../Auth'
 import Hidden from '@material-ui/core/Hidden'
 
-import FilteredImage from '../components/FilteredImage'
+import FilteredImage, {TintedImage} from '../components/FilteredImage'
 
 const HeaderImage = styled.div`
   grid-column-start:4;
@@ -16,6 +16,7 @@ const HeaderImage = styled.div`
   grid-row-end:2;
   height:360px;
   text-align: right;
+  background-color:white;
 `
 
 const MobileHeaderImage = styled.div`
@@ -35,7 +36,7 @@ const RecipeHeader = ({name, date, children, imageUrl, imageColor, imageAltText,
       <Hidden smDown>
         {auth.isAuthenticated() && <Link to={`/recipe/edit/${recipeId}`}><Button variant='contained'>Edit</Button></Link>}
         <HeaderImage>
-          <FilteredImage imageUrl={imageUrl} color={imageColor} alt={imageAltText} side={'RIGHT'}/>
+          <TintedImage imageUrl={imageUrl} color={imageColor} alt={imageAltText} side={'RIGHT'}/>
         </HeaderImage>
         <div id="left" style={{gridColumnStart:1,gridColumnEnd:6,gridRowStart:1,gridRowEnd:2, zIndex:10}}>
           <Typography variant='overline' color='primary'>RECIPE</Typography>

@@ -29,7 +29,6 @@ const Ellipsis = styled.div`
 const Pagination = ({
   onClick, pageCursors
 }) => {
-  console.log(pageCursors);
   return(
     <PaginationBar>
       <Page disabled={!pageCursors.previous} onClick={()=>{onClick(pageCursors.previous?.page, pageCursors.previous?.cursor)}}><ChevronLeftIcon fontSize="small"/></Page>
@@ -40,7 +39,6 @@ const Pagination = ({
         </>
       }
       {pageCursors.around.map( page => {
-        console.log(page);
         return <Page key={`page-${page.page}`} onClick={()=>{onClick(page.page, page.cursor)}} active={page.isCurrent}>{page.page}</Page>
       })}
       { pageCursors.last && (pageCursors.last.page !== pageCursors.around[pageCursors.around.length - 1].page) &&

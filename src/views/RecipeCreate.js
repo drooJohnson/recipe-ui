@@ -37,7 +37,6 @@ const RecipeCreate = () => {
   const [ createRecipe, { error, loading }] = useMutation(CREATE_RECIPE,
     {
       onCompleted: (data) => {
-      console.log("ONCOMPLETED",data);
       history.push(`/recipe/${data.insertRecipe.id}`)
     }
   });
