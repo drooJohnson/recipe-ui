@@ -1,4 +1,4 @@
-import React, { useRef } from 'react';
+import React, { useRef, useState } from 'react';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Card from '@material-ui/core/Card';
@@ -12,6 +12,8 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
+
+import MDEditor from '@uiw/react-md-editor';
 
 import { useEnumValues } from '../../utils/useEnumValues';
 import { useDrag, useDrop } from 'react-dnd';
@@ -85,6 +87,16 @@ const StepCard = ({step, index, addStep, updateStep, removeStep, moveStep}) => {
 
   drag(drop(ref));
   if (step.type === 'HEADER'){
+    return <HeaderStep ref={ref} {...{step, opacity, index, addStep, updateStep, removeStep, moveStep}}/>
+  } else if (step.type === 'IMAGE'){
+    return <ImageStep ref={ref} {...{step, opacity, imageColorOptions, imageSideOptions, index, addStep, updateStep, removeStep, moveStep}}/>
+  } else {
+    return <TextStep ref={ref} {...{step, opacity, index, addStep, updateStep, removeStep, moveStep}}/>
+  }
+}
+
+const TextStep = ({step, opacity, index, addStep, updateStep, removeStep, moveStep}) => {
+    const [text, setText] = useState(step.text);
     return(
       <Grid
         item
@@ -94,31 +106,48 @@ const StepCard = ({step, index, addStep, updateStep, removeStep, moveStep}) => {
           justifyContent:'stretch',
           alignItems:'flex-start'
         }}
-        ref={ref}
         >
           <Card style={{flexGrow:1, opacity}}>
             <CardHeader
               action={
                 <IconButton aria-label="delete" onClick={()=>{removeStep(step)}}><DeleteIcon/></IconButton>
               }
-              title={`Section Header`}
+              title={`Step ${step.displayOrder ?? index+1 }`}
               />
             <CardContent style={{paddingTop:0}}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
                   variant='outlined'
-                  label='Header'
+                  label='Title'
                   defaultValue={step.title ?? ''}
                   fullWidth
                   onBlur={(event) => {updateStep({...step, title: event.target.value}, index)}}
                   />
               </Grid>
+              <Grid item xs={12}>
+                <MDEditor
+                  value={text}
+                  onChange={(value) => setText(value)}
+                  preview="edit"
+                  onBlur={(event)=>{updateStep({...step, text: event.target.value}, index)}}
+                />
+                {false&&<TextField
+                  variant='outlined'
+                  label='Text'
+                  defaultValue={step.text ?? ''}
+                  fullWidth
+                  multiline
+                  onBlur={(event) => {updateStep({...step, text: event.target.value}, index)}}
+                  />}
+                </Grid>
               </Grid>
             </CardContent>
           </Card>
       </Grid>)
-  } else if (step.type === 'IMAGE'){
+}
+
+const ImageStep = ({step, opacity, imageColorOptions, imageSideOptions, index, addStep, updateStep, removeStep, moveStep}) => {
     return(
       <Grid
         item
@@ -128,7 +157,6 @@ const StepCard = ({step, index, addStep, updateStep, removeStep, moveStep}) => {
           justifyContent:'stretch',
           alignItems:'flex-start'
         }}
-        ref={ref}
         >
            <Card style={{flexGrow:1, opacity}}>
             <CardHeader
@@ -201,7 +229,9 @@ const StepCard = ({step, index, addStep, updateStep, removeStep, moveStep}) => {
             </CardContent>
           </Card>
       </Grid>)
-  } else {
+}
+
+const HeaderStep = ({step, opacity, index, addStep, updateStep, removeStep, moveStep}) => {
     return(
       <Grid
         item
@@ -211,41 +241,29 @@ const StepCard = ({step, index, addStep, updateStep, removeStep, moveStep}) => {
           justifyContent:'stretch',
           alignItems:'flex-start'
         }}
-        ref={ref}
         >
           <Card style={{flexGrow:1, opacity}}>
             <CardHeader
               action={
                 <IconButton aria-label="delete" onClick={()=>{removeStep(step)}}><DeleteIcon/></IconButton>
               }
-              title={`Step ${step.displayOrder ?? index+1 }`}
+              title={`Section Header`}
               />
             <CardContent style={{paddingTop:0}}>
             <Grid container spacing={2}>
               <Grid item xs={12}>
                 <TextField
                   variant='outlined'
-                  label='Title'
+                  label='Header'
                   defaultValue={step.title ?? ''}
                   fullWidth
                   onBlur={(event) => {updateStep({...step, title: event.target.value}, index)}}
                   />
               </Grid>
-              <Grid item xs={12}>
-                <TextField
-                  variant='outlined'
-                  label='Text'
-                  defaultValue={step.text ?? ''}
-                  fullWidth
-                  multiline
-                  onBlur={(event) => {updateStep({...step, text: event.target.value}, index)}}
-                  />
-                </Grid>
               </Grid>
             </CardContent>
           </Card>
       </Grid>)
-  }
 }
 
 export default StepCard;

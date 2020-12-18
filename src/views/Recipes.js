@@ -85,7 +85,6 @@ const Recipes = () => {
 
 
   const changePage = (page,cursor) => {
-    console.log(page,cursor);
     refetch({
       page: page,
       after: cursor

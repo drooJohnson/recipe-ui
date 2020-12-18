@@ -12,6 +12,7 @@ import Step from './recipe/Step'
 import Hidden from '@material-ui/core/Hidden'
 import {device} from '../utils/device'
 
+import MDEditor from '@uiw/react-md-editor'
 import auth from '../Auth'
 
 const RECIPE = gql`
@@ -166,8 +167,6 @@ const Recipe = () => {
   const renderSteps = (steps) => {
     var count = 1;
     return steps?.map((step, index) => {
-      console.log(count);
-      console.log(step.type);
       if (step.type === 'TEXT'){
         count += 1;
         return <Step step={step} stepNumber={count}/>
@@ -187,11 +186,17 @@ const Recipe = () => {
       </RecipeHeader>
       <GridContainer>
         <Description>
-          <DashedSubhead><Typography variant='h6'>Notes</Typography></DashedSubhead>
-          <DescriptionText>{description}</DescriptionText>
+          <DashedSubhead>
+            <Typography variant='h6'>Notes</Typography>
+          </DashedSubhead>
+          <DescriptionText>
+            <MDEditor.Markdown style={{fontSize:'20px',fontFamily:'inherit'}} source={description}/>
+          </DescriptionText>
         </Description>
         <Ingredients>
-          <DashedSubhead><Typography variant='h6'>Ingredients</Typography></DashedSubhead>
+          <DashedSubhead>
+            <Typography variant='h6'>Ingredients</Typography>
+          </DashedSubhead>
           {ingredients?.map(ingredient => {
             return <Ingredient ingredient={ingredient}/>
           })}

@@ -25,24 +25,6 @@ const TAG_KINDS = gql`
   }
 `
 
-const ImageInput = () => {
-  return(
-    <>
-    <input
-      accept="image/*"
-      id="raised-button-file"
-      type="file"
-      onChange={()=>{console.log("Later")}}
-    />
-    <label htmlFor="raised-button-file">
-      <Button raised component="span">
-        Upload
-      </Button>
-    </label>
-    </>
-  )
-}
-
 const TagForm = ({onSubmit, loading, error, tag}) => {
   // State
   const [slug, setSlug] = useState(tag.slug);

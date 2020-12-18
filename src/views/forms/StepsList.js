@@ -117,7 +117,7 @@ Steps.propTypes = {
 }
 
 Steps.defaultProps = {
-  updateSteps: (newSteps) => { console.log(newSteps); },
+  updateSteps: (newSteps) => { console.log("No updateStep func provided to StepsList.js"); },
   steps: []
 }
 

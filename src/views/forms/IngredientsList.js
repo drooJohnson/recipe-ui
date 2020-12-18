@@ -126,7 +126,7 @@ Ingredients.propTypes = {
 }
 
 Ingredients.defaultProps = {
-  updateIngredients: (newIngredients) => { console.log(newIngredients); },
+  updateIngredients: (newIngredients) => { console.log("No updateIngredients func provided to IngredientsList.js"); },
   ingredients: []
 }
 

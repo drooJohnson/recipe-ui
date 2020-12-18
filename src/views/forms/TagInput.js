@@ -48,7 +48,6 @@ const TagInput = ({recipeId, tags, onChange, onInsertTag}) => {
       renderOption={(option) => option.text}
       style={{ width: 300 }}
       onChange={(event, newValue) => {
-        console.log(event, newValue);
         if (newValue[newValue.length - 1]?.openDialog){
           setInputValue(newValue[newValue.length-1].inputValue)
           toggleOpen(true);
