@@ -119,7 +119,7 @@ const StepImageGrid = styled.div`
 `
 
 const StepImageCaption = styled.div`
-  grid-column-start:${props => props.side === 'LEFT' ? '10' : '4'};
+  grid-column-start:${props => props.side === 'LEFT' ? '10' : '1'};
   grid-column-end:${props => props.side === 'LEFT' ? '13' : '13'};
   @media ${device.mobile} {
     margin-top:16px;
@@ -129,7 +129,7 @@ const StepImageCaption = styled.div`
 `
 
 const StepImg = styled.div`
-  grid-column-start: ${props => props.side === 'LEFT' ? '1' : '4'};
+  grid-column-start: ${props => props.side === 'LEFT' ? '1' : '1'};
   grid-column-end: ${props => props.side === 'LEFT' ? '10' : '13'};
   margin-bottom: ${props => props.side === 'LEFT' ? '0' : '16px'};
   width: 100%;
