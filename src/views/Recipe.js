@@ -7,7 +7,7 @@ import styled from 'styled-components'
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
 import RecipeHeader from './recipe/RecipeHeader'
-import Ingredient from './recipe/Ingredient'
+import Ingredients from './recipe/Ingredients'
 import Step from './recipe/Step'
 import Hidden from '@material-ui/core/Hidden'
 import {device} from '../utils/device'
@@ -24,14 +24,7 @@ const RECIPE = gql`
       imageUrl,
       imageColor,
       imageAltText,
-      ingredients {
-        id,
-        displayOrder,
-        quantity,
-        unit,
-        type,
-        name
-      },
+      ingredients,
       steps {
         id,
         displayOrder,
@@ -102,7 +95,7 @@ const DescriptionText = styled.p`
   }
 `
 
-const Ingredients = styled.div`
+const IngredientsSection = styled.div`
   grid-column-start: 1;
   grid-column-end: 5;
   grid-row-start: 1;
@@ -194,14 +187,12 @@ const Recipe = () => {
             <MDEditor.Markdown style={{fontSize:'20px',fontFamily:'inherit'}} source={description}/>
           </DescriptionText>
         </Description>
-        <Ingredients>
+        <IngredientsSection>
           <DashedSubhead>
             <Typography variant='h6'>Ingredients</Typography>
           </DashedSubhead>
-          {ingredients?.map(ingredient => {
-            return <Ingredient ingredient={ingredient}/>
-          })}
-        </Ingredients>
+          <Ingredients ingredients={ingredients}/>
+        </IngredientsSection>
         <Steps>
           <Hidden mdUp><DashedSubhead><Typography variant='h6'>Directions</Typography></DashedSubhead></Hidden>
           {renderSteps(steps)}

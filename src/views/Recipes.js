@@ -53,13 +53,7 @@ const RECIPES = gql`
         name,
         description,
         imageUrl,
-        ingredients {
-          id,
-          displayOrder,
-          quantity,
-          unit,
-          name
-        },
+        ingredients,
         steps {
           id,
           displayOrder,

@@ -12,14 +12,7 @@ const RECIPE = gql`
       name,
       description,
       imageUrl,
-      ingredients {
-        id,
-        displayOrder,
-        quantity,
-        unit,
-        name,
-        type
-      },
+      ingredients,
       steps {
         id,
         displayOrder,
@@ -48,14 +41,7 @@ const UPDATE_RECIPE = gql`
       name,
       description,
       imageUrl,
-      ingredients {
-        id,
-        displayOrder,
-        quantity,
-        unit,
-        name,
-        type
-      },
+      ingredients,
       steps {
         id,
         displayOrder,
@@ -84,14 +70,7 @@ const DELETE_RECIPE = gql`
       name,
       description,
       imageUrl,
-      ingredients {
-        id,
-        displayOrder,
-        quantity,
-        unit,
-        name,
-        type
-      },
+      ingredients,
       steps {
         id,
         displayOrder,
@@ -136,7 +115,7 @@ const RecipeEdit = () => {
       name: recipe.name,
       description: recipe.description,
       imageUrl: recipe.imageUrl,
-      ingredients: recipe.ingredients.map( ingredient => stripProperties(['__typename','key','uiKey'],ingredient) ),
+      ingredients: recipe.ingredients,
       steps: recipe.steps.map( step => stripProperties(['__typename','key','uiKey'],step) ),
       tags: recipe.tags.map( tag => stripProperties(['__typename','key','uiKey'],tag) )
     }

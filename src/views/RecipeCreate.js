@@ -10,13 +10,7 @@ const CREATE_RECIPE = gql`
       name,
       description,
       imageUrl,
-      ingredients {
-        id,
-        displayOrder,
-        quantity,
-        unit,
-        name
-      },
+      ingredients,
       steps {
         id,
         displayOrder,
@@ -56,7 +50,7 @@ const RecipeCreate = () => {
       name: recipe.name,
       description: recipe.description,
       imageUrl: recipe.imageUrl,
-      ingredients: recipe.ingredients.map( ingredient => stripProperties(['__typename','key','uiKey'],ingredient) ),
+      ingredients: recipe.ingredients,
       steps: recipe.steps.map( step => stripProperties(['__typename','key','uiKey'],step) ),
       tags: recipe.tags.map( tag => stripProperties(['__typename','key','uiKey'],tag) )
     }
