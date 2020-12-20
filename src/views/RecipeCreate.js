@@ -56,9 +56,9 @@ const RecipeCreate = () => {
       name: recipe.name,
       description: recipe.description,
       imageUrl: recipe.imageUrl,
-      ingredients: recipe.ingredients.map( ingredient => stripProperties(['__typename','key'],ingredient) ),
-      steps: recipe.steps.map( step => stripProperties(['__typename','key'],step) ),
-      tags: recipe.tags.map( tag => stripProperties(['__typename','key'],tag) )
+      ingredients: recipe.ingredients.map( ingredient => stripProperties(['__typename','key','uiKey'],ingredient) ),
+      steps: recipe.steps.map( step => stripProperties(['__typename','key','uiKey'],step) ),
+      tags: recipe.tags.map( tag => stripProperties(['__typename','key','uiKey'],tag) )
     }
 
     createRecipe({
