@@ -130,6 +130,7 @@ const Steps = styled.div`
     grid-column-end:13;
     grid-row-start: 3;
     grid-row-end: 4;
+    display:block;
   }
 `
 
