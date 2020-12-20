@@ -5,10 +5,9 @@ import TagInput from './TagInput'
 import Grid from '@material-ui/core/Grid';
 import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
-import IngredientsList from './IngredientsList';
 import StepsList from './StepsList';
 import UploadFile from '../UploadFile';
-import MDEditor from '@uiw/react-md-editor';
+import MDEditor, { commands } from '@uiw/react-md-editor';
 
 // ARRAY INPUTS - Tags/Ingredients/Steps - currently only equipped to handle
 // "key" values for NEW entries.
@@ -38,6 +37,7 @@ const recipeReducer = (state, action) => {
 const RecipeForm = ({onSubmit, loading, error, recipe}) => {
   const [state, dispatch] = useReducer(recipeReducer, recipe);
   const [description, setDescription] = useState(recipe.description);
+  const [ingredients, setIngredients] = useState(recipe.ingredients);
   return (
     <form noValidate autoComplete='off'>
       <Grid container spacing={2} style={{marginBottom:'24px'}}>
@@ -52,18 +52,44 @@ const RecipeForm = ({onSubmit, loading, error, recipe}) => {
             />
         </Grid>
         <Grid item xs={12}>
+          <UploadFile imageUrl={recipe.imageUrl} onSuccess={({url}) => {dispatch({type: 'updateImageUrl', payload:url})}}/>
+        </Grid>
+        <Grid item xs={12}><Typography variant='h5'>Description</Typography></Grid>
+        <Grid item xs={12}>
           <MDEditor
             id="recipe-description"
             value={description}
+            preview="edit"
+            commands={[
+              commands.bold, commands.italic, commands.strikethrough, commands.hr, commands.title,
+              commands.divider,
+              commands.link, commands.quote, commands.code, commands.image,
+              commands.divider,
+              commands.unorderedListCommand, commands.orderedListCommand, commands.checkedListCommand
+            ]}
             onChange={(value) => setDescription(value)}
             onBlur={(event) => {dispatch({type: 'updateDescription', payload:event.target.value})}}
             />
         </Grid>
+        <Grid item xs={12}><Typography variant='h5'>Ingredients</Typography></Grid>
         <Grid item xs={12}>
-          <UploadFile imageUrl={recipe.imageUrl} onSuccess={({url}) => {dispatch({type: 'updateImageUrl', payload:url})}}/>
+          <MDEditor
+            id="recipe-ingredients"
+            value={ingredients}
+            preview="edit"
+            commands={[
+              commands.bold, commands.italic, commands.strikethrough, commands.hr, commands.title,
+              commands.divider,
+              commands.link, commands.quote, commands.code, commands.image,
+              commands.divider,
+              commands.unorderedListCommand, commands.orderedListCommand, commands.checkedListCommand
+            ]}
+            onChange={(value) => setIngredients(value)}
+            onBlur={(event) => {dispatch({type: 'updateIngredients', payload:event.target.value})}}
+            />
         </Grid>
       </Grid>
-        <IngredientsList ingredients={state.ingredients} updateIngredients={(newIngredients) => {dispatch({type: 'updateIngredients', payload:newIngredients})}}/>
+
         <StepsList steps={state.steps} updateSteps={(newSteps) => {dispatch({type: 'updateSteps', payload:newSteps})}}/>
         <TagInput tags={state.tags} onInsertTag={(newTag)=>{dispatch({type: 'updateTags', payload:[...state.tags, newTag]})}} onChange={(newTags) => {dispatch({type: 'updateTags', payload:newTags})}}/>
 

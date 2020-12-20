@@ -30,8 +30,6 @@ const TAG = gql`
   }
 `
 
-
-
 const Tag = () => {
   let { id: tagId } = useParams();
   const { loading, data, error } = useQuery(TAG, { variables: { id: tagId } });

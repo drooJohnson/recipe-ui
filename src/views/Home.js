@@ -46,13 +46,7 @@ const RECIPES = gql`
         imageUrl,
         imageColor,
         imageAltText,
-        ingredients {
-          id,
-          displayOrder,
-          quantity,
-          unit,
-          name
-        },
+        ingredients,
         steps {
           id,
           displayOrder,
