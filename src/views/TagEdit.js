@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { gql, useQuery, useMutation } from '@apollo/client'
-import { useParams, Link } from 'react-router-dom'
+import { useParams } from 'react-router-dom'
 import TagForm from './forms/TagForm'
 
 const TAG = gql`
@@ -46,7 +46,7 @@ const TagEdit = () => {
   let { id: tagId } = useParams();
   const { loading, data, error } = useQuery(TAG, { variables: { id: tagId } });
 
-  const [ updateTag, { loading: updateLoading, data: updateData, error: updateError }] = useMutation(UPDATE_TAG);
+  const [ updateTag, { loading: updateLoading, error: updateError }] = useMutation(UPDATE_TAG);
 
   if (loading) return "Loading..."
   if (error) return `${error}`

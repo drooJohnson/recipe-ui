@@ -1,11 +1,8 @@
 import React from 'react';
 import { gql, useQuery } from '@apollo/client'
-import { Link, useHistory } from 'react-router-dom'
 import Pagination from './components/Pagination'
-import MPagination from '@material-ui/lab/Pagination'
 import RecipeCard from './components/RecipeCard'
 import Grid from '@material-ui/core/Grid'
-import Button from '@material-ui/core/Button'
 import Typography from '@material-ui/core/Typography'
 
 const RECIPES = gql`
@@ -72,8 +69,7 @@ const RECIPES = gql`
 
 
 const Recipes = () => {
-  const history = useHistory();
-  const {loading, data, error, refetch, fetchMore} = useQuery(RECIPES, {variables: {pageSize: 4}});
+  const {loading, data, error, refetch} = useQuery(RECIPES, {variables: {pageSize: 4}});
   if (loading) return "Loading..."
   if (error) return `${error}`
 
@@ -83,11 +79,6 @@ const Recipes = () => {
       page: page,
       after: cursor
     })
-  }
-
-  const currentPage = () => {
-    let cursors = data.recipes.pageCursors.around;
-    return cursors.filter(cursor => (cursor.isCurrent)).page;
   }
 
   return(

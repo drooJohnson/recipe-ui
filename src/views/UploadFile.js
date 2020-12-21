@@ -38,14 +38,6 @@ const ImageDetails = styled.div`
   margin-left:24px;
   flex-grow:1;
 `
-const DeleteButton = styled.div`
-  width:24px;
-  height:24px;
-  background-color:red;
-  position:absolute;
-  top:-12px;
-  left:-12px;
-`
 
 const UploadFile = ({onSuccess, onFailure, imageUrl}) => {
   const htmlInput = useRef(null);
@@ -58,20 +50,13 @@ const UploadFile = ({onSuccess, onFailure, imageUrl}) => {
     } else {
       setFileUrl(imageUrl ?? null);
     }
-  },[file]);
+  },[file, imageUrl]);
 
   const handleClick = event => {
     htmlInput.current.click();
   }
 
-  const [mutate, { loading, data, error }] = useMutation(SINGLE_UPLOAD);
-
-  const onSubmit = () => {
-    mutate({ variables: { file } }).then((res) => {
-      let {encoding, filename, mimetype, url} = res?.data?.singleUpload;
-      onSuccess({encoding, filename, mimetype, url})
-    })
-  }
+  const [mutate] = useMutation(SINGLE_UPLOAD);
 
   const onChange = (
     {target: {validity, files: [file] }}

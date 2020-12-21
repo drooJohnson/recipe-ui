@@ -1,10 +1,5 @@
 import React from 'react';
-import { Link } from 'react-router-dom'
-import Typography from '@material-ui/core/Typography'
-import styled, { css } from 'styled-components'
-import Button from '@material-ui/core/Button'
-import PropTypes from 'prop-types'
-import { useHistory } from 'react-router-dom';
+import styled from 'styled-components'
 
 const Colors = {
   MAGENTA: {

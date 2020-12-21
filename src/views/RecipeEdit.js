@@ -97,7 +97,7 @@ const RecipeEdit = () => {
   const history = useHistory();
   const { loading, data, error } = useQuery(RECIPE, { variables: { id: recipeId } });
   const [ updateRecipe, { error: updateError, loading: updateLoading }] = useMutation(UPDATE_RECIPE);
-  const [ deleteRecipe, { error: deleteError, loading: deleteLoading }] = useMutation(DELETE_RECIPE, { variables: {recipeId: recipeId} });
+  const [ deleteRecipe, {/* error: deleteError, loading: deleteLoading */}] = useMutation(DELETE_RECIPE, { variables: {recipeId: recipeId} });
   // After successful submission, redirect user to the EDIT route, using the
   // id that the CREATE_RECIPE mutation should return.
   const stripProperties = (propertiesArray, obj) => {

@@ -7,12 +7,10 @@ import MenuItem from '@material-ui/core/MenuItem';
 import InputLabel from '@material-ui/core/InputLabel';
 import UploadFile from '../UploadFile'
 
-import { useQuery, useMutation, gql } from '@apollo/client';
+import { useQuery, gql } from '@apollo/client';
 
 import PropTypes from 'prop-types';
-import TagInput from './TagInput'
 import Grid from '@material-ui/core/Grid';
-import Typography from '@material-ui/core/Typography';
 
 const TAG_KINDS = gql`
   query {

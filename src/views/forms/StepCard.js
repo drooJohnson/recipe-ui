@@ -7,7 +7,6 @@ import CardHeader from '@material-ui/core/CardHeader';
 import TextField from '@material-ui/core/TextField';
 import UploadFile from '../UploadFile';
 import DeleteIcon from '@material-ui/icons/Delete';
-import styled from 'styled-components';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';

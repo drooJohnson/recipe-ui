@@ -1,11 +1,9 @@
 import React from 'react';
 import { gql, useQuery } from '@apollo/client'
-import { useParams, Link, Redirect } from 'react-router-dom'
+import { useParams, Redirect } from 'react-router-dom'
 import Typography from '@material-ui/core/Typography'
 import ChipTagList from './components/ChipTagList'
 import styled from 'styled-components'
-import Grid from '@material-ui/core/Grid'
-import Button from '@material-ui/core/Button'
 import RecipeHeader from './recipe/RecipeHeader'
 import Ingredients from './recipe/Ingredients'
 import Step from './recipe/Step'
@@ -13,7 +11,6 @@ import Hidden from '@material-ui/core/Hidden'
 import {device} from '../utils/device'
 
 import MDEditor from '@uiw/react-md-editor'
-import auth from '../Auth'
 
 const RECIPE = gql`
   query Recipe($id: ID!){

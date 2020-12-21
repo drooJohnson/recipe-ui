@@ -1,6 +1,6 @@
 import React from 'react';
 import { gql, useQuery } from '@apollo/client'
-import { useHistory, Link } from 'react-router-dom'
+import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import * as _ from 'lodash'
 
@@ -33,18 +33,6 @@ const TAGS = gql`
 
 const TagKind = styled.h2`
   text-transform:capitalize;
-`
-
-const TagChip = styled.div`
-  display:block;
-  margin:4px;
-  background-color:pink;
-`
-
-const TagChipRow = styled.div`
-  display:flex;
-  justify-content:flex-start;
-  flex-wrap:wrap;
 `
 
 const Tags = () => {

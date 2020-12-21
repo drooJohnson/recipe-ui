@@ -2,8 +2,6 @@ import React from 'react';
 import { makeStyles } from '@material-ui/core/styles';
 import LocalOfferIcon from '@material-ui/icons/LocalOffer';
 
-import {useHistory} from 'react-router-dom';
-
 const linkListStyles = makeStyles((theme) => ({
   root: {
     display:'flex',
@@ -46,7 +44,6 @@ const linkListStyles = makeStyles((theme) => ({
 
 const LinkTagList = ({tags, fadeOverflow = true}) => {
   const classes = linkListStyles();
-  const history = useHistory();
   if (tags.length < 1){
     return null;
   }

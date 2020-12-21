@@ -1,10 +1,8 @@
 import React from 'react';
 import { gql, useQuery } from '@apollo/client'
-import { Link, useHistory } from 'react-router-dom'
-import RecipeCard from './components/RecipeCard'
+import { useHistory } from 'react-router-dom'
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
-import Typography from '@material-ui/core/Typography'
 import styled from 'styled-components'
 import FeaturedRecipe from './recipe/FeaturedRecipe'
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
@@ -63,16 +61,9 @@ const RECIPES = gql`
   }
 `
 
-const FeaturedRecipes = styled.div`
-  display:grid;
-  grid-template-columns:repeat(12, 1fr);
-  grid-template-rows: auto;
-  column-gap:24px;
-`
-
 const Home = () => {
   const history = useHistory();
-  const {loading, data, error, refetch, fetchMore} = useQuery(RECIPES, {variables: {pageSize: 3}});
+  const {loading, data, error} = useQuery(RECIPES, {variables: {pageSize: 3}});
 
   if (loading) return "Loading..."
   if (error) return `${error}`

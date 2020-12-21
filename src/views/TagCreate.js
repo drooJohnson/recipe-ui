@@ -1,6 +1,5 @@
 import React from 'react';
-import { gql, useQuery, useMutation } from '@apollo/client'
-import { useParams, Link } from 'react-router-dom'
+import { gql, useMutation } from '@apollo/client'
 import TagForm from './forms/TagForm'
 
 const INSERT_TAG = gql`
@@ -20,7 +19,7 @@ const INSERT_TAG = gql`
 `
 
 const TagCreate = () => {
-  const [ insertTag, { loading, data, error }] = useMutation(INSERT_TAG);
+  const [ insertTag, { loading, error }] = useMutation(INSERT_TAG);
   if (loading) return "Loading..."
   if (error) return `${error}`
 
