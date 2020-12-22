@@ -69,7 +69,7 @@ const RECIPES = gql`
 
 
 const Recipes = () => {
-  const {loading, data, error, refetch} = useQuery(RECIPES, {variables: {pageSize: 4}});
+  const {loading, data, error, refetch} = useQuery(RECIPES, {variables: {pageSize: 20}});
   if (loading) return "Loading..."
   if (error) return `${error}`
 
@@ -89,7 +89,9 @@ const Recipes = () => {
       </Grid>
       {data.recipes.recipes.map(recipe => {
         return(
-          <Grid item xs={12} sm={6} md={4} style={{display:'flex',justifyContent:'stretch',alignItems:'stretch'}}><RecipeCard recipe={recipe}/></Grid>
+          <Grid item xs={12} sm={6} md={3} style={{display:'flex',justifyContent:'stretch',alignItems:'stretch'}}>
+            <RecipeCard recipe={recipe}/>
+          </Grid>
         )
       })}
       <Grid item xs={12}>

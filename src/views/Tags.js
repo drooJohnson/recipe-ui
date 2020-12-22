@@ -53,7 +53,7 @@ const Tags = () => {
         {Object.entries(groupedTags).map(([key,value]) => {
           return (
             <>
-              <TagKind key={key}>{key}</TagKind>
+              <TagKind key={key}>{key.toLowerCase()}</TagKind>
               <GridList>
                 {value.map(tag => {
                   if (tag.recipes.length < 1) return;
