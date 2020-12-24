@@ -6,7 +6,9 @@ class Callback extends Component {
 
   async componentDidMount() {
     await auth.handleAuthentication();
-    this.props.history.replace('/');
+    const redirectRoute = localStorage.getItem('redirectRoute');
+    localStorage.removeItem('redirectRoute');
+    this.props.history.replace(redirectRoute ?? '/');
   }
 
   render() {
