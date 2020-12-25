@@ -12,6 +12,8 @@ const RECIPE = gql`
       name,
       description,
       imageUrl,
+      imageAltText,
+      imageColor,
       ingredients,
       steps {
         id,
@@ -41,6 +43,8 @@ const UPDATE_RECIPE = gql`
       name,
       description,
       imageUrl,
+      imageAltText,
+      imageColor,
       ingredients,
       steps {
         id,
@@ -115,6 +119,8 @@ const RecipeEdit = () => {
       name: recipe.name,
       description: recipe.description,
       imageUrl: recipe.imageUrl,
+      imageAltText: recipe.imageAltText,
+      imageColor: recipe.imageColor,
       ingredients: recipe.ingredients,
       steps: recipe.steps.map( step => stripProperties(['__typename','key','uiKey'],step) ),
       tags: recipe.tags.map( tag => stripProperties(['__typename','key','uiKey'],tag) )

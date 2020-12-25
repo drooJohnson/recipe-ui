@@ -124,11 +124,11 @@ const TintedImageContent = styled.img`
   }
 `
 
-export const TintedImage = ({color, imageUrl}) => {
+export const TintedImage = ({color, imageUrl, alt}) => {
   return(
     <TintedWrapper>
       {color && <ImageTint color={color}/>}
-      <TintedImageContent color={color} src={imageUrl ?? `/images/pumpkin_tart.jpg`}/>
+      <TintedImageContent alt={alt} color={color} src={imageUrl ?? `/images/pumpkin_tart.jpg`}/>
     </TintedWrapper>
   )
 }
