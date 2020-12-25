@@ -3,7 +3,7 @@ import { gql, useQuery } from '@apollo/client'
 import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import * as _ from 'lodash'
-
+import Typography from '@material-ui/core/Typography';
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
@@ -49,12 +49,12 @@ const Tags = () => {
 
   return(
     <>
-      <h1>All Tags</h1>
+      <Typography gutterBottom variant="h4">Recipes by Tag</Typography>
         {Object.entries(groupedTags).map(([key,value]) => {
           return (
             <>
               <TagKind key={key}>{key.toLowerCase()}</TagKind>
-              <GridList>
+              <GridList cols={3}>
                 {value.map(tag => {
                   if (tag.recipes.length < 1) return;
                   return (

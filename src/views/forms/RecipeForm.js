@@ -8,6 +8,13 @@ import Button from '@material-ui/core/Button';
 import StepsList from './StepsList';
 import UploadFile from '../UploadFile';
 import MDEditor, { commands } from '@uiw/react-md-editor';
+import { useEnumValues } from '../../utils/useEnumValues';
+import InputLabel from '@material-ui/core/InputLabel';
+import MenuItem from '@material-ui/core/MenuItem';
+import FormControl from '@material-ui/core/FormControl';
+import Select from '@material-ui/core/Select';
+
+
 
 // ARRAY INPUTS - Tags/Ingredients/Steps - currently only equipped to handle
 // "key" values for NEW entries.
@@ -21,6 +28,10 @@ const recipeReducer = (state, action) => {
       return {...state, name: action.payload}
     case 'updateImageUrl':
       return {...state, imageUrl: action.payload}
+    case 'updateImageAltText':
+      return {...state, imageAltText: action.payload}
+    case 'updateImageColor':
+      return {...state, imageColor: action.payload}
     case 'updateTags':
       return {...state, tags: action.payload}
     case 'updateSteps':
@@ -36,8 +47,13 @@ const recipeReducer = (state, action) => {
 
 const RecipeForm = ({onSubmit, loading, error, recipe}) => {
   const [state, dispatch] = useReducer(recipeReducer, recipe);
+
   const [description, setDescription] = useState(recipe.description);
+  const [imageAltText, setImageAltText] = useState(recipe.imageAltText);
   const [ingredients, setIngredients] = useState(recipe.ingredients);
+
+  const {data:imageColorOptions} = useEnumValues("ImageColor");
+
   return (
     <form noValidate autoComplete='off'>
       <Grid container spacing={2} style={{marginBottom:'24px'}}>
@@ -51,8 +67,32 @@ const RecipeForm = ({onSubmit, loading, error, recipe}) => {
             onChange={(event) => {dispatch({type: 'updateName', payload:event.target.value})}}
             />
         </Grid>
-        <Grid item xs={12}>
+        <Grid item xs={12} sm={6}>
           <UploadFile imageUrl={recipe.imageUrl} onSuccess={({url}) => {dispatch({type: 'updateImageUrl', payload:url})}}/>
+        </Grid>
+
+        <Grid container item xs={12} sm={6} style={{flexDirection: 'column'}}>
+            <FormControl fullWidth style={{paddingBottom:'16px'}}>
+              <InputLabel>Image Color</InputLabel>
+              <Select
+                defaultValue={recipe.imageColor ?? ''}
+                onChange={(event) => {dispatch({type: 'updateImageColor', payload: event.target.value})}}
+                >
+                {[null, ...imageColorOptions].map((opt) => {
+                  return( <MenuItem value={opt}>{opt ?? '...'}</MenuItem>)
+                })}
+                </Select>
+              </FormControl>
+                <TextField
+                  id="recipe-image-alt-text"
+                  label="Image Alt Text"
+                  variant='outlined'
+                  value={imageAltText ?? ''}
+                  multiline
+                  fullWidth
+                  onChange={(event) => {setImageAltText(event.target.value)}}
+                  onBlur={(event) => {dispatch({type: 'updateImageAltText', payload:event.target.value})}}
+                  />
         </Grid>
         <Grid item xs={12}><Typography variant='h5'>Description</Typography></Grid>
         <Grid item xs={12}>
