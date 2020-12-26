@@ -1,9 +1,9 @@
 import React from 'react';
 import PropTypes from 'prop-types'
-import MDEditor from '@uiw/react-md-editor'
+//import MDEditor from '@uiw/react-md-editor'
 import styled from 'styled-components'
 
-const IngredientsStyles = styled(MDEditor.Markdown)`
+/*const IngredientsStyles = styled(MDEditor.Markdown)`
   font-family:'inherit';
   ul,ol,dl{
     list-style:none;
@@ -13,11 +13,14 @@ const IngredientsStyles = styled(MDEditor.Markdown)`
     margin-top:16px;
     margin-bottom:8px;
   }
-`
+`*/
 
 const Ingredients = ({ingredients}) => {
   return(
-    <IngredientsStyles style={{fontFamily:'inherit'}} source={ingredients}/>
+    <>
+    {/*<IngredientsStyles style={{fontFamily:'inherit'}} source={ingredients}/>*/}
+      {ingredients}
+    </>
   )
 }
 

@@ -12,7 +12,7 @@ import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
 
-import MDEditor from '@uiw/react-md-editor';
+//import MDEditor from '@uiw/react-md-editor';
 
 import { useEnumValues } from '../../utils/useEnumValues';
 import { useDrag, useDrop } from 'react-dnd';
@@ -125,12 +125,12 @@ const TextStep = ({step, opacity, index, addStep, updateStep, removeStep, moveSt
                   />
               </Grid>
               <Grid item xs={12}>
-                <MDEditor
+                {/*<MDEditor
                   value={text}
                   onChange={(value) => setText(value)}
                   preview="edit"
                   onBlur={(event)=>{updateStep({...step, text: event.target.value}, index)}}
-                />
+                />*/}
                 {false&&<TextField
                   variant='outlined'
                   label='Text'

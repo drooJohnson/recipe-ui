@@ -7,7 +7,7 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import StepsList from './StepsList';
 import UploadFile from '../UploadFile';
-import MDEditor, { commands } from '@uiw/react-md-editor';
+//import MDEditor, { commands } from '@uiw/react-md-editor';
 import { useEnumValues } from '../../utils/useEnumValues';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -96,7 +96,7 @@ const RecipeForm = ({onSubmit, loading, error, recipe}) => {
         </Grid>
         <Grid item xs={12}><Typography variant='h5'>Description</Typography></Grid>
         <Grid item xs={12}>
-          <MDEditor
+          {/*<MDEditor
             id="recipe-description"
             value={description}
             preview="edit"
@@ -109,11 +109,11 @@ const RecipeForm = ({onSubmit, loading, error, recipe}) => {
             ]}
             onChange={(value) => setDescription(value)}
             onBlur={(event) => {dispatch({type: 'updateDescription', payload:event.target.value})}}
-            />
+            />*/}
         </Grid>
         <Grid item xs={12}><Typography variant='h5'>Ingredients</Typography></Grid>
         <Grid item xs={12}>
-          <MDEditor
+          {/*<MDEditor
             id="recipe-ingredients"
             value={ingredients}
             preview="edit"
@@ -126,7 +126,7 @@ const RecipeForm = ({onSubmit, loading, error, recipe}) => {
             ]}
             onChange={(value) => setIngredients(value)}
             onBlur={(event) => {dispatch({type: 'updateIngredients', payload:event.target.value})}}
-            />
+            />*/}
         </Grid>
       </Grid>
 

@@ -10,7 +10,7 @@ import Step from './recipe/Step'
 import Hidden from '@material-ui/core/Hidden'
 import {device} from '../utils/device'
 
-import MDEditor from '@uiw/react-md-editor'
+//import MDEditor from '@uiw/react-md-editor'
 
 const RECIPE = gql`
   query Recipe($id: ID!){
@@ -181,7 +181,7 @@ const Recipe = () => {
             <Typography variant='h6'>Notes</Typography>
           </DashedSubhead>
           <DescriptionText>
-            <MDEditor.Markdown style={{fontSize:'20px',fontFamily:'inherit'}} source={description}/>
+            {/*<MDEditor.Markdown style={{fontSize:'20px',fontFamily:'inherit'}} source={description}/>*/}
           </DescriptionText>
         </Description>
         <IngredientsSection>
