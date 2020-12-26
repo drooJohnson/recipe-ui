@@ -1,10 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types'
-import MDEditor from '@uiw/react-md-editor'
+import ReactMarkdown from 'react-markdown'
 import styled from 'styled-components'
 
-const IngredientsStyles = styled(MDEditor.Markdown)`
-  font-family:'inherit';
+const IngredientsStyles = styled(ReactMarkdown)`
+  font-family:inherit;
   ul,ol,dl{
     list-style:none;
     padding:0;
@@ -17,7 +17,7 @@ const IngredientsStyles = styled(MDEditor.Markdown)`
 
 const Ingredients = ({ingredients}) => {
   return(
-    <IngredientsStyles style={{fontFamily:'inherit'}} source={ingredients}/>
+    <IngredientsStyles children={ingredients}/>
   )
 }
 

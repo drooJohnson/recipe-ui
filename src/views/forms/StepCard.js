@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Card from '@material-ui/core/Card';
@@ -11,8 +11,6 @@ import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
 import Select from '@material-ui/core/Select';
-
-import MDEditor from '@uiw/react-md-editor';
 
 import { useEnumValues } from '../../utils/useEnumValues';
 import { useDrag, useDrop } from 'react-dnd';
@@ -95,7 +93,6 @@ const StepCard = ({step, index, addStep, updateStep, removeStep, moveStep}) => {
 }
 
 const TextStep = ({step, opacity, index, addStep, updateStep, removeStep, moveStep}) => {
-    const [text, setText] = useState(step.text);
     return(
       <Grid
         item
@@ -125,20 +122,14 @@ const TextStep = ({step, opacity, index, addStep, updateStep, removeStep, moveSt
                   />
               </Grid>
               <Grid item xs={12}>
-                <MDEditor
-                  value={text}
-                  onChange={(value) => setText(value)}
-                  preview="edit"
-                  onBlur={(event)=>{updateStep({...step, text: event.target.value}, index)}}
-                />
-                {false&&<TextField
+              <TextField
                   variant='outlined'
                   label='Text'
                   defaultValue={step.text ?? ''}
                   fullWidth
                   multiline
                   onBlur={(event) => {updateStep({...step, text: event.target.value}, index)}}
-                  />}
+                  />
                 </Grid>
               </Grid>
             </CardContent>
