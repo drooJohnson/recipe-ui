@@ -1,4 +1,4 @@
-import React, { useRef, useState } from 'react';
+import React, { useRef } from 'react';
 import Grid from '@material-ui/core/Grid';
 import IconButton from '@material-ui/core/IconButton';
 import Card from '@material-ui/core/Card';
@@ -93,7 +93,6 @@ const StepCard = ({step, index, addStep, updateStep, removeStep, moveStep}) => {
 }
 
 const TextStep = ({step, opacity, index, addStep, updateStep, removeStep, moveStep}) => {
-    const [text, setText] = useState(step.text);
     return(
       <Grid
         item
@@ -123,7 +122,7 @@ const TextStep = ({step, opacity, index, addStep, updateStep, removeStep, moveSt
                   />
               </Grid>
               <Grid item xs={12}>
-                <TextField
+              <TextField
                   variant='outlined'
                   label='Text'
                   defaultValue={step.text ?? ''}
