@@ -3,7 +3,6 @@ import { gql, useQuery } from '@apollo/client'
 import { useHistory } from 'react-router-dom'
 import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
-import styled from 'styled-components'
 import FeaturedRecipe from './recipe/FeaturedRecipe'
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
 
