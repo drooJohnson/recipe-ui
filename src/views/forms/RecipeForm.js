@@ -7,7 +7,6 @@ import Typography from '@material-ui/core/Typography';
 import Button from '@material-ui/core/Button';
 import StepsList from './StepsList';
 import UploadFile from '../UploadFile';
-//import MDEditor, { commands } from '@uiw/react-md-editor';
 import { useEnumValues } from '../../utils/useEnumValues';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
@@ -96,37 +95,29 @@ const RecipeForm = ({onSubmit, loading, error, recipe}) => {
         </Grid>
         <Grid item xs={12}><Typography variant='h5'>Description</Typography></Grid>
         <Grid item xs={12}>
-          {/*<MDEditor
+          <TextField
             id="recipe-description"
-            value={description}
-            preview="edit"
-            commands={[
-              commands.bold, commands.italic, commands.strikethrough, commands.hr, commands.title,
-              commands.divider,
-              commands.link, commands.quote, commands.code, commands.image,
-              commands.divider,
-              commands.unorderedListCommand, commands.orderedListCommand, commands.checkedListCommand
-            ]}
-            onChange={(value) => setDescription(value)}
+            label="Description"
+            variant='outlined'
+            value={description ?? ''}
+            multiline
+            fullWidth
+            onChange={(event) => {setDescription(event.target.value)}}
             onBlur={(event) => {dispatch({type: 'updateDescription', payload:event.target.value})}}
-            />*/}
+            />
         </Grid>
         <Grid item xs={12}><Typography variant='h5'>Ingredients</Typography></Grid>
         <Grid item xs={12}>
-          {/*<MDEditor
-            id="recipe-ingredients"
-            value={ingredients}
-            preview="edit"
-            commands={[
-              commands.bold, commands.italic, commands.strikethrough, commands.hr, commands.title,
-              commands.divider,
-              commands.link, commands.quote, commands.code, commands.image,
-              commands.divider,
-              commands.unorderedListCommand, commands.orderedListCommand, commands.checkedListCommand
-            ]}
-            onChange={(value) => setIngredients(value)}
-            onBlur={(event) => {dispatch({type: 'updateIngredients', payload:event.target.value})}}
-            />*/}
+          <TextField
+          id="recipe-ingredients"
+          label="Ingredients"
+          variant='outlined'
+          value={ingredients ?? ''}
+          multiline
+          fullWidth
+          onChange={(event) => {setIngredients(event.target.value)}}
+          onBlur={(event) => {dispatch({type: 'updateIngredients', payload:event.target.value})}}
+          />
         </Grid>
       </Grid>
 

@@ -5,7 +5,7 @@ import PropTypes from 'prop-types'
 import FilteredImage from '../components/FilteredImage'
 import {device} from '../../utils/device'
 
-//import MDEditor from '@uiw/react-md-editor'
+import ReactMarkdown from 'react-markdown'
 
 const Tick = styled.div`
   width: 16px;
@@ -74,7 +74,7 @@ const StepText = ({step, stepNumber}) => {
         </Typography>
       </StepHeaderContainer>
       <StepTextText variant='body1' paragraph>
-        {/*<MDEditor.Markdown style={{fontSize:'inherit',fontFamily:'inherit'}} source={step.text}/>*/}
+        <ReactMarkdown style={{fontSize:'inherit',fontFamily:'inherit'}} children={step.text}/>
       </StepTextText>
     </StepTextWrapper>
   )
