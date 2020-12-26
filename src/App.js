@@ -1,27 +1,27 @@
 import React, {Component} from 'react';
 import { Switch, Route, withRouter } from 'react-router-dom';
 import GuardedRoute from './GuardedRoute'
-import Home from 'views/Home'
+import Home from './views/Home'
 
-import Recipe from 'views/Recipe'
-import Recipes from 'views/Recipes'
-import RecipeEdit from 'views/RecipeEdit'
-import RecipeCreate from 'views/RecipeCreate'
+import Recipe from './views/Recipe'
+import Recipes from './views/Recipes'
+import RecipeEdit from './views/RecipeEdit'
+import RecipeCreate from './views/RecipeCreate'
 
-import Tag from 'views/Tag'
-import Tags from 'views/Tags'
-import TagEdit from 'views/TagEdit'
-import TagCreate from 'views/TagCreate'
+import Tag from './views/Tag'
+import Tags from './views/Tags'
+import TagEdit from './views/TagEdit'
+import TagCreate from './views/TagCreate'
 
-import About from 'views/About'
+import About from './views/About'
 
-import Callback from 'views/Callback'
-import Login from 'views/Login'
+import Callback from './views/Callback'
+import Login from './views/Login'
 
-import NotFound from 'views/NotFound'
+import NotFound from './views/NotFound'
 
-import Nav from 'views/Nav'
-import Layout from 'views/layout/Layout'
+import Nav from './views/Nav'
+import Layout from './views/layout/Layout'
 
 import auth from './Auth'
 
