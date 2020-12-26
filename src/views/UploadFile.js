@@ -39,7 +39,7 @@ const ImageDetails = styled.div`
   flex-grow:1;
 `
 
-const UploadFile = ({onSuccess, onFailure, imageUrl}) => {
+const UploadFile = ({onSuccess, onFailure, imageUrl, alt}) => {
   const htmlInput = useRef(null);
   const [file, setFile] = useState(null);
   const [fileUrl, setFileUrl] = useState(imageUrl ?? null);
@@ -79,7 +79,7 @@ const UploadFile = ({onSuccess, onFailure, imageUrl}) => {
     >
       <UploadFileWrapper>
         <ImagePreview>
-          <img src={fileUrl || imageUrl} style={{maxHeight:240,maxWidth:240}}/>
+          <img alt={alt} src={fileUrl || imageUrl} style={{maxHeight:240,maxWidth:240}}/>
           {file && <ImageDetails>
             <Typography variant='body2' gutterBottom>{file.name}</Typography>
             <Typography variant='body2' gutterBottom>{file.size}</Typography>
