@@ -11,6 +11,9 @@ import { useEnumValues } from '../../utils/useEnumValues';
 import InputLabel from '@material-ui/core/InputLabel';
 import MenuItem from '@material-ui/core/MenuItem';
 import FormControl from '@material-ui/core/FormControl';
+import FormGroup from '@material-ui/core/FormGroup';
+import FormControlLabel from '@material-ui/core/FormControlLabel';
+import Switch from '@material-ui/core/Switch';
 import Select from '@material-ui/core/Select';
 
 
@@ -23,6 +26,8 @@ const recipeReducer = (state, action) => {
   switch (action.type) {
     case 'updateDescription':
       return {...state, description: action.payload}
+    case 'updateStatus':
+      return {...state, status: action.payload}
     case 'updateName':
       return {...state, name: action.payload}
     case 'updateImageUrl':
@@ -120,11 +125,22 @@ const RecipeForm = ({onSubmit, loading, error, recipe}) => {
           />
         </Grid>
       </Grid>
-
         <StepsList steps={state.steps} updateSteps={(newSteps) => {dispatch({type: 'updateSteps', payload:newSteps})}}/>
         <TagInput tags={state.tags} onInsertTag={(newTag)=>{dispatch({type: 'updateTags', payload:[...state.tags, newTag]})}} onChange={(newTags) => {dispatch({type: 'updateTags', payload:newTags})}}/>
-
-      <Button type='button' onClick={()=>{onSubmit(state)}}>SUBMIT</Button>
+          <FormGroup row>
+       <FormControlLabel
+         control={
+           <Switch
+             checked={(state.status === 'PUBLISHED')}
+             onChange={(event) => {dispatch({type: 'updateStatus', payload:(event.target.checked ? 'PUBLISHED' : 'DRAFT')})}}
+             name="published"
+             color="primary"
+           />
+         }
+         label="Published"
+       />
+     </FormGroup>
+    <Button type='button' onClick={()=>{onSubmit(state)}}>SUBMIT</Button>
     </form>
   )
 }

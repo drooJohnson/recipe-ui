@@ -51,6 +51,7 @@ const RecipeCreate = () => {
     let createRecipeInput = {
       name: recipe.name,
       description: recipe.description,
+      status: recipe.status,
       imageUrl: recipe.imageUrl,
       imageAltText: recipe.imageAltText,
       imageColor: recipe.imageColor,
