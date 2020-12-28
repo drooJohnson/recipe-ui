@@ -156,6 +156,7 @@ RecipeForm.defaultProps = {
   recipe: {
     name: '',
     description: '',
+    status: 'DRAFT',
     imageUrl: '',
     steps: [],
     ingredients: [],

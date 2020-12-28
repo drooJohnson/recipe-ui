@@ -10,12 +10,13 @@ const RECIPES = gql`
     $pageSize: Int,
     $page: Int,
     $after: String,
+    $status: RecipeStatus
   ){
     recipes(
       pageSize:$pageSize,
       page:$page,
       after:$after,
-      status:DRAFT
+      status:$status
     ){
       cursor,
       hasMore,
@@ -70,7 +71,7 @@ const RECIPES = gql`
 
 
 const Drafts = () => {
-  const {loading, data, error, refetch} = useQuery(RECIPES, {variables: {pageSize: 20}});
+  const {loading, data, error, refetch} = useQuery(RECIPES, {variables: {pageSize: 20, status: "DRAFT"}});
   if (loading) return "Loading..."
   if (error) return `${error}`
 
