@@ -25,6 +25,7 @@ const NavItem = styled(NavLink)`
   font-weight:normal;
   font-size:1.2em;
   color:rgba(0,0,0,0.72);
+  text-decoration: none;
   padding:0.5em;
   &:last-of-type{
     padding-right:0;
@@ -82,7 +83,9 @@ const Nav = () => {
       <Hidden smDown>
       <div style={{display:'flex', justifyContent:'center'}}>
         <NavContainer>
-          <Typography variant="h5"><NavLink exact to="/" activeStyle={activeStyle}>He Bakes</NavLink></Typography>
+          <Typography variant="h5">
+            <NavLink exact to="/" style={{textDecoration:'none'}} activeStyle={activeStyle}>He Bakes</NavLink>
+          </Typography>
           <div>
             <NavItem to="/recipes" activeStyle={activeStyle}>
               Recipes
