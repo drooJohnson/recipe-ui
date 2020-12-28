@@ -97,6 +97,11 @@ const Nav = () => {
               About
             </NavItem>
             { (auth.isAuthenticated()) && (
+              <NavItem to="/drafts" activeStyle={activeStyle}>
+                Drafts
+              </NavItem>
+            ) }
+            { (auth.isAuthenticated()) && (
               <span style={{color:'rgba(0,0,0,0.72)',fontSize:'1.2em',padding:'0.5em',paddingLeft:'1em'}} onClick={()=> logout()}>
                 Logout
               </span>
