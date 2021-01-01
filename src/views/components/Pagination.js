@@ -29,25 +29,58 @@ const Ellipsis = styled.div`
 const Pagination = ({
   onClick, pageCursors
 }) => {
+  let {first, previous, around, next, last} = pageCursors;
+
+  const displayFirst = (first && (first.page !== around[0].page));
+  const displayLast = (last && (last.page !== around[around.length - 1].page));
+
   return(
     <PaginationBar>
-      <Page disabled={!pageCursors.previous} onClick={()=>{onClick(pageCursors.previous?.page, pageCursors.previous?.cursor)}}><ChevronLeftIcon fontSize="small"/></Page>
-      { pageCursors.first && (pageCursors.first.page !== pageCursors.around[0].page) &&
+      <Page
+        disabled={!previous}
+        onClick={()=>{ onClick(previous?.page, previous?.cursor) }}
+      >
+        <ChevronLeftIcon fontSize="small"/>
+      </Page>
+      { displayFirst &&
         <>
-          <Page onClick={()=>{onClick(pageCursors.first.page, pageCursors.first.cursor)}} active={pageCursors.first.isCurrent}>{pageCursors.first.page}</Page>
+          <Page
+            onClick={()=>{onClick(first.page, first.cursor)}}
+            active={first.isCurrent}
+          >
+            {first.page}
+          </Page>
           <Ellipsis>…</Ellipsis>
         </>
       }
-      {pageCursors.around.map( page => {
-        return <Page key={`page-${page.page}`} onClick={()=>{onClick(page.page, page.cursor)}} active={page.isCurrent}>{page.page}</Page>
+      {around.map( page => {
+        return (
+          <Page
+            key={`page-${page.page}`}
+            onClick={()=>{onClick(page.page, page.cursor)}}
+            active={page.isCurrent}
+          >
+            {page.page}
+          </Page>
+        )
       })}
-      { pageCursors.last && (pageCursors.last.page !== pageCursors.around[pageCursors.around.length - 1].page) &&
+      { displayLast &&
         <>
           <Ellipsis>…</Ellipsis>
-          <Page onClick={()=>{onClick(pageCursors.last.page, pageCursors.last.cursor)}} active={pageCursors.last.isCurrent}>{pageCursors.last.page}</Page>
+          <Page
+            onClick={()=>{onClick(last.page, last.cursor)}}
+            active={last.isCurrent}
+          >
+            {last.page}
+          </Page>
         </>
       }
-      <Page disabled={!pageCursors.next} onClick={()=>{onClick(pageCursors.next.page, pageCursors.next.cursor)}}><ChevronRightIcon fontSize="small"/></Page>
+      <Page
+        disabled={!next}
+        onClick={()=>{onClick(next.page, next.cursor)}}
+      >
+        <ChevronRightIcon fontSize="small"/>
+      </Page>
     </PaginationBar>
   )
 }
