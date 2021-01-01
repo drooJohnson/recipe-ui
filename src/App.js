@@ -22,6 +22,8 @@ import Login from './views/Login'
 
 import NotFound from './views/NotFound'
 
+import Admin from './views/Admin'
+
 import Nav from './views/Nav'
 import Layout from './views/layout/Layout'
 
@@ -57,6 +59,7 @@ class App extends Component {
             <Route path="/recipes">
               <Recipes/>
             </Route>
+            <GuardedRoute path="/admin" component={Admin}/>
             <GuardedRoute path="/drafts" component={Drafts}/>
             <GuardedRoute path="/tag/new" component={TagCreate}/>
             <GuardedRoute path="/tag/edit/:id" component={TagEdit}/>
