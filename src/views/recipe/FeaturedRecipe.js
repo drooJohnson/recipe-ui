@@ -6,6 +6,7 @@ import { useHistory } from 'react-router-dom';
 import FilteredImage from '../components/FilteredImage'
 import {device} from '../../utils/device'
 import useMediaQuery from '@material-ui/core/useMediaQuery';
+import Paper from '@material-ui/core/Paper';
 
 const ImagePosition = styled.div`
   grid-column-start:${props => props.side === 'LEFT' ? 1 : 4};
@@ -66,13 +67,14 @@ const FeaturedRecipe = ({side, color, recipe}) => {
   return (
     <>
         <Wrapper onClick={()=>{history.push(`/recipe/${recipe.id}`)}}>
+
           <ImagePosition side={mobile ? 'RIGHT' : side}>
             <FilteredImage color={color || recipe.imageColor} side={mobile ? 'RIGHT' : side} imageUrl={recipe.imageUrl ?? `/images/pumpkin_tart.jpg`} gradientStart={mobile ? "50%" : null} gradientEnd={mobile ? "200%" : null}/>
           </ImagePosition>
           <Text side={mobile ? 'RIGHT' : side}>
-            <Typography variant='overline' color='primary'>RECIPE</Typography>
-            <Typography gutterBottom variant='h1' style={{fontWeight:'bold',lineHeight:'56px',color:'rgba(0,0,0,.8)'}}>{recipe.name}</Typography>
-          </Text>
+              <Typography variant='overline' color='primary'>RECIPE</Typography>
+              <Typography gutterBottom variant='h1' style={{fontWeight:'bold',lineHeight:'56px',color:'rgba(0,0,0,.8)'}}>{recipe.name}</Typography>
+           </Text>
         </Wrapper>
     </>
   )

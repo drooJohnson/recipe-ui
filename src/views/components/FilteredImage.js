@@ -5,19 +5,19 @@ const Colors = {
   MAGENTA: {
     startColor: 'rgba(255, 100, 180, 1.0)',
     endColor: 'rgba(255, 100, 180, 0.0)',
-    gradient:'linear-gradient(to right, rgba(255, 100, 180, 1.0) 10%, rgba(255, 100, 180, 0.0) 95%)',
+    gradient:'linear-gradient(to right, rgba(255, 100, 180, 1.0) -5%, rgba(255, 100, 180, 1.0) 10%, rgba(255, 100, 180, 0.0) 95%)',
     blend:'hard-light'
   },
   CYAN: {
     startColor: 'rgba(80, 150, 255, 1.0)',
     endColor: 'rgba(80, 150, 255, 0.0)',
-    gradient:'linear-gradient(to right, rgba(80, 150, 255, 1.0) 10%, rgba(80, 150, 255, 0.0) 95%)',
+    gradient:'linear-gradient(to right, rgba(80, 150, 255, 1.0) -5%, rgba(80, 150, 255, 1.0) 10%, rgba(80, 150, 255, 0.0) 95%)',
     blend:'lighten'
   },
   YELLOW: {
     startColor: 'rgba(230, 245, 100, 1.0)',
     endColor: 'rgba(230, 245, 100, 0.0)',
-    gradient:'linear-gradient(to right, rgba(230, 245, 100, 1.0) 10%, rgba(230, 245, 100, 0.0) 95%)',
+    gradient:'linear-gradient(to right, rgba(230, 245, 100, 1.0) -5%, rgba(230, 245, 100, 1.0) 10%, rgba(230, 245, 100, 0.0) 95%)',
     blend:'lighten'
   }
 }
@@ -26,6 +26,7 @@ const ImageWrapper = styled.div`
   width:100%;
   height:100%;
   position:relative;
+  overflow:hidden;
 `
 
 const ImageDesaturation = styled.div`
@@ -41,7 +42,7 @@ const ImageDesaturation = styled.div`
 `
 
 const ImageGradient = styled.div`
-  width:100%;
+  width:102%;
   height:100%;
   position:absolute;
   top:0;
@@ -49,7 +50,13 @@ const ImageGradient = styled.div`
   left:0;
   right:0;
   background:
-    ${props => props.color ? `linear-gradient(to right, ${Colors[props.color].startColor} ${props?.gradientStart ?? '10%'}, ${Colors[props.color].endColor} ${props?.gradientEnd ?? '95%'} )` : 'transparent'};
+    ${props => props.color ?
+      `linear-gradient(to right,
+        ${Colors[props.color].startColor} ${props?.gradientStart ?? '-5%'},
+        ${Colors[props.color].startColor} ${props?.gradientStart ?? '10%'},
+        ${Colors[props.color].endColor} ${props?.gradientEnd ?? '95%'} )`
+      :
+      'transparent'};
   mix-blend-mode: ${props => props.color ? Colors[props.color].blend : 'normal'};
   transform: ${props => props.side === 'LEFT' ? 'rotateZ(180deg)' : 'rotateZ(0deg)'};
 `
