@@ -40,7 +40,7 @@ const RECIPES = gql`
     $order: Order,
     $includeDeleted: Boolean,
   ){
-    recipes(
+    adminRecipes(
       pageSize: $pageSize,
       page: $page,
       after: $after,
@@ -125,7 +125,7 @@ const Admin = () => {
   const [rowsPerPage, setRowsPerPage] = useState(25);
   const [page, setPage] = useState(0);
   const [orderBy, setOrderBy] = useState('updatedAt');
-  const [order, setOrder] = useState('asc');
+  const [order, setOrder] = useState('desc');
   const [includeDeleted, setIncludeDeleted] = useState(true);
 
   const {loading, data, error, refetch} = useQuery(RECIPES, {variables: {
@@ -137,7 +137,7 @@ const Admin = () => {
   }});
 
   const getCursorForPage = (pageNumber) => {
-    let {first, previous, around, next, last} = data.recipes.pageCursors;
+    let {first, previous, around, next, last} = data.adminRecipes.pageCursors;
     let cursors = [first, previous, ...around, next, last].filter(entry => entry != null);
     console.log(cursors);
     let cursorForPage = cursors.filter(cursor => cursor.page === pageNumber)[0];
@@ -243,7 +243,7 @@ const Admin = () => {
         </TableRow>
       </TableHead>
       <TableBody>
-        {data.recipes.recipes.map((row) => (
+        {data.adminRecipes.recipes.map((row) => (
           <TableRow key={row.id}>
             <TableCell>{row.name}</TableCell>
             <TableCell>{formatDate(row.createdAt) ?? '—'}</TableCell>
@@ -264,7 +264,7 @@ const Admin = () => {
     <TablePagination
       rowsPerPageOptions={[10,25,50]}
       component='div'
-      count={data.recipes.totalItems}
+      count={data.adminRecipes.totalItems}
       rowsPerPage={rowsPerPage}
       page={page}
       onChangePage={handleChangePage}
