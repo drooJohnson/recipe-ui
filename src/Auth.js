@@ -14,6 +14,7 @@ class Auth {
     this.authFlag = 'isLoggedIn'
     this.login = this.login.bind(this);
     this.loginToRoute = this.loginToRoute.bind(this);
+    this.getIdToken = this.getIdToken.bind(this);
     this.logout = this.logout.bind(this);
     this.handleAuthentication = this.handleAuthentication.bind(this);
     this.isAuthenticated = this.isAuthenticated.bind(this);

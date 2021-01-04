@@ -10,7 +10,7 @@ import {BrowserRouter as Router} from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 //import store from './store/configureStore';
 import { cache } from './cache';
-import { ApolloClient, ApolloProvider } from '@apollo/client';
+import { ApolloClient, ApolloProvider, ApolloLink } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
 import { createUploadLink } from 'apollo-upload-client';
@@ -20,9 +20,8 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import Theme from './theme';
 
-const authLink = setContext((_, {headers}) => {
-  const token = auth.getIdToken();
-
+const authLink = setContext( async (_, {headers}) => {
+  let token = await auth.getIdToken();
   return {
     headers: {
       ...headers,

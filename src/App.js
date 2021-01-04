@@ -8,8 +8,6 @@ import Recipes from './views/Recipes'
 import RecipeEdit from './views/RecipeEdit'
 import RecipeCreate from './views/RecipeCreate'
 
-import Drafts from './views/Drafts'
-
 import Tag from './views/Tag'
 import Tags from './views/Tags'
 import TagEdit from './views/TagEdit'
@@ -60,7 +58,6 @@ class App extends Component {
               <Recipes/>
             </Route>
             <GuardedRoute path="/admin" component={Admin}/>
-            <GuardedRoute path="/drafts" component={Drafts}/>
             <GuardedRoute path="/tag/new" component={TagCreate}/>
             <GuardedRoute path="/tag/edit/:id" component={TagEdit}/>
             <Route path="/tag/:id">
