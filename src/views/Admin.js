@@ -1,9 +1,7 @@
-import React, {useState, useEffect} from 'react';
-import { gql, useQuery } from '@apollo/client'
+import React, {useState} from 'react';
+import { gql, useQuery, useMutation } from '@apollo/client'
 import { useHistory } from 'react-router-dom'
-import Grid from '@material-ui/core/Grid'
 import IconButton from '@material-ui/core/IconButton'
-import ButtonGroup from '@material-ui/core/ButtonGroup'
 import RecipeDeleteConfirmationDialog from './components/RecipeDeleteConfirmationDialog';
 import RecipeRestoreConfirmationDialog from './components/RecipeRestoreConfirmationDialog';
 import { format, fromUnixTime, isValid } from 'date-fns';
@@ -22,14 +20,12 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 
 import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 
-import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import PublishIcon from '@material-ui/icons/Publish';
+import GetAppIcon from '@material-ui/icons/GetApp';
 
 const RECIPES = gql`
   query Recipes {
@@ -55,7 +51,42 @@ const RECIPES = gql`
       status,
       createdAt,
       updatedAt,
-      deletedAt,
+      deletedAt
+    }
+  }
+`
+
+const UPDATE_RECIPE_STATUS = gql`
+  mutation UpdateRecipeStatus (
+    $recipeId: ID!,
+    $status: RecipeStatus!
+  ) {
+    updateRecipeStatus (
+      recipeId: $recipeId,
+      status: $status
+    ) {
+      id,
+      name,
+      description,
+      imageUrl,
+      imageColor,
+      imageAltText,
+      ingredients,
+      steps {
+        id,
+        displayOrder,
+        text
+      },
+      tags {
+        id,
+        slug,
+        text,
+        kind
+      },
+      status,
+      createdAt,
+      updatedAt,
+      deletedAt
     }
   }
 `
@@ -81,9 +112,11 @@ const Admin = () => {
   const [page, setPage] = useState(0);
   const [orderBy, setOrderBy] = useState('updatedAt');
   const [order, setOrder] = useState('desc');
-  const [includeDeleted, setIncludeDeleted] = useState(true);
+  const [includeDeleted, setIncludeDeleted] = useState(false);
 
   const {loading, data, error} = useQuery(RECIPES);
+  const [updateRecipeStatus, {loading: updateLoading, data: updateData, error: updateError}] = useMutation(UPDATE_RECIPE_STATUS);
+
 
   const descendingComparator = (a, b, orderBy) => {
     if (b[orderBy] < a[orderBy]) {
@@ -135,6 +168,7 @@ const Admin = () => {
   if (error) return `${error}`
 
   const filteredRows = includeDeleted ? data.adminRecipes : data.adminRecipes.filter(row => row.deletedAt == null);
+  const deletedRows = data.adminRecipes.filter(row => row.deletedAt != null);
   const emptyRows = rowsPerPage - Math.min(rowsPerPage, filteredRows.length - page * rowsPerPage);
 
   return(
@@ -148,7 +182,7 @@ const Admin = () => {
           <FormControlLabel
           style={{marginRight:8}}
           control={<Checkbox checked={includeDeleted} onChange={handleChangeIncludeDeleted} name="includeDeleted" />}
-          label="Include Deleted"
+          label={`Include Deleted (${deletedRows?.length ?? `0`})`}
           />
       </Tooltip>
     </Toolbar>
@@ -184,9 +218,32 @@ const Admin = () => {
             <TableCell>{formatDate(row.deletedAt) ?? '—'}</TableCell>
             <TableCell>{row.status}</TableCell>
             <TableCell align='right'>
-              <IconButton size='small' style={{marginRight:'8px'}} onClick={()=>{history.push(`/recipe/edit/${row.id}`)}}><EditIcon fontSize='small'/></IconButton>
+              {
+                (row.status !== 'PUBLISHED')
+                ?
+                <Tooltip title='Publish'>
+                  <IconButton
+                    size='small'
+                    style={{marginRight:'8px'}}
+                    onClick={()=>{updateRecipeStatus({variables:{recipeId:row.id, status:'PUBLISHED'}})}}
+                  >
+                    <PublishIcon fontSize='small'/>
+                  </IconButton>
+                </Tooltip>
+                :
+                <Tooltip title='Unpublish'>
+                  <IconButton
+                    size='small'
+                    style={{marginRight:'8px'}}
+                    onClick={()=>{updateRecipeStatus({variables:{recipeId:row.id, status:'DRAFT'}})}}
+                  >
+                    <GetAppIcon fontSize='small'/>
+                  </IconButton>
+                </Tooltip>
+              }
+              <Tooltip title="Edit"><IconButton size='small' style={{marginRight:'8px'}} onClick={()=>{history.push(`/recipe/edit/${row.id}`)}}><EditIcon fontSize='small'/></IconButton></Tooltip>
               {row.deletedAt ? <RecipeRestoreConfirmationDialog recipe={row}/> : <RecipeDeleteConfirmationDialog recipe={row}/> }
-              <IconButton size='small' onClick={()=>{history.push(`/recipe/${row.id}`)}}><VisibilityIcon fontSize='small'/></IconButton>
+              <Tooltip title="View"><IconButton size='small' onClick={()=>{history.push(`/recipe/${row.id}`)}}><VisibilityIcon fontSize='small'/></IconButton></Tooltip>
             </TableCell>
           </TableRow>
         ))}

@@ -36,7 +36,7 @@ class Auth {
   handleAuthentication() {
     return new Promise((resolve, reject) => {
       this.auth0.parseHash((err, authResult) => {
-        if (err) return reject(err);
+        if (err) return reject(err)
         if (!authResult || !authResult.idToken) {
           return reject(err);
         }
@@ -68,7 +68,7 @@ class Auth {
             return reject(err);
           }
           this.setSession(authResult);
-          resolve();
+          resolve(authResult);
         });
       });
     }
@@ -76,7 +76,6 @@ class Auth {
 
   isAuthenticated() {
     return JSON.parse(localStorage.getItem(this.authFlag));
-    //return new Date().getTime() < this.expiresAt;
   }
 }
 

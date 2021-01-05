@@ -6,6 +6,8 @@ import DialogContent from '@material-ui/core/DialogContent';
 import DialogContentText from '@material-ui/core/DialogContentText';
 import DialogTitle from '@material-ui/core/DialogTitle';
 
+import Tooltip from '@material-ui/core/Tooltip';
+
 import IconButton from '@material-ui/core/IconButton';
 import RestoreFromTrashIcon from '@material-ui/icons/RestoreFromTrash';
 
@@ -62,7 +64,7 @@ const RecipeRestoreConfirmationDialog = ({recipe}) => {
 
   return (
     <>
-    <IconButton onClick={handleClickOpen} size='small' style={{marginRight:'8px'}}><RestoreFromTrashIcon fontSize='small'/></IconButton>
+    <Tooltip title='Restore Recipe'><IconButton onClick={handleClickOpen} size='small' style={{marginRight:'8px'}}><RestoreFromTrashIcon fontSize='small'/></IconButton></Tooltip>
     <Dialog
       open={open}
       onClose={handleClickClose}

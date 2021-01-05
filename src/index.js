@@ -10,7 +10,7 @@ import {BrowserRouter as Router} from 'react-router-dom';
 import CssBaseline from '@material-ui/core/CssBaseline';
 //import store from './store/configureStore';
 import { cache } from './cache';
-import { ApolloClient, ApolloProvider, ApolloLink } from '@apollo/client';
+import { ApolloClient, ApolloProvider } from '@apollo/client';
 import { setContext } from '@apollo/client/link/context';
 
 import { createUploadLink } from 'apollo-upload-client';
