@@ -156,7 +156,7 @@ const Recipe = () => {
   const {id, name, description, ingredients, steps, tags} = data.recipe;
 
   const renderSteps = (steps) => {
-    var count = 1;
+    var count = 0;
     return steps?.map((step, index) => {
       if (step.type === 'TEXT'){
         count += 1;
