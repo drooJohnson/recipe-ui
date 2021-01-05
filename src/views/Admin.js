@@ -1,9 +1,7 @@
-import React, {useState, useEffect} from 'react';
-import { gql, useQuery } from '@apollo/client'
+import React, {useState} from 'react';
+import { gql, useQuery, useMutation } from '@apollo/client'
 import { useHistory } from 'react-router-dom'
-import Grid from '@material-ui/core/Grid'
 import IconButton from '@material-ui/core/IconButton'
-import ButtonGroup from '@material-ui/core/ButtonGroup'
 import RecipeDeleteConfirmationDialog from './components/RecipeDeleteConfirmationDialog';
 import RecipeRestoreConfirmationDialog from './components/RecipeRestoreConfirmationDialog';
 import { format, fromUnixTime, isValid } from 'date-fns';
@@ -22,96 +20,84 @@ import Tooltip from '@material-ui/core/Tooltip';
 import Typography from '@material-ui/core/Typography';
 
 import EditIcon from '@material-ui/icons/Edit';
-import DeleteIcon from '@material-ui/icons/Delete';
 import VisibilityIcon from '@material-ui/icons/Visibility';
 
-import FormGroup from '@material-ui/core/FormGroup';
 import FormControlLabel from '@material-ui/core/FormControlLabel';
 import Checkbox from '@material-ui/core/Checkbox';
-import CheckBoxOutlineBlankIcon from '@material-ui/icons/CheckBoxOutlineBlank';
-import CheckBoxIcon from '@material-ui/icons/CheckBox';
+import PublishIcon from '@material-ui/icons/Publish';
+import GetAppIcon from '@material-ui/icons/GetApp';
 
 const RECIPES = gql`
-  query Recipes(
-    $pageSize: Int,
-    $page: Int,
-    $after: String,
-    $orderBy: RecipeOrderBy,
-    $order: Order,
-    $includeDeleted: Boolean,
-  ){
-    adminRecipes(
-      pageSize: $pageSize,
-      page: $page,
-      after: $after,
-      orderBy: $orderBy,
-      order: $order,
-      includeDeleted: $includeDeleted
-    ){
-      cursor,
-      hasMore,
-      pageCursors {
-        first {
-          page
-          cursor
-          isCurrent
-        }
-        last {
-          page
-          cursor
-          isCurrent
-        }
-        next {
-          page
-          cursor
-          isCurrent
-        }
-        previous {
-          page
-          cursor
-          isCurrent
-        }
-        around {
-          page
-          cursor
-          isCurrent
-        }
-      },
-      totalItems,
-      recipes {
+  query Recipes {
+    adminRecipes {
+      id,
+      name,
+      description,
+      imageUrl,
+      imageColor,
+      imageAltText,
+      ingredients,
+      steps {
         id,
-        name,
-        description,
-        imageUrl,
-        imageColor,
-        imageAltText,
-        ingredients,
-        steps {
-          id,
-          displayOrder,
-          text
-        },
-        tags {
-          id,
-          slug,
-          text,
-          kind
-        },
-        status,
-        createdAt,
-        updatedAt,
-        deletedAt,
-      }
+        displayOrder,
+        text
+      },
+      tags {
+        id,
+        slug,
+        text,
+        kind
+      },
+      status,
+      createdAt,
+      updatedAt,
+      deletedAt
+    }
+  }
+`
+
+const UPDATE_RECIPE_STATUS = gql`
+  mutation UpdateRecipeStatus (
+    $recipeId: ID!,
+    $status: RecipeStatus!
+  ) {
+    updateRecipeStatus (
+      recipeId: $recipeId,
+      status: $status
+    ) {
+      id,
+      name,
+      description,
+      imageUrl,
+      imageColor,
+      imageAltText,
+      ingredients,
+      steps {
+        id,
+        displayOrder,
+        text
+      },
+      tags {
+        id,
+        slug,
+        text,
+        kind
+      },
+      status,
+      createdAt,
+      updatedAt,
+      deletedAt
     }
   }
 `
 
 const columns = [
-  {name: 'Name', key: 'name', sortable: true},
-  {name: 'Created', key: 'createdAt', sortable: true},
-  {name: 'Updated', key: 'updatedAt', sortable: true},
-  {name: 'Deleted', key: 'deletedAt', sortable: true},
-  {name: 'Status', key: 'status', sortable: true}
+  {name: 'Name', key: 'name', sortable: true, align:'left'},
+  {name: 'Created', key: 'createdAt', sortable: true, align:'left'},
+  {name: 'Updated', key: 'updatedAt', sortable: true, align:'left'},
+  {name: 'Deleted', key: 'deletedAt', sortable: true, align:'left'},
+  {name: 'Status', key: 'status', sortable: true, align:'left'},
+  {name: 'Actions', key: 'actions', sortable: false, align:'right'}
 ]
 
 const formatDate = (unixMillisecondsString) => {
@@ -126,83 +112,64 @@ const Admin = () => {
   const [page, setPage] = useState(0);
   const [orderBy, setOrderBy] = useState('updatedAt');
   const [order, setOrder] = useState('desc');
-  const [includeDeleted, setIncludeDeleted] = useState(true);
+  const [includeDeleted, setIncludeDeleted] = useState(false);
 
-  const {loading, data, error, refetch} = useQuery(RECIPES, {variables: {
-    pageSize: rowsPerPage,
-    page: 0,
-    orderBy: orderBy,
-    order: order.toUpperCase(),
-    includeDeleted: includeDeleted
-  }});
+  const {loading, data, error} = useQuery(RECIPES);
+  const [updateRecipeStatus, {loading: updateLoading, data: updateData, error: updateError}] = useMutation(UPDATE_RECIPE_STATUS);
 
-  const getCursorForPage = (pageNumber) => {
-    let {first, previous, around, next, last} = data.adminRecipes.pageCursors;
-    let cursors = [first, previous, ...around, next, last].filter(entry => entry != null);
-    console.log(cursors);
-    let cursorForPage = cursors.filter(cursor => cursor.page === pageNumber)[0];
-    console.log(cursorForPage);
-    return cursorForPage.cursor;
+
+  const descendingComparator = (a, b, orderBy) => {
+    if (b[orderBy] < a[orderBy]) {
+      return -1;
+    }
+    if (b[orderBy] > a[orderBy]) {
+      return 1;
+    }
+    return 0;
+  }
+
+  const getComparator = (order, orderBy) => {
+    return order === 'desc'
+    ? (a, b) => descendingComparator(a, b, orderBy)
+    : (a, b) => -descendingComparator(a, b, orderBy);
+  }
+
+  const stableSort = (array, comparator) => {
+    const stabilizedThis = array.map((el, index) => [el, index]);
+    stabilizedThis.sort((a, b) => {
+      const order = comparator(a[0], b[0]);
+      if (order !== 0) return order;
+      return a[1] - b[1];
+    });
+    return stabilizedThis.map((el) => el[0]);
   }
 
   const handleSort = (columnKey) => {
-    let newOrder;
-    if(orderBy === columnKey){
-      newOrder = (order === 'asc') ? 'desc' : 'asc'
-    } else {
-      newOrder = 'asc'
-    }
-    setPage(0);
-    setOrder(newOrder);
+    const isAsc = orderBy === columnKey && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
     setOrderBy(columnKey);
-    refetch({
-      pageSize: rowsPerPage,
-      page: 0,
-      orderBy: columnKey,
-      includeDeleted: includeDeleted,
-      order: newOrder.toUpperCase()
-    })
   }
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
-    const cursor = getCursorForPage(newPage+1);
-    refetch({
-      pageSize: rowsPerPage,
-      page: newPage+1,
-      after: cursor,
-      orderBy: orderBy,
-      includeDeleted: includeDeleted,
-      order: order.toUpperCase()
-    })
   }
 
   const handleChangeRowsPerPage = (event) => {
     setPage(0);
     setRowsPerPage(+event.target.value);
-    refetch({
-      pageSize: +event.target.value,
-      page: 0,
-      orderBy: orderBy,
-      includeDeleted: event.target.checked,
-      order: order.toUpperCase()
-    })
   }
 
   const handleChangeIncludeDeleted = (event) => {
     setIncludeDeleted(event.target.checked);
     setPage(0);
-    refetch({
-      pageSize: rowsPerPage,
-      page: 0,
-      orderBy: orderBy,
-      includeDeleted: event.target.checked,
-      order: order.toUpperCase()
-    })
   }
 
   if (loading) return "Loading..."
   if (error) return `${error}`
+
+  const filteredRows = includeDeleted ? data.adminRecipes : data.adminRecipes.filter(row => row.deletedAt == null);
+  const deletedRows = data.adminRecipes.filter(row => row.deletedAt != null);
+  const emptyRows = rowsPerPage - Math.min(rowsPerPage, filteredRows.length - page * rowsPerPage);
 
   return(
     <>
@@ -215,7 +182,7 @@ const Admin = () => {
           <FormControlLabel
           style={{marginRight:8}}
           control={<Checkbox checked={includeDeleted} onChange={handleChangeIncludeDeleted} name="includeDeleted" />}
-          label="Include Deleted"
+          label={`Include Deleted (${deletedRows?.length ?? `0`})`}
           />
       </Tooltip>
     </Toolbar>
@@ -224,26 +191,26 @@ const Admin = () => {
       <TableHead>
         <TableRow>
           {columns.map(column => (
-            <TableCell key={column.key}>
-              <TableSortLabel
-              active={orderBy === column.key}
-              direction={orderBy === column.key ? order : 'asc'}
-              onClick={()=>{handleSort(column.key);console.log(column)}}
-              >
-                {column.name}
-              </TableSortLabel>
+            <TableCell key={column.key} align={column.align}>
+              {column.sortable ?
+                <TableSortLabel
+                  active={orderBy === column.key}
+                  direction={orderBy === column.key ? order : 'asc'}
+                  onClick={()=>{handleSort(column.key)}}
+                >
+                  {column.name}
+                </TableSortLabel>
+                :
+                <>{column.name}</>
+              }
             </TableCell>
           ))}
-          <TableCell
-            key={'actions'}
-            align='right'
-          >
-            Actions
-          </TableCell>
         </TableRow>
       </TableHead>
       <TableBody>
-        {data.adminRecipes.recipes.map((row) => (
+        {stableSort(filteredRows, getComparator(order, orderBy))
+          .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+          .map((row, index) => (
           <TableRow key={row.id}>
             <TableCell>{row.name}</TableCell>
             <TableCell>{formatDate(row.createdAt) ?? '—'}</TableCell>
@@ -251,12 +218,37 @@ const Admin = () => {
             <TableCell>{formatDate(row.deletedAt) ?? '—'}</TableCell>
             <TableCell>{row.status}</TableCell>
             <TableCell align='right'>
-              <IconButton size='small' style={{marginRight:'8px'}} onClick={()=>{history.push(`/recipe/edit/${row.id}`)}}><EditIcon fontSize='small'/></IconButton>
+              {
+                (row.status !== 'PUBLISHED')
+                ?
+                <Tooltip title='Publish'>
+                  <IconButton
+                    size='small'
+                    style={{marginRight:'8px'}}
+                    onClick={()=>{updateRecipeStatus({variables:{recipeId:row.id, status:'PUBLISHED'}})}}
+                  >
+                    <PublishIcon fontSize='small'/>
+                  </IconButton>
+                </Tooltip>
+                :
+                <Tooltip title='Unpublish'>
+                  <IconButton
+                    size='small'
+                    style={{marginRight:'8px'}}
+                    onClick={()=>{updateRecipeStatus({variables:{recipeId:row.id, status:'DRAFT'}})}}
+                  >
+                    <GetAppIcon fontSize='small'/>
+                  </IconButton>
+                </Tooltip>
+              }
+              <Tooltip title="Edit"><IconButton size='small' style={{marginRight:'8px'}} onClick={()=>{history.push(`/recipe/edit/${row.id}`)}}><EditIcon fontSize='small'/></IconButton></Tooltip>
               {row.deletedAt ? <RecipeRestoreConfirmationDialog recipe={row}/> : <RecipeDeleteConfirmationDialog recipe={row}/> }
-              <IconButton size='small' onClick={()=>{history.push(`/recipe/${row.id}`)}}><VisibilityIcon fontSize='small'/></IconButton>
+              <Tooltip title="View"><IconButton size='small' onClick={()=>{history.push(`/recipe/${row.id}`)}}><VisibilityIcon fontSize='small'/></IconButton></Tooltip>
             </TableCell>
           </TableRow>
-          )
+        ))}
+        {emptyRows > 0 && (
+          <TableRow style={{ height: 53 * emptyRows}}><TableCell colSpan={columns.length + 1}/></TableRow>
         )}
       </TableBody>
       </Table>
@@ -264,7 +256,7 @@ const Admin = () => {
     <TablePagination
       rowsPerPageOptions={[10,25,50]}
       component='div'
-      count={data.adminRecipes.totalItems}
+      count={filteredRows.length}
       rowsPerPage={rowsPerPage}
       page={page}
       onChangePage={handleChangePage}

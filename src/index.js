@@ -20,9 +20,8 @@ import 'react-toastify/dist/ReactToastify.css';
 
 import Theme from './theme';
 
-const authLink = setContext((_, {headers}) => {
-  const token = auth.getIdToken();
-
+const authLink = setContext( async (_, {headers}) => {
+  let token = await auth.getIdToken();
   return {
     headers: {
       ...headers,

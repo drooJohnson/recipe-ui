@@ -75,6 +75,8 @@ const Nav = () => {
     history.replace('/');
   }
 
+  const isAuthenticated = auth.isAuthenticated();
+
   return(
     <>
       <Hidden mdUp>
@@ -96,15 +98,13 @@ const Nav = () => {
             <NavItem to="/about" activeStyle={activeStyle}>
               About
             </NavItem>
-            { (auth.isAuthenticated()) && (
-              <NavItem to="/drafts" activeStyle={activeStyle}>
-                Drafts
-              </NavItem>
-            ) }
-            { (auth.isAuthenticated()) && (
+            { (isAuthenticated) && (
+              <>
+              <NavItem to="/admin" activeStyle={activeStyle}>Admin</NavItem>
               <span style={{color:'rgba(0,0,0,0.72)',fontSize:'1.2em',padding:'0.5em',paddingLeft:'1em'}} onClick={()=> logout()}>
                 Logout
               </span>
+              </>
             ) }
           </div>
         </NavContainer>
