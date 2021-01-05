@@ -54,7 +54,6 @@ const MobileNav = () => {
         <List>
           <ListItem button component="a" href="/recipes" key="recipes"><ListItemText primary="Recipes"/></ListItem>
           <ListItem button component="a" href="/tags" key="tags"><ListItemText primary="Tags"/></ListItem>
-          <ListItem button component="a" href="/about" key="about"><ListItemText primary="About"/></ListItem>
         </List>
       </SwipeableDrawer>
       <AppBar position='static' style={{color:'white',backgroundColor:'rgba(0,0,0,0.87)'}} color="inherit">
@@ -94,9 +93,6 @@ const Nav = () => {
             </NavItem>
             <NavItem to="/tags" activeStyle={activeStyle}>
               Tags
-            </NavItem>
-            <NavItem to="/about" activeStyle={activeStyle}>
-              About
             </NavItem>
             { (isAuthenticated) && (
               <>
