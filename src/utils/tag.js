@@ -14,6 +14,7 @@ let schema = yup.object().shape({
     'SWEETS',
     'DIET',
     'INGREDIENT',
+    'COMPONENT',
     'DEBUG'
   ]).required()
 })
