@@ -68,6 +68,14 @@ const ImageContent = styled.img`
   object-position:center center;
 `
 
+export const CroppedImage = ({imageUrl, ...props}) => {
+  return (
+    <ImageWrapper>
+      <ImageContent src={imageUrl} {...props}/>
+    </ImageWrapper>
+  )
+}
+
 const FilteredImage = ({color, side, gradientStart, gradientEnd, imageUrl}) => {
   return(
     <ImageWrapper>

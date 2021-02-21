@@ -39,6 +39,8 @@ const RECIPE = gql`
         text,
         kind
       }
+      createdAt
+      updatedAt
     }
   }
 `
@@ -170,7 +172,7 @@ const Recipe = () => {
 
   return(
     <>
-      <RecipeHeader name={name} date={null} recipeId={id} imageUrl={data.recipe.imageUrl} imageColor={data.recipe.imageColor} imageAltText={data.recipe.imageAltText}>
+      <RecipeHeader name={name} createdAt={data.recipe.createdAt} updatedAt={data.recipe.updatedAt} recipeId={id} imageUrl={data.recipe.imageUrl} imageColor={data.recipe.imageColor} imageAltText={data.recipe.imageAltText}>
         <div>
           {tags && <ChipTagList tags={tags} fadeOverflow={false}/>}
         </div>
@@ -191,7 +193,7 @@ const Recipe = () => {
           <Ingredients ingredients={ingredients}/>
         </IngredientsSection>
         <Steps>
-          <Hidden mdUp><DashedSubhead><Typography variant='h6'>Directions</Typography></DashedSubhead></Hidden>
+          <DashedSubhead><Typography variant='h6'>Directions</Typography></DashedSubhead>
           {renderSteps(steps)}
         </Steps>
       </GridContainer>

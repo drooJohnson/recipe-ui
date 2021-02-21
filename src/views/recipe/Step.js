@@ -2,7 +2,7 @@ import React from 'react';
 import Typography from '@material-ui/core/Typography'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
-import FilteredImage from '../components/FilteredImage'
+import {CroppedImage} from '../components/FilteredImage'
 import {device} from '../../utils/device'
 
 import ReactMarkdown from 'react-markdown'
@@ -154,7 +154,7 @@ const StepImage = ({step, stepNumber}) => {
   return (
     <StepImageGrid style={{marginBottom:36}}>
       <StepImg side={step.side}>
-        <FilteredImage imageUrl={step.imageUrl} side={'RIGHT'} color={step.color} gradientStart='0%' gradientEnd='50%'/>
+        <CroppedImage imageUrl={step.imageUrl}/>
       </StepImg>
       {(step.title || step.text) &&
       <StepImageCaption side={step.side}>
