@@ -4,22 +4,28 @@ import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
 const theme = createMuiTheme({
   typography: {
     h1:{
-      fontSize:"42px"
+      fontSize:"42px",
+      fontFamily:"'Space Grotesk', sans-serif",
     },
     h2:{
-      fontSize:"36px"
+      fontSize:"36px",
+      fontFamily:"'Space Grotesk', sans-serif",
     },
     h3:{
-      fontSize:"32px"
+      fontSize:"32px",
+      fontFamily:"'Space Grotesk', sans-serif",
     },
     h4:{
-      fontSize:"28px"
+      fontSize:"28px",
+      fontFamily:"'Space Grotesk', sans-serif",
     },
     h5:{
-      fontSize:"24px"
+      fontSize:"24px",
+      fontFamily:"'Space Grotesk', sans-serif",
     },
     h6:{
-      fontSize:"20px"
+      fontSize:"20px",
+      fontFamily:"'Space Grotesk', sans-serif",
     },
     subtitle1:{
 

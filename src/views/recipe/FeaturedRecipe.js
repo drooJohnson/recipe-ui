@@ -3,14 +3,16 @@ import Typography from '@material-ui/core/Typography'
 import styled from 'styled-components'
 import PropTypes from 'prop-types'
 import { useHistory } from 'react-router-dom';
-import FilteredImage from '../components/FilteredImage'
+import {CroppedImage} from '../components/FilteredImage'
 import {device} from '../../utils/device'
 import useMediaQuery from '@material-ui/core/useMediaQuery';
 import Paper from '@material-ui/core/Paper';
+import {format, fromUnixTime} from 'date-fns';
+import TextTruncate from "react-text-truncate";
 
 const ImagePosition = styled.div`
-  grid-column-start:${props => props.side === 'LEFT' ? 1 : 4};
-  grid-column-end:${props => props.side === 'LEFT' ? 10 : 13};
+  grid-column-start:1;
+  grid-column-end:8;
   grid-row-start:1;
   grid-row-end:2;
   img{
@@ -22,25 +24,29 @@ const ImagePosition = styled.div`
   transition:all 300ms ease-in-out;
   @media ${device.mobile} {
     grid-column-start:1;
-    grid-column-end:13;
+    grid-column-end:6;
     opacity:0.85;
   }
 `
 
 const Text = styled.div`
-  margin-top:48px;
-  grid-column-start:${props => props.side === 'LEFT' ? 8 : 1};
-  grid-column-end:${props => props.side === 'LEFT' ? 13 : 6};
-  grid-row-start:1;
-  grid-row-end:2;
-  transform: translate(0, 0);
-  transition:all 300ms ease-in-out;
-  mix-blend-mode:normal;
-  @media ${device.mobile} {
-    grid-column-start:2;
-    grid-column-end:9;
+  h1 {
+    font-family: "Space Grotesk", sans-serif;
   }
-`
+  margin-top: 48px;
+  grid-column-start: 8;
+  grid-column-end: 13;
+  grid-row-start: 1;
+  grid-row-end: 2;
+  transform: translate(0, 0);
+  transition: all 300ms ease-in-out;
+  mix-blend-mode: normal;
+  @media ${device.mobile} {
+    margin-top:0;
+    grid-column-start: 6;
+    grid-column-end: 16;
+  }
+`;
 
 const Wrapper = styled.div`
   display: grid;
@@ -61,23 +67,68 @@ const Wrapper = styled.div`
   }
 `
 
+const DateStamps = ({ createdAt, updatedAt }) => {
+  const displayUpdatedAt = updatedAt != null && createdAt != updatedAt;
+  if (createdAt == null && updatedAt == null){
+    return null;
+  }
+  return (
+    <>
+      <Typography variant="overline" color="primary">
+        PUBLISHED: {format(fromUnixTime(createdAt * 0.001), "PPP")}
+      </Typography>
+      {displayUpdatedAt && (
+        <Typography variant="overline" color="primary">
+          LAST UPDATED: {format(fromUnixTime(updatedAt * 0.001), "PPP")}
+        </Typography>
+      )}
+    </>
+  );
+};
+
+
 const FeaturedRecipe = ({side, color, recipe}) => {
   const mobile = useMediaQuery(`${device.mobile}`);
   const history = useHistory();
   return (
     <>
-        <Wrapper onClick={()=>{history.push(`/recipe/${recipe.id}`)}}>
+      <Wrapper
+        onClick={() => {
+          history.push(`/recipe/${recipe.id}`);
+        }}
+      >
+        <ImagePosition>
+          <CroppedImage
+            imageUrl={recipe.imageUrl ?? `/images/pumpkin_tart.jpg`}
+          />
+        </ImagePosition>
+        <Text>
+          <DateStamps
+            createdAt={recipe.createdAt}
+            updatedAt={recipe.updatedAt}
+          />
+          <Typography
+            gutterBottom
+            variant="h1"
+            style={{
+              fontWeight: "bold",
+              lineHeight: "56px",
+              color: "rgba(0,0,0,.8)",
+            }}
+          >
+            {recipe.name}
+          </Typography>
 
-          <ImagePosition side={mobile ? 'RIGHT' : side}>
-            <FilteredImage color={color || recipe.imageColor} side={mobile ? 'RIGHT' : side} imageUrl={recipe.imageUrl ?? `/images/pumpkin_tart.jpg`} gradientStart={mobile ? "50%" : null} gradientEnd={mobile ? "200%" : null}/>
-          </ImagePosition>
-          <Text side={mobile ? 'RIGHT' : side}>
-              <Typography variant='overline' color='primary'>RECIPE</Typography>
-              <Typography gutterBottom variant='h1' style={{fontWeight:'bold',lineHeight:'56px',color:'rgba(0,0,0,.8)'}}>{recipe.name}</Typography>
-           </Text>
-        </Wrapper>
+          <TextTruncate
+            line={mobile ? 3 : 6}
+            element="span"
+            truncateText="..."
+            text={recipe.description}
+          />
+        </Text>
+      </Wrapper>
     </>
-  )
+  );
 }
 
 FeaturedRecipe.propTypes = {
