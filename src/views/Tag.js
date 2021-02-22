@@ -4,6 +4,7 @@ import { useParams, Link } from 'react-router-dom'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
+import auth from "../Auth";
 import RecipeCard from './components/RecipeCard'
 
 const TAG = gql`
@@ -37,21 +38,43 @@ const Tag = () => {
   if (loading) return "Loading..."
   if (error) return `${error}`
 
-  return(
+  return (
     <Grid container spacing={3}>
-      <Grid item xs={12} style={{display:'flex',justifyContent:'space-between',alignItems:'baseline'}}>
+      <Grid
+        item
+        xs={12}
+        style={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "baseline",
+        }}
+      >
         <Typography variant="h4">All Recipes tagged {data.tag.text}</Typography>
-        <Link to={`/tag/edit/${tagId}`}><Button>EDIT</Button></Link>
+        {auth.isAuthenticated() && (
+          <Link to={`/tag/edit/${tagId}`}>
+            <Button>EDIT</Button>
+          </Link>
+        )}
       </Grid>
-      {data.tag.recipes.map(recipe => {
+      {data.tag.recipes.map((recipe) => {
         return (
-          <Grid item xs={12} sm={6} md={4} style={{display:'flex',justifyContent:'stretch',alignItems:'stretch'}}>
-            <RecipeCard recipe={recipe}/>
-        </Grid>
-        )
+          <Grid
+            item
+            xs={12}
+            sm={6}
+            md={4}
+            style={{
+              display: "flex",
+              justifyContent: "stretch",
+              alignItems: "stretch",
+            }}
+          >
+            <RecipeCard recipe={recipe} />
+          </Grid>
+        );
       })}
     </Grid>
-  )
+  );
 }
 
 export default Tag;
