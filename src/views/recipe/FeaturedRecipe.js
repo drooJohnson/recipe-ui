@@ -69,20 +69,25 @@ const Wrapper = styled.div`
 
 const DateStamps = ({ createdAt, updatedAt }) => {
   const displayUpdatedAt = updatedAt != null && createdAt != updatedAt;
-  if (createdAt == null && updatedAt == null){
-    return null;
-  }
   return (
-    <>
-      <Typography variant="overline" color="primary">
+    <div style={{ marginBottom: 8 }}>
+      <Typography
+        variant="overline"
+        color="primary"
+        style={{ display: "block", lineHeight: 1.5 }}
+      >
         PUBLISHED: {format(fromUnixTime(createdAt * 0.001), "PPP")}
       </Typography>
       {displayUpdatedAt && (
-        <Typography variant="overline" color="primary">
+        <Typography
+          variant="overline"
+          color="primary"
+          style={{ display: "block", lineHeight: 1.5 }}
+        >
           LAST UPDATED: {format(fromUnixTime(updatedAt * 0.001), "PPP")}
         </Typography>
       )}
-    </>
+    </div>
   );
 };
 
