@@ -48,31 +48,80 @@ const DateStamps = ({createdAt, updatedAt}) => {
 
 const RecipeHeader = ({name, createdAt, updatedAt, children, imageUrl, imageColor, imageAltText, recipeId}) => {
   return (
-    <div id="container" style={{display:'grid',gridTemplateColumns:'repeat(12, 1fr)',columnGap:'24px',alignItems:'center'}}>
+    <div
+      id="container"
+      style={{
+        display: "grid",
+        gridTemplateColumns: "repeat(12, 1fr)",
+        columnGap: "24px",
+        alignItems: "center",
+      }}
+    >
       <Hidden smDown>
-        {auth.isAuthenticated() && <Link to={`/recipe/edit/${recipeId}`}><Button variant='contained'>Edit</Button></Link>}
+        {auth.isAuthenticated() && (
+          <Link to={`/recipe/edit/${recipeId}`}>
+            <Button variant="contained">Edit</Button>
+          </Link>
+        )}
         <HeaderImage>
-          <CroppedImage imageUrl={imageUrl} alt={imageAltText}/>
+          <CroppedImage imageUrl={imageUrl} alt={imageAltText} />
         </HeaderImage>
-        <div id="left" style={{gridColumnStart:8,gridColumnEnd:16,gridRowStart:1,gridRowEnd:2, zIndex:10}}>
-          <DateStamps createdAt={createdAt} updatedAt={updatedAt}/>
-          <Typography variant='h1' style={{fontWeight:'bold',lineHeight:'56px'}}>{name}</Typography>
+        <div
+          id="left"
+          style={{
+            gridColumnStart: 8,
+            gridColumnEnd: 16,
+            gridRowStart: 1,
+            gridRowEnd: 2,
+            zIndex: 10,
+          }}
+        >
+          <DateStamps createdAt={createdAt} updatedAt={updatedAt} />
+          <Typography
+            variant="h1"
+            style={{ fontWeight: "bold", lineHeight: "56px" }}
+          >
+            {name}
+          </Typography>
           {children}
         </div>
       </Hidden>
       <Hidden mdUp>
         <MobileHeaderImage>
-          <CroppedImage imageUrl={imageUrl} alt={imageAltText}/>
+          <CroppedImage imageUrl={imageUrl} alt={imageAltText} />
+          <Link to={`/recipes`}>
+            <Button style={{position:'absolute',left:'20px',top:'20px'}} variant="contained">Back to Recipes</Button>
+          </Link>
         </MobileHeaderImage>
-        <div id="left" style={{gridColumnStart:1,gridColumnEnd:13,gridRowStart:2,gridRowEnd:3, zIndex:10}}>
-          <div style={{display:'flex',justifyContent:'space-between'}}><DateStamps createdAt={createdAt} updatedAt={updatedAt}/>
-            {auth.isAuthenticated() && <Link to={`/recipe/edit/${recipeId}`}><Button variant='contained'>Edit</Button></Link>}</div>
-          <Typography variant='h1' style={{fontWeight:'bold',lineHeight:'56px'}}>{name}</Typography>
+        <div
+          id="left"
+          style={{
+            gridColumnStart: 1,
+            gridColumnEnd: 13,
+            gridRowStart: 2,
+            gridRowEnd: 3,
+            zIndex: 10,
+          }}
+        >
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            <DateStamps createdAt={createdAt} updatedAt={updatedAt} />
+            {auth.isAuthenticated() && (
+              <Link to={`/recipe/edit/${recipeId}`}>
+                <Button variant="contained">Edit</Button>
+              </Link>
+            )}
+          </div>
+          <Typography
+            variant="h1"
+            style={{ fontWeight: "bold", lineHeight: "56px" }}
+          >
+            {name}
+          </Typography>
           {children}
         </div>
       </Hidden>
     </div>
-  )
+  );
 }
 
 RecipeHeader.propTypes = {

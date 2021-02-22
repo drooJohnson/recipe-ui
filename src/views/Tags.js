@@ -4,9 +4,11 @@ import { useHistory } from 'react-router-dom'
 import styled from 'styled-components'
 import * as _ from 'lodash'
 import Typography from '@material-ui/core/Typography';
+import useMediaQuery from "@material-ui/core/useMediaQuery";
 import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
+import { device } from "../utils/device";
 
 const TAGS = gql`
   query Tags{
@@ -19,7 +21,8 @@ const TAGS = gql`
       recipes (first:4) {
         id,
         name,
-        description
+        description,
+        imageUrl,
         tags {
           id,
           slug,
@@ -38,6 +41,7 @@ const TagKind = styled.h2`
 const Tags = () => {
   const { loading, data, error } = useQuery(TAGS);
   const history = useHistory();
+  const mobile = useMediaQuery(`${device.mobile}`);
 
   if (loading) return "Loading..."
   if (error) return `${error}`
@@ -54,12 +58,12 @@ const Tags = () => {
           return (
             <>
               <TagKind key={key}>{key.toLowerCase()}</TagKind>
-              <GridList cols={3}>
+              <GridList cols={mobile ? 1 : 3}>
                 {value.map(tag => {
                   if (tag.recipes.length < 1) return;
                   return (
                     <GridListTile style={{cursor:'pointer'}} key={tag.id} onClick={()=>{history.push(`/tag/${tag.id}`)}}>
-                        <img src={tag.imageUrl}/>
+                        <img src={tag.imageUrl ?? tag.recipes[0].imageUrl}/>
                         <GridListTileBar title={tag.text}>
                           {tag.text}
                         </GridListTileBar>

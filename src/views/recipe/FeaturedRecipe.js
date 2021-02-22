@@ -25,7 +25,6 @@ const ImagePosition = styled.div`
   @media ${device.mobile} {
     grid-column-start:1;
     grid-column-end:6;
-    opacity:0.85;
   }
 `
 
@@ -116,9 +115,7 @@ const FeaturedRecipe = ({side, color, recipe}) => {
             gutterBottom
             variant="h1"
             style={{
-              fontWeight: "bold",
-              lineHeight: "56px",
-              color: "rgba(0,0,0,.8)",
+              fontWeight: "bold"
             }}
           >
             {recipe.name}

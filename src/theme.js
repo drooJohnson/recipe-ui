@@ -1,7 +1,7 @@
 import React from 'react';
-import { createMuiTheme, ThemeProvider } from '@material-ui/core/styles';
+import { createMuiTheme, ThemeProvider, responsiveFontSizes } from '@material-ui/core/styles';
 
-const theme = createMuiTheme({
+let theme = createMuiTheme({
   typography: {
     h1:{
       fontSize:"42px",
@@ -50,6 +50,8 @@ const theme = createMuiTheme({
     }
   }
 })
+
+theme = responsiveFontSizes(theme);
 
 const Theme = ({children}) => {
   return (

@@ -4,6 +4,8 @@ import ReactMarkdown from 'react-markdown'
 import styled from 'styled-components'
 
 const IngredientsStyles = styled(ReactMarkdown)`
+  font-size:1rem;
+  line-height:1.5;
   font-family:inherit;
   ul,ol,dl{
     list-style:none;
