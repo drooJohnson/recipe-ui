@@ -24,26 +24,28 @@ import Select from '@material-ui/core/Select';
 const recipeReducer = (state, action) => {
   //console.log(`recipeReducer called with action.type of ${action.type}`)
   switch (action.type) {
-    case 'updateDescription':
-      return {...state, description: action.payload}
-    case 'updateStatus':
-      return {...state, status: action.payload}
-    case 'updateName':
-      return {...state, name: action.payload}
-    case 'updateImageUrl':
-      return {...state, imageUrl: action.payload}
-    case 'updateImageAltText':
-      return {...state, imageAltText: action.payload}
-    case 'updateImageColor':
-      return {...state, imageColor: action.payload}
-    case 'updateTags':
-      return {...state, tags: action.payload}
-    case 'updateSteps':
-      return {...state, steps: action.payload}
-    case 'updateIngredients':
-      return {...state, ingredients: action.payload}
-    case 'updateRecipe':
-      return {...state, ...action.payload}
+    case "updateDescription":
+      return { ...state, description: action.payload };
+    case "updateStatus":
+      return { ...state, status: action.payload };
+    case "updateName":
+      return { ...state, name: action.payload };
+    case "updateSlug":
+      return { ...state, slug: action.payload };
+    case "updateImageUrl":
+      return { ...state, imageUrl: action.payload };
+    case "updateImageAltText":
+      return { ...state, imageAltText: action.payload };
+    case "updateImageColor":
+      return { ...state, imageColor: action.payload };
+    case "updateTags":
+      return { ...state, tags: action.payload };
+    case "updateSteps":
+      return { ...state, steps: action.payload };
+    case "updateIngredients":
+      return { ...state, ingredients: action.payload };
+    case "updateRecipe":
+      return { ...state, ...action.payload };
     default:
       throw new Error();
   }
@@ -59,90 +61,165 @@ const RecipeForm = ({onSubmit, loading, error, recipe}) => {
   const {data:imageColorOptions} = useEnumValues("ImageColor");
 
   return (
-    <form noValidate autoComplete='off'>
-      <Grid container spacing={2} style={{marginBottom:'24px'}}>
+    <form noValidate autoComplete="off">
+      <Grid container spacing={2} style={{ marginBottom: "24px" }}>
         <Grid item xs={12}>
           <TextField
             id="recipe-name"
             label="Name"
-            variant='outlined'
-            value={state.name ?? ''}
+            variant="outlined"
+            value={state.name ?? ""}
             fullWidth
-            onChange={(event) => {dispatch({type: 'updateName', payload:event.target.value})}}
-            />
+            onChange={(event) => {
+              dispatch({ type: "updateName", payload: event.target.value });
+            }}
+          />
+        </Grid>
+        <Grid item xs={12}>
+          <TextField
+            id="recipe-slug"
+            label="Slug"
+            variant="outlined"
+            value={state.name ?? ""}
+            fullWidth
+            pattern="[a-z\-]"
+            onChange={(event) => {
+              dispatch({ type: "updateSlug", payload: event.target.value });
+            }}
+          />
         </Grid>
         <Grid item xs={12} sm={6}>
-          <UploadFile imageUrl={recipe.imageUrl} onSuccess={({url}) => {dispatch({type: 'updateImageUrl', payload:url})}}/>
+          <UploadFile
+            imageUrl={recipe.imageUrl}
+            onSuccess={({ url }) => {
+              dispatch({ type: "updateImageUrl", payload: url });
+            }}
+          />
         </Grid>
 
-        <Grid container item xs={12} sm={6} style={{flexDirection: 'column'}}>
-            <FormControl fullWidth style={{paddingBottom:'16px'}}>
-              <InputLabel>Image Color</InputLabel>
-              <Select
-                defaultValue={recipe.imageColor ?? ''}
-                onChange={(event) => {dispatch({type: 'updateImageColor', payload: event.target.value})}}
-                >
-                {[null, ...imageColorOptions].map((opt) => {
-                  return( <MenuItem value={opt}>{opt ?? '...'}</MenuItem>)
-                })}
-                </Select>
-              </FormControl>
-                <TextField
-                  id="recipe-image-alt-text"
-                  label="Image Alt Text"
-                  variant='outlined'
-                  value={imageAltText ?? ''}
-                  multiline
-                  fullWidth
-                  onChange={(event) => {setImageAltText(event.target.value)}}
-                  onBlur={(event) => {dispatch({type: 'updateImageAltText', payload:event.target.value})}}
-                  />
+        <Grid container item xs={12} sm={6} style={{ flexDirection: "column" }}>
+          <FormControl fullWidth style={{ paddingBottom: "16px" }}>
+            <InputLabel>Image Color</InputLabel>
+            <Select
+              defaultValue={recipe.imageColor ?? ""}
+              onChange={(event) => {
+                dispatch({
+                  type: "updateImageColor",
+                  payload: event.target.value,
+                });
+              }}
+            >
+              {[null, ...imageColorOptions].map((opt) => {
+                return <MenuItem value={opt}>{opt ?? "..."}</MenuItem>;
+              })}
+            </Select>
+          </FormControl>
+          <TextField
+            id="recipe-image-alt-text"
+            label="Image Alt Text"
+            variant="outlined"
+            value={imageAltText ?? ""}
+            multiline
+            fullWidth
+            onChange={(event) => {
+              setImageAltText(event.target.value);
+            }}
+            onBlur={(event) => {
+              dispatch({
+                type: "updateImageAltText",
+                payload: event.target.value,
+              });
+            }}
+          />
         </Grid>
-        <Grid item xs={12}><Typography variant='h5'>Description</Typography></Grid>
+        <Grid item xs={12}>
+          <Typography variant="h5">Description</Typography>
+        </Grid>
         <Grid item xs={12}>
           <TextField
             id="recipe-description"
             label="Description"
-            variant='outlined'
-            value={description ?? ''}
+            variant="outlined"
+            value={description ?? ""}
             multiline
             fullWidth
-            onChange={(event) => {setDescription(event.target.value)}}
-            onBlur={(event) => {dispatch({type: 'updateDescription', payload:event.target.value})}}
-            />
+            onChange={(event) => {
+              setDescription(event.target.value);
+            }}
+            onBlur={(event) => {
+              dispatch({
+                type: "updateDescription",
+                payload: event.target.value,
+              });
+            }}
+          />
         </Grid>
-        <Grid item xs={12}><Typography variant='h5'>Ingredients</Typography></Grid>
+        <Grid item xs={12}>
+          <Typography variant="h5">Ingredients</Typography>
+        </Grid>
         <Grid item xs={12}>
           <TextField
-          id="recipe-ingredients"
-          label="Ingredients"
-          variant='outlined'
-          value={ingredients ?? ''}
-          multiline
-          fullWidth
-          onChange={(event) => {setIngredients(event.target.value)}}
-          onBlur={(event) => {dispatch({type: 'updateIngredients', payload:event.target.value})}}
+            id="recipe-ingredients"
+            label="Ingredients"
+            variant="outlined"
+            value={ingredients ?? ""}
+            multiline
+            fullWidth
+            onChange={(event) => {
+              setIngredients(event.target.value);
+            }}
+            onBlur={(event) => {
+              dispatch({
+                type: "updateIngredients",
+                payload: event.target.value,
+              });
+            }}
           />
         </Grid>
       </Grid>
-        <StepsList steps={state.steps} updateSteps={(newSteps) => {dispatch({type: 'updateSteps', payload:newSteps})}}/>
-        <TagInput tags={state.tags} onInsertTag={(newTag)=>{dispatch({type: 'updateTags', payload:[...state.tags, newTag]})}} onChange={(newTags) => {dispatch({type: 'updateTags', payload:newTags})}}/>
-          <FormGroup row>
-       <FormControlLabel
-         control={
-           <Switch
-             checked={(state.status === 'PUBLISHED')}
-             onChange={(event) => {dispatch({type: 'updateStatus', payload:(event.target.checked ? 'PUBLISHED' : 'DRAFT')})}}
-             name="published"
-             color="primary"
-           />
-         }
-         label="Published"
-       />
-     </FormGroup>
-    <Button type='button' onClick={()=>{onSubmit(state)}}>SUBMIT</Button>
+      <StepsList
+        steps={state.steps}
+        updateSteps={(newSteps) => {
+          dispatch({ type: "updateSteps", payload: newSteps });
+        }}
+      />
+      <TagInput
+        tags={state.tags}
+        onInsertTag={(newTag) => {
+          dispatch({ type: "updateTags", payload: [...state.tags, newTag] });
+        }}
+        onChange={(newTags) => {
+          dispatch({ type: "updateTags", payload: newTags });
+        }}
+      />
+      <FormGroup row>
+        <FormControlLabel
+          control={
+            <Switch
+              checked={state.status === "PUBLISHED"}
+              onChange={(event) => {
+                dispatch({
+                  type: "updateStatus",
+                  payload: event.target.checked ? "PUBLISHED" : "DRAFT",
+                });
+              }}
+              name="published"
+              color="primary"
+            />
+          }
+          label="Published"
+        />
+      </FormGroup>
+      <Button
+        type="button"
+        onClick={() => {
+          onSubmit(state);
+        }}
+      >
+        SUBMIT
+      </Button>
     </form>
-  )
+  );
 }
 
 RecipeForm.propTypes = {

@@ -56,6 +56,7 @@ const RECIPES = gql`
           displayOrder,
           text
         },
+        slug,
         tags {
           id,
           slug,

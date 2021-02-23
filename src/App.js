@@ -50,8 +50,8 @@ class App extends Component {
         <Layout>
           <Switch>
             <GuardedRoute path="/recipe/new" component={RecipeCreate}/>
-            <GuardedRoute path="/recipe/edit/:id" component={RecipeEdit}/>
-            <Route path="/recipe/:id">
+            <GuardedRoute path="/recipe/edit/:slug" component={RecipeEdit}/>
+            <Route path="/recipe/:slug">
               <Recipe/>
             </Route>
             <Route path="/recipes">

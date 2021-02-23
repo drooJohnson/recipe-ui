@@ -13,8 +13,8 @@ import {device} from '../utils/device'
 import ReactMarkdown from 'react-markdown'
 
 const RECIPE = gql`
-  query Recipe($id: ID!){
-    recipe(id: $id){
+  query Recipe($slug: String!){
+    recipeBySlug(slug: $slug){
       id,
       name,
       description,
@@ -39,6 +39,7 @@ const RECIPE = gql`
         text,
         kind
       }
+      slug
       createdAt
       updatedAt
     }
@@ -148,14 +149,14 @@ const DashedSubhead = ({children}) => {
 }
 
 const Recipe = () => {
-  let { id: recipeId } = useParams();
-  const { loading, data, error } = useQuery(RECIPE, { variables: { id: recipeId } });
+  let { slug: recipeSlug } = useParams();
+  const { loading, data, error } = useQuery(RECIPE, { variables: { slug: recipeSlug } });
 
   if (loading) return "Loading..."
   if (error) return `${error}`
-  if (data.recipe === null) return <Redirect to="/404"/>
+  if (data.recipeBySlug === null) return <Redirect to="/404"/>
 
-  const {id, name, description, ingredients, steps, tags} = data.recipe;
+  const {id, name, description, ingredients, steps, tags} = data.recipeBySlug;
 
   const renderSteps = (steps) => {
     var count = 0;
@@ -172,7 +173,7 @@ const Recipe = () => {
 
   return(
     <>
-      <RecipeHeader name={name} createdAt={data.recipe.createdAt} updatedAt={data.recipe.updatedAt} recipeId={id} imageUrl={data.recipe.imageUrl} imageColor={data.recipe.imageColor} imageAltText={data.recipe.imageAltText}>
+      <RecipeHeader name={name} createdAt={data.recipeBySlug.createdAt} updatedAt={data.recipeBySlug.updatedAt} recipeId={id} imageUrl={data.recipeBySlug.imageUrl} imageColor={data.recipeBySlug.imageColor} imageAltText={data.recipeBySlug.imageAltText}>
         <div>
           {tags && <ChipTagList tags={tags} fadeOverflow={false}/>}
         </div>
