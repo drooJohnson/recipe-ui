@@ -6,8 +6,8 @@ import Button from '@material-ui/core/Button'
 import { toast } from 'react-toastify';
 
 const RECIPE = gql`
-  query Recipe($id: ID!){
-    recipe(id: $id){
+  query Recipe($slug: String!){
+    recipe(slug: $slug){
       id,
       name,
       description,
@@ -27,6 +27,7 @@ const RECIPE = gql`
         color,
         altText
       },
+      slug,
       tags {
         id,
         slug,
@@ -59,6 +60,7 @@ const UPDATE_RECIPE = gql`
         color,
         altText
       },
+      slug
       tags {
         id,
         slug,
@@ -89,6 +91,7 @@ const DELETE_RECIPE = gql`
         color,
         altText
       },
+      slug
       tags {
         id,
         slug,
@@ -100,11 +103,11 @@ const DELETE_RECIPE = gql`
 `
 
 const RecipeEdit = () => {
-  let { id: recipeId } = useParams();
+  let { slug: recipeSlug } = useParams();
   const history = useHistory();
-  const { loading, data, error } = useQuery(RECIPE, { variables: { id: recipeId } });
+  const { loading, data, error } = useQuery(RECIPE, { variables: { slug: recipeSlug } });
   const [ updateRecipe, { error: updateError, loading: updateLoading }] = useMutation(UPDATE_RECIPE);
-  const [ deleteRecipe, {/* error: deleteError, loading: deleteLoading */}] = useMutation(DELETE_RECIPE, { variables: {recipeId: recipeId} });
+  const [ deleteRecipe, {/* error: deleteError, loading: deleteLoading */}] = useMutation(DELETE_RECIPE);
   // After successful submission, redirect user to the EDIT route, using the
   // id that the CREATE_RECIPE mutation should return.
   const stripProperties = (propertiesArray, obj) => {
@@ -144,7 +147,7 @@ const RecipeEdit = () => {
   }
 
   const deleteRecipeHandler = () => {
-    deleteRecipe()
+    deleteRecipe({ variables: {recipeId: data.recipeBySlug.id} })
     .then((res) => {
       toast.success('Recipe Deleted, returning to recipes...', {onClose: ()=>{history.push(`/recipes`)}})
     })
@@ -159,7 +162,7 @@ const RecipeEdit = () => {
   return(
     <>
       <h1>Edit Recipe</h1>
-      <RecipeForm onSubmit={submitRecipe} recipe={data.recipe} loading={updateLoading} error={updateError}/>
+      <RecipeForm onSubmit={submitRecipe} recipe={data.recipeBySlug} loading={updateLoading} error={updateError}/>
       <Button onClick={()=>{deleteRecipeHandler()}}>Delete Recipe</Button>
     </>
   )

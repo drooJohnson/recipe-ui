@@ -55,6 +55,7 @@ const RECIPES = gql`
           text,
           kind
         },
+        slug,
         createdAt,
         updatedAt
       }

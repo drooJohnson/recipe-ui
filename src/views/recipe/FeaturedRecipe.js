@@ -98,7 +98,7 @@ const FeaturedRecipe = ({side, color, recipe}) => {
     <>
       <Wrapper
         onClick={() => {
-          history.push(`/recipe/${recipe.id}`);
+          history.push(`/recipe/${recipe.slug}`);
         }}
       >
         <ImagePosition>
