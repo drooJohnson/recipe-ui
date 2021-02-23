@@ -18,6 +18,7 @@ const CREATE_RECIPE = gql`
         displayOrder,
         text
       },
+      slug
       tags {
         id,
         slug,
@@ -33,7 +34,7 @@ const RecipeCreate = () => {
   const [ createRecipe, { error, loading }] = useMutation(CREATE_RECIPE,
     {
       onCompleted: (data) => {
-      history.push(`/recipe/${data.insertRecipe.id}`)
+      history.push(`/recipe/${data.insertRecipe.slug}`)
     }
   });
   // After successful submission, redirect user to the EDIT route, using the
@@ -56,6 +57,7 @@ const RecipeCreate = () => {
       imageAltText: recipe.imageAltText,
       imageColor: recipe.imageColor,
       ingredients: recipe.ingredients,
+      slug: recipe.slug,
       steps: recipe.steps.map( step => stripProperties(['__typename','key','uiKey'],step) ),
       tags: recipe.tags.map( tag => stripProperties(['__typename','key','uiKey'],tag) )
     }
