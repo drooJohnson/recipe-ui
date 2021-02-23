@@ -18,7 +18,7 @@ const RecipeCard = ({recipe}) => {
   const history = useHistory();
   return(
     <Card style={{flexGrow:1}}>
-      <CardActionArea onClick={()=>{history.push(`/recipe/${recipe.id}`)}}>
+      <CardActionArea onClick={()=>{history.push(`/recipe/${recipe.slug}`)}}>
       <Image title={recipe.name} image={recipe.imageUrl}/>
       <CardContent>
           <Typography gutterBottom variant="h5" component="h2">
