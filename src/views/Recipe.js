@@ -17,6 +17,7 @@ const RECIPE = gql`
     recipeBySlug(slug: $slug){
       id,
       name,
+      slug,
       description,
       imageUrl,
       imageColor,
@@ -173,7 +174,7 @@ const Recipe = () => {
 
   return(
     <>
-      <RecipeHeader name={name} createdAt={data.recipeBySlug.createdAt} updatedAt={data.recipeBySlug.updatedAt} recipeId={id} imageUrl={data.recipeBySlug.imageUrl} imageColor={data.recipeBySlug.imageColor} imageAltText={data.recipeBySlug.imageAltText}>
+      <RecipeHeader name={name} createdAt={data.recipeBySlug.createdAt} updatedAt={data.recipeBySlug.updatedAt} recipeId={id} recipeSlug={data.recipeBySlug.slug} imageUrl={data.recipeBySlug.imageUrl} imageColor={data.recipeBySlug.imageColor} imageAltText={data.recipeBySlug.imageAltText}>
         <div>
           {tags && <ChipTagList tags={tags} fadeOverflow={false}/>}
         </div>
