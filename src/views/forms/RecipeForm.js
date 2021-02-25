@@ -80,7 +80,7 @@ const RecipeForm = ({onSubmit, loading, error, recipe}) => {
             id="recipe-slug"
             label="Slug"
             variant="outlined"
-            value={state.name ?? ""}
+            value={state.slug ?? ""}
             fullWidth
             pattern="[a-z\-]"
             onChange={(event) => {
