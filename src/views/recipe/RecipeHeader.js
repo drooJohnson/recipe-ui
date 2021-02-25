@@ -46,7 +46,7 @@ const DateStamps = ({createdAt, updatedAt}) => {
   );
 }
 
-const RecipeHeader = ({name, createdAt, updatedAt, children, imageUrl, imageColor, imageAltText, recipeId}) => {
+const RecipeHeader = ({name, createdAt, updatedAt, children, imageUrl, imageColor, imageAltText, recipeId, recipeSlug}) => {
   return (
     <div
       id="container"
@@ -59,7 +59,7 @@ const RecipeHeader = ({name, createdAt, updatedAt, children, imageUrl, imageColo
     >
       <Hidden smDown>
         {auth.isAuthenticated() && (
-          <Link to={`/recipe/edit/${recipeId}`}>
+          <Link to={`/recipe/edit/${recipeSlug}`}>
             <Button variant="contained">Edit</Button>
           </Link>
         )}
@@ -106,7 +106,7 @@ const RecipeHeader = ({name, createdAt, updatedAt, children, imageUrl, imageColo
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <DateStamps createdAt={createdAt} updatedAt={updatedAt} />
             {auth.isAuthenticated() && (
-              <Link to={`/recipe/edit/${recipeId}`}>
+              <Link to={`/recipe/edit/${recipeSlug}`}>
                 <Button variant="contained">Edit</Button>
               </Link>
             )}
