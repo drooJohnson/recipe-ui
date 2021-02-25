@@ -7,9 +7,10 @@ import { toast } from 'react-toastify';
 
 const RECIPE = gql`
   query Recipe($slug: String!){
-    recipe(slug: $slug){
+    recipeBySlug(slug: $slug){
       id,
       name,
+      slug,
       description,
       status,
       imageUrl,
@@ -43,6 +44,7 @@ const UPDATE_RECIPE = gql`
     updateRecipe(recipe: $recipe){
       id,
       name,
+      slug,
       description,
       status,
       imageUrl,
@@ -76,6 +78,7 @@ const DELETE_RECIPE = gql`
     deleteRecipe(recipeId: $recipeId){
       id,
       name,
+      slug,
       description,
       status,
       imageUrl,
@@ -123,6 +126,7 @@ const RecipeEdit = () => {
     let updateRecipeInput = {
       id: recipe.id,
       name: recipe.name,
+      slug: recipe.slug,
       description: recipe.description,
       status: recipe.status,
       imageUrl: recipe.imageUrl,
