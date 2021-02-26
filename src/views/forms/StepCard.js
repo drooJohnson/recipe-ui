@@ -177,7 +177,7 @@ const ImageStep = ({step, opacity, imageColorOptions, imageSideOptions, index, a
                   />
                 </Grid>
                 <Grid item xs={6}>
-                  <UploadFile imageUrl={step.imageUrl} onSuccess={({url}) => {updateStep({...step, imageUrl: url}, index)}}/>
+                  <UploadFile imageUrl={step.imageUrl} onSuccess={(url) => {updateStep({...step, imageUrl: url}, index)}}/>
                 </Grid>
                 <Grid item xs={6}>
                   <TextField

@@ -83,7 +83,7 @@ const TagForm = ({onSubmit, loading, error, tag}) => {
             />
         </Grid>
         <Grid item xs={12}>
-          <UploadFile imageUrl={imageUrl} onSuccess={({url}) => {setImageUrl(url)}}/>
+          <UploadFile imageUrl={imageUrl} onSuccess={(url) => {setImageUrl(url)}}/>
         </Grid>
         <Grid item xs={12}>
           <InputLabel id="tag-kinds-select-label">Tag Kind</InputLabel>
