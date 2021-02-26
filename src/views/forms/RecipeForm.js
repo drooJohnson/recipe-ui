@@ -91,7 +91,7 @@ const RecipeForm = ({onSubmit, loading, error, recipe}) => {
         <Grid item xs={12} sm={6}>
           <UploadFile
             imageUrl={recipe.imageUrl}
-            onSuccess={({ url }) => {
+            onSuccess={(url) => {
               dispatch({ type: "updateImageUrl", payload: url });
             }}
           />
