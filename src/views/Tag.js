@@ -18,6 +18,7 @@ const TAG = gql`
       recipes {
         id,
         name,
+        slug,
         description,
         imageUrl,
         tags {
