@@ -9,6 +9,7 @@ import GridList from '@material-ui/core/GridList';
 import GridListTile from '@material-ui/core/GridListTile';
 import GridListTileBar from '@material-ui/core/GridListTileBar';
 import { device } from "../utils/device";
+import { Helmet } from 'react-helmet';
 
 const TAGS = gql`
   query Tags{
@@ -53,6 +54,7 @@ const Tags = () => {
 
   return(
     <>
+      <Helmet><title>Tags - Droolangerie</title></Helmet>
       <Typography gutterBottom variant="h4">Recipes by Tag</Typography>
         {Object.entries(groupedTags).map(([key,value]) => {
           return (

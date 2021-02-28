@@ -5,6 +5,7 @@ import Paper from '@material-ui/core/Paper';
 import Button from '@material-ui/core/Button';
 import {useHistory} from 'react-router-dom';
 import ArrowBackIcon from '@material-ui/icons/ArrowBack';
+import { Helmet } from 'react-helmet';
 
 const Emphasis = keyframes`
   from {
@@ -51,6 +52,8 @@ const Shame = styled.span`
 const NotFound = () => {
   const history = useHistory();
   return(
+    <>
+    <Helmet><title>Not Found - Droolangerie</title></Helmet>
     <div style={{textAlign:'center'}}>
       <Paper style={{padding:48,marginTop:'6em',willChange:'transform'}}>
         <Typography variant="h3" gutterBottom>Sorry, I couldn't find the page you were looking for.</Typography>
@@ -60,6 +63,7 @@ const NotFound = () => {
         <Button variant='contained' color='primary' startIcon={<ArrowBackIcon/>} onClick={() => {history.push(`/recipes`)}}>Back to Recipes</Button>
       </Paper>
     </div>
+    </>
   )
 }
 

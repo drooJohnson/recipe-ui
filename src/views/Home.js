@@ -5,6 +5,7 @@ import Grid from '@material-ui/core/Grid'
 import Button from '@material-ui/core/Button'
 import FeaturedRecipe from './recipe/FeaturedRecipe'
 import ArrowForwardIcon from '@material-ui/icons/ArrowForward'
+import { Helmet } from 'react-helmet'
 
 const RECIPES = gql`
   query Recipes(
@@ -73,6 +74,8 @@ const Home = () => {
   const colors = ['MAGENTA','CYAN','YELLOW'];
 
   return(
+      <>
+      <Helmet><title>Droolangerie</title></Helmet>
       <Grid container spacing={3}>
           {data.recipes.recipes.map((recipe, index) => {
             return(
@@ -85,6 +88,7 @@ const Home = () => {
             <Button endIcon={<ArrowForwardIcon/>} onClick={()=>{history.push('/recipes')}} variant="contained">More Recipes</Button>
           </Grid>
       </Grid>
+      </>
   )
 }
 

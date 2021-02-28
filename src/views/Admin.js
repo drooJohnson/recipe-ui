@@ -32,6 +32,7 @@ const RECIPES = gql`
     adminRecipes {
       id,
       name,
+      slug,
       description,
       imageUrl,
       imageColor,
@@ -241,9 +242,9 @@ const Admin = () => {
                   </IconButton>
                 </Tooltip>
               }
-              <Tooltip title="Edit"><IconButton size='small' style={{marginRight:'8px'}} onClick={()=>{history.push(`/recipe/edit/${row.id}`)}}><EditIcon fontSize='small'/></IconButton></Tooltip>
+              <Tooltip title="Edit"><IconButton size='small' style={{marginRight:'8px'}} onClick={()=>{history.push(`/recipe/edit/${row.slug}`)}}><EditIcon fontSize='small'/></IconButton></Tooltip>
               {row.deletedAt ? <RecipeRestoreConfirmationDialog recipe={row}/> : <RecipeDeleteConfirmationDialog recipe={row}/> }
-              <Tooltip title="View"><IconButton size='small' onClick={()=>{history.push(`/recipe/${row.id}`)}}><VisibilityIcon fontSize='small'/></IconButton></Tooltip>
+              <Tooltip title="View"><IconButton size='small' onClick={()=>{history.push(`/recipe/${row.slug}`)}}><VisibilityIcon fontSize='small'/></IconButton></Tooltip>
             </TableCell>
           </TableRow>
         ))}
