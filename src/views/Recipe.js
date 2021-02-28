@@ -9,7 +9,7 @@ import Ingredients from './recipe/Ingredients'
 import Step from './recipe/Step'
 import Hidden from '@material-ui/core/Hidden'
 import {device} from '../utils/device'
-
+import {Helmet} from 'react-helmet'
 import ReactMarkdown from 'react-markdown'
 
 const RECIPE = gql`
@@ -174,6 +174,9 @@ const Recipe = () => {
 
   return(
     <>
+      <Helmet>
+        <title>{data.recipeBySlug.name} - Droolangerie</title>
+      </Helmet>
       <RecipeHeader name={name} createdAt={data.recipeBySlug.createdAt} updatedAt={data.recipeBySlug.updatedAt} recipeId={id} recipeSlug={data.recipeBySlug.slug} imageUrl={data.recipeBySlug.imageUrl} imageColor={data.recipeBySlug.imageColor} imageAltText={data.recipeBySlug.imageAltText}>
         <div>
           {tags && <ChipTagList tags={tags} fadeOverflow={false}/>}
