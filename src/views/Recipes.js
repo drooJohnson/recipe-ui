@@ -4,6 +4,7 @@ import Pagination from './components/Pagination'
 import RecipeCard from './components/RecipeCard'
 import Grid from '@material-ui/core/Grid'
 import Typography from '@material-ui/core/Typography'
+import { Helmet } from 'react-helmet'
 
 const RECIPES = gql`
   query Recipes(
@@ -82,28 +83,49 @@ const Recipes = () => {
     })
   }
 
-  return(
+  return (
     <>
-    <Grid container spacing={3}>
-      <Grid item xs={12} style={{display:'flex',justifyContent:'space-between',alignItems:'baseline'}}>
-        <Typography variant="h4">All Recipes</Typography>
-      </Grid>
-      {data.recipes.recipes.map(recipe => {
-        return(
-          <Grid item xs={12} sm={6} md={3} style={{display:'flex',justifyContent:'stretch',alignItems:'stretch'}}>
-            <RecipeCard recipe={recipe}/>
-          </Grid>
-        )
-      })}
-      <Grid item xs={12}>
-        <Pagination
-          pageCursors={data.recipes.pageCursors}
-          onClick={changePage}
+      <Helmet>
+        <title>Recipes - Droolangerie</title>
+      </Helmet>
+      <Grid container spacing={3}>
+        <Grid
+          item
+          xs={12}
+          style={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "baseline",
+          }}
+        >
+          <Typography variant="h4">All Recipes</Typography>
+        </Grid>
+        {data.recipes.recipes.map((recipe) => {
+          return (
+            <Grid
+              item
+              xs={12}
+              sm={6}
+              md={3}
+              style={{
+                display: "flex",
+                justifyContent: "stretch",
+                alignItems: "stretch",
+              }}
+            >
+              <RecipeCard recipe={recipe} />
+            </Grid>
+          );
+        })}
+        <Grid item xs={12}>
+          <Pagination
+            pageCursors={data.recipes.pageCursors}
+            onClick={changePage}
           />
+        </Grid>
       </Grid>
-    </Grid>
     </>
-  )
+  );
 }
 
 export default Recipes;

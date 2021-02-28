@@ -60,7 +60,13 @@ const RecipeHeader = ({name, createdAt, updatedAt, children, imageUrl, imageColo
       <Hidden smDown>
         {auth.isAuthenticated() && (
           <Link to={`/recipe/edit/${recipeSlug}`}>
-            <Button variant="contained">Edit</Button>
+            <Button
+              style={{ position: "absolute", right: "20px", top: "20px" }}
+              variant="contained"
+              color="primary"
+            >
+              Edit
+            </Button>
           </Link>
         )}
         <HeaderImage>
@@ -77,10 +83,7 @@ const RecipeHeader = ({name, createdAt, updatedAt, children, imageUrl, imageColo
           }}
         >
           <DateStamps createdAt={createdAt} updatedAt={updatedAt} />
-          <Typography
-            variant="h1"
-            style={{ fontWeight: "bold", lineHeight: "56px" }}
-          >
+          <Typography variant="h1" style={{ fontWeight: "bold", marginBottom: 8 }}>
             {name}
           </Typography>
           {children}
@@ -90,8 +93,24 @@ const RecipeHeader = ({name, createdAt, updatedAt, children, imageUrl, imageColo
         <MobileHeaderImage>
           <CroppedImage imageUrl={imageUrl} alt={imageAltText} />
           <Link to={`/recipes`}>
-            <Button style={{position:'absolute',left:'20px',top:'20px'}} variant="contained">Back to Recipes</Button>
+            <Button
+              style={{ position: "absolute", left: "20px", top: "20px" }}
+              variant="contained"
+            >
+              Back to Recipes
+            </Button>
           </Link>
+          {auth.isAuthenticated() && (
+            <Link to={`/recipe/edit/${recipeSlug}`}>
+              <Button
+                style={{ position: "absolute", right: "20px", top: "20px" }}
+                variant="contained"
+                color="primary"
+              >
+                Edit
+              </Button>
+            </Link>
+          )}
         </MobileHeaderImage>
         <div
           id="left"
@@ -105,16 +124,8 @@ const RecipeHeader = ({name, createdAt, updatedAt, children, imageUrl, imageColo
         >
           <div style={{ display: "flex", justifyContent: "space-between" }}>
             <DateStamps createdAt={createdAt} updatedAt={updatedAt} />
-            {auth.isAuthenticated() && (
-              <Link to={`/recipe/edit/${recipeSlug}`}>
-                <Button variant="contained">Edit</Button>
-              </Link>
-            )}
           </div>
-          <Typography
-            variant="h1"
-            style={{ fontWeight: "bold", lineHeight: "56px" }}
-          >
+          <Typography variant="h1" style={{ fontWeight: "bold", marginBottom: 8 }}>
             {name}
           </Typography>
           {children}
