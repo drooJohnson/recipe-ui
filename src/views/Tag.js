@@ -6,6 +6,7 @@ import Typography from '@material-ui/core/Typography'
 import Button from '@material-ui/core/Button'
 import auth from "../Auth";
 import RecipeCard from './components/RecipeCard'
+import {Helmet} from 'react-helmet'
 
 const TAG = gql`
   query Tag($id: ID!){
@@ -40,6 +41,8 @@ const Tag = () => {
   if (error) return `${error}`
 
   return (
+    <>
+    <Helmet><title>Recipes tagged {data.tag.text} - Droolangerie</title></Helmet>
     <Grid container spacing={3}>
       <Grid
         item
@@ -75,6 +78,7 @@ const Tag = () => {
         );
       })}
     </Grid>
+    </>
   );
 }
 
